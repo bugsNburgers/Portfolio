@@ -9,6 +9,7 @@ The website will be expanded over time to include:
 - Technical skills
 - Experience
 - Contact information
+### Add something like a red-yellow-green inititial loading page like stop-wait-lesgo
 
 ## Live Website
 
