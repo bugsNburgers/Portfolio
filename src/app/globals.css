@@ -1,0 +1,3 @@
+/* Only @font-face declarations — all other styles live in GlobalStyles.ts */
+/* If you have the Calibre & SF Mono font files, add them here */
+/* Otherwise the CSS font-family stacks fall back to Inter and Fira Code */
