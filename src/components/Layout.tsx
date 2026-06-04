@@ -1,0 +1,63 @@
+'use client';
+
+import React, { useState } from 'react';
+import styled, { css } from 'styled-components';
+import Loader from '@/components/Loader';
+import Nav from '@/components/Nav';
+import SocialSidebar from '@/components/SocialSidebar';
+import EmailSidebar from '@/components/EmailSidebar';
+import Footer from '@/components/Footer';
+import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
+
+// ------------------------------------------------------------------
+// Styled components
+// ------------------------------------------------------------------
+
+const StyledContent = styled.div`
+  ${({ theme }) => css`
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  `}
+`;
+
+// ------------------------------------------------------------------
+// Component
+// ------------------------------------------------------------------
+
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+const Layout = ({ children }: LayoutProps): React.ReactElement => {
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const handleLoaderFinish = () => {
+    setIsLoading(false);
+  };
+
+  return (
+    <>
+      {isLoading && !prefersReducedMotion ? (
+        <Loader finishLoading={handleLoaderFinish} />
+      ) : null}
+
+      <StyledContent>
+        <a className="skip-to-content" href="#content">
+          Skip to Content
+        </a>
+
+        <Nav isHome={!isLoading || prefersReducedMotion} />
+        <SocialSidebar />
+        <EmailSidebar />
+
+        <main id="content">{children}</main>
+
+        <Footer />
+      </StyledContent>
+    </>
+  );
+};
+
+export default Layout;
