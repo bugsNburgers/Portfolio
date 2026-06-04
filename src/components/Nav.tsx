@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import Logo from '@/components/Logo';
 import Menu from '@/components/Menu';
@@ -22,28 +22,26 @@ const StyledHeader = styled.header<{
   $scrolled: boolean;
   $scrollDirection: 'up' | 'down' | null;
 }>`
-  ${({ theme }) => css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    z-index: 11;
-    padding: 0px 50px;
-    width: 100%;
-    background-color: ${theme.colors.navy};
-    filter: none !important;
-    pointer-events: auto !important;
-    user-select: auto !important;
-    transition: ${theme.transition};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  z-index: 11;
+  padding: 0px 50px;
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.navy};
+  filter: none !important;
+  pointer-events: auto !important;
+  user-select: auto !important;
+  transition: ${({ theme }) => theme.transition};
 
-    @media ${theme.media.md} {
-      padding: 0 25px;
-    }
-    @media ${theme.media.sm} {
-      padding: 0 15px;
-    }
-  `}
+  @media ${({ theme }) => theme.media.md} {
+    padding: 0 25px;
+  }
+  @media ${({ theme }) => theme.media.sm} {
+    padding: 0 15px;
+  }
 
   height: ${({ $scrolled, theme }) =>
     $scrolled ? theme.sizes.navScrollHeight : theme.sizes.navHeight};
@@ -56,88 +54,82 @@ const StyledHeader = styled.header<{
 `;
 
 const StyledNav = styled.nav`
-  ${({ theme }) => css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    width: 100%;
-    font-family: ${theme.fonts.mono};
-    counter-reset: item 0;
-    z-index: 12;
-  `}
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  font-family: ${({ theme }) => theme.fonts.mono};
+  counter-reset: item 0;
+  z-index: 12;
 `;
 
 const StyledLinks = styled.div`
-  ${({ theme }) => css`
+  display: flex;
+  align-items: center;
+
+  @media ${({ theme }) => theme.media.md} {
+    display: none;
+  }
+
+  ol {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
 
-    @media ${theme.media.md} {
-      display: none;
-    }
+    li {
+      margin: 0 5px;
+      position: relative;
+      counter-increment: item 1;
+      font-size: ${({ theme }) => theme.fontSizes.xs};
 
-    ol {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0;
-      margin: 0;
-      list-style: none;
+      a {
+        padding: 10px;
+        color: ${({ theme }) => theme.colors.lightestSlate};
+        transition: ${({ theme }) => theme.transition};
 
-      li {
-        margin: 0 5px;
-        position: relative;
-        counter-increment: item 1;
-        font-size: ${theme.fontSizes.xs};
+        &:before {
+          content: '0' counter(item) '.';
+          margin-right: 5px;
+          color: ${({ theme }) => theme.colors.green};
+          font-size: ${({ theme }) => theme.fontSizes.xxs};
+          text-align: right;
+        }
 
-        a {
-          padding: 10px;
-          color: ${theme.colors.lightestSlate};
-          transition: ${theme.transition};
-
-          &:before {
-            content: '0' counter(item) '.';
-            margin-right: 5px;
-            color: ${theme.colors.green};
-            font-size: ${theme.fontSizes.xxs};
-            text-align: right;
-          }
-
-          &:hover,
-          &:focus {
-            color: ${theme.colors.green};
-          }
+        &:hover,
+        &:focus {
+          color: ${({ theme }) => theme.colors.green};
         }
       }
     }
+  }
 
-    .resume-button {
-      ${({ theme }) => css`
-        color: ${theme.colors.green};
-        background-color: transparent;
-        border: 1px solid ${theme.colors.green};
-        border-radius: ${theme.sizes.borderRadius};
-        font-size: ${theme.fontSizes.xs};
-        font-family: ${theme.fonts.mono};
-        line-height: 1;
-        text-decoration: none;
-        padding: 0.75rem 1rem;
-        transition: ${theme.transition};
-        margin-left: 15px;
+  .resume-button {
+    color: ${({ theme }) => theme.colors.green};
+    background-color: transparent;
+    border: 1px solid ${({ theme }) => theme.colors.green};
+    border-radius: ${({ theme }) => theme.sizes.borderRadius};
+    font-size: ${({ theme }) => theme.fontSizes.xs};
+    font-family: ${({ theme }) => theme.fonts.mono};
+    line-height: 1;
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    transition: ${({ theme }) => theme.transition};
+    margin-left: 15px;
 
-        &:hover,
-        &:focus-visible {
-          background-color: ${theme.colors.greenTint};
-          outline: none;
-        }
-
-        &:after {
-          display: none !important;
-        }
-      `}
+    &:hover,
+    &:focus-visible {
+      background-color: ${({ theme }) => theme.colors.greenTint};
+      outline: none;
     }
-  `}
+
+    &:after {
+      display: none !important;
+    }
+  }
 `;
 
 // ------------------------------------------------------------------
@@ -180,9 +172,6 @@ const Nav = ({ isHome }: NavProps): React.ReactElement => {
   }, [isHome, prefersReducedMotion]);
 
   const handleMenuToggle = () => setMenuOpen((prev) => !prev);
-
-  const timeout = isHome ? 3000 : 0;
-  const fadeClass = isHome && !prefersReducedMotion ? 'fade-down' : '';
 
   return (
     <StyledHeader
