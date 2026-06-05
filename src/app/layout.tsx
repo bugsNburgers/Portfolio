@@ -1,9 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import { ThemeProvider } from 'styled-components';
 import StyledComponentsRegistry from '@/lib/registry';
-import { theme } from '@/styles/theme';
-import GlobalStyles from '@/styles/GlobalStyles';
+import Providers from '@/components/Providers';
 import '@/app/globals.css';
 
 // ------------------------------------------------------------------
@@ -57,10 +55,9 @@ export default function RootLayout({ children }: RootLayoutProps): React.ReactEl
     <html lang="en">
       <body>
         <StyledComponentsRegistry>
-          <ThemeProvider theme={theme}>
-            <GlobalStyles />
+          <Providers>
             {children}
-          </ThemeProvider>
+          </Providers>
         </StyledComponentsRegistry>
       </body>
     </html>
