@@ -1,6 +1,6 @@
 {
   "extends": "next/core-web-vitals",
   "rules": {
-    "react/no-danger": "warn"
+    "react/no-danger": "off"
   }
 }

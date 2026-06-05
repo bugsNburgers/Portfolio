@@ -1,4 +1,12 @@
 import { createGlobalStyle } from 'styled-components';
+import { theme } from './theme';
+
+// Note: We import theme directly instead of using props interpolations
+// because createGlobalStyle's SSR rendering happens outside ThemeProvider
+// context during Next.js static prerender. Theme values are static constants
+// so direct import is safe and avoids SSR runtime errors.
+
+const { colors, fonts, fontSizes, sizes, media, transition } = theme;
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -6,7 +14,7 @@ const GlobalStyles = createGlobalStyle`
     width: 100%;
     scroll-behavior: smooth;
     scrollbar-width: thin;
-    scrollbar-color: ${({ theme }) => theme.colors.darkSlate} ${({ theme }) => theme.colors.navy};
+    scrollbar-color: ${colors.darkSlate} ${colors.navy};
   }
 
   *,
@@ -16,12 +24,12 @@ const GlobalStyles = createGlobalStyle`
   }
 
   ::selection {
-    background-color: ${({ theme }) => theme.colors.lightestNavy};
-    color: ${({ theme }) => theme.colors.lightestSlate};
+    background-color: ${colors.lightestNavy};
+    color: ${colors.lightestSlate};
   }
 
   :focus {
-    outline: 2px dashed ${({ theme }) => theme.colors.green};
+    outline: 2px dashed ${colors.green};
     outline-offset: 3px;
   }
 
@@ -31,7 +39,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   :focus-visible {
-    outline: 2px dashed ${({ theme }) => theme.colors.green};
+    outline: 2px dashed ${colors.green};
     outline-offset: 3px;
   }
 
@@ -40,12 +48,12 @@ const GlobalStyles = createGlobalStyle`
   }
 
   ::-webkit-scrollbar-track {
-    background: ${({ theme }) => theme.colors.navy};
+    background: ${colors.navy};
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: ${({ theme }) => theme.colors.darkSlate};
-    border: 3px solid ${({ theme }) => theme.colors.navy};
+    background-color: ${colors.darkSlate};
+    border: 3px solid ${colors.navy};
     border-radius: 10px;
   }
 
@@ -56,14 +64,14 @@ const GlobalStyles = createGlobalStyle`
     overflow-x: hidden;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    background-color: ${({ theme }) => theme.colors.navy};
-    color: ${({ theme }) => theme.colors.slate};
-    font-family: ${({ theme }) => theme.fonts.sans};
-    font-size: ${({ theme }) => theme.fontSizes.xl};
+    background-color: ${colors.navy};
+    color: ${colors.slate};
+    font-family: ${fonts.sans};
+    font-size: ${fontSizes.xl};
     line-height: 1.3;
 
-    @media ${({ theme }) => theme.media.sm} {
-      font-size: ${({ theme }) => theme.fontSizes.lg};
+    @media ${media.sm} {
+      font-size: ${fontSizes.lg};
     }
 
     &.hidden {
@@ -75,7 +83,7 @@ const GlobalStyles = createGlobalStyle`
 
       #content > * {
         filter: blur(5px) brightness(0.7);
-        transition: ${({ theme }) => theme.transition};
+        transition: ${transition};
         pointer-events: none;
         user-select: none;
       }
@@ -92,30 +100,30 @@ const GlobalStyles = createGlobalStyle`
   main {
     margin: 0 auto;
     width: 100%;
-    max-width: ${({ theme }) => theme.sizes.maxWidth};
+    max-width: ${sizes.maxWidth};
     min-height: 100vh;
     padding: 200px 150px;
 
-    @media ${({ theme }) => theme.media.lg} {
+    @media ${media.lg} {
       padding: 200px 100px;
     }
-    @media ${({ theme }) => theme.media.md} {
+    @media ${media.md} {
       padding: 150px 50px;
     }
-    @media ${({ theme }) => theme.media.sm} {
+    @media ${media.sm} {
       padding: 125px 25px;
     }
 
     &.fillHeight {
       padding: 0 150px;
 
-      @media ${({ theme }) => theme.media.lg} {
+      @media ${media.lg} {
         padding: 0 100px;
       }
-      @media ${({ theme }) => theme.media.md} {
+      @media ${media.md} {
         padding: 0 50px;
       }
-      @media ${({ theme }) => theme.media.sm} {
+      @media ${media.sm} {
         padding: 0 25px;
       }
     }
@@ -126,12 +134,12 @@ const GlobalStyles = createGlobalStyle`
   section {
     margin: 0 auto;
     padding: 100px 0;
-    max-width: ${({ theme }) => theme.sizes.sectionMaxWidth};
+    max-width: ${sizes.sectionMaxWidth};
 
-    @media ${({ theme }) => theme.media.md} {
+    @media ${media.md} {
       padding: 80px 0;
     }
-    @media ${({ theme }) => theme.media.sm} {
+    @media ${media.sm} {
       padding: 60px 0;
     }
   }
@@ -144,7 +152,7 @@ const GlobalStyles = createGlobalStyle`
   h6 {
     margin: 0 0 10px 0;
     font-weight: 600;
-    color: ${({ theme }) => theme.colors.lightestSlate};
+    color: ${colors.lightestSlate};
     line-height: 1.1;
   }
 
@@ -164,7 +172,7 @@ const GlobalStyles = createGlobalStyle`
     position: relative;
     margin: 10px 0 40px;
     width: 100%;
-    font-size: clamp(26px, 5vw, ${({ theme }) => theme.fontSizes.heading});
+    font-size: clamp(26px, 5vw, ${fontSizes.heading});
     white-space: nowrap;
 
     &:before {
@@ -173,13 +181,12 @@ const GlobalStyles = createGlobalStyle`
       counter-increment: section;
       content: '0' counter(section) '.';
       margin-right: 10px;
-      color: ${({ theme }) => theme.colors.green};
-      font-family: ${({ theme }) => theme.fonts.mono};
-      font-size: clamp(${({ theme }) => theme.fontSizes.md}, 3vw, ${({ theme }) =>
-  theme.fontSizes.xl});
+      color: ${colors.green};
+      font-family: ${fonts.mono};
+      font-size: clamp(${fontSizes.md}, 3vw, ${fontSizes.xl});
       font-weight: 400;
 
-      @media ${({ theme }) => theme.media.sm} {
+      @media ${media.sm} {
         margin-bottom: -3px;
         margin-right: 5px;
       }
@@ -193,12 +200,12 @@ const GlobalStyles = createGlobalStyle`
       width: 300px;
       height: 1px;
       margin-left: 20px;
-      background-color: ${({ theme }) => theme.colors.lightestNavy};
+      background-color: ${colors.lightestNavy};
 
-      @media ${({ theme }) => theme.media.lg} {
+      @media ${media.lg} {
         width: 200px;
       }
-      @media ${({ theme }) => theme.media.md} {
+      @media ${media.md} {
         width: 100%;
       }
       @media (max-width: 600px) {
@@ -228,18 +235,18 @@ const GlobalStyles = createGlobalStyle`
     text-decoration-skip-ink: auto;
     color: inherit;
     position: relative;
-    transition: ${({ theme }) => theme.transition};
+    transition: ${transition};
 
     &:hover,
     &:focus {
-      color: ${({ theme }) => theme.colors.green};
+      color: ${colors.green};
     }
 
     &.inline-link {
       display: inline-block;
       position: relative;
-      color: ${({ theme }) => theme.colors.green};
-      transition: ${({ theme }) => theme.transition};
+      color: ${colors.green};
+      transition: ${transition};
 
       &:after {
         content: '';
@@ -248,11 +255,11 @@ const GlobalStyles = createGlobalStyle`
         height: 1px;
         position: relative;
         bottom: 0.37em;
-        background-color: ${({ theme }) => theme.colors.green};
+        background-color: ${colors.green};
         opacity: 0.5;
 
         @media (prefers-reduced-motion: no-preference) {
-          transition: ${({ theme }) => theme.transition};
+          transition: ${transition};
         }
       }
 
@@ -280,8 +287,8 @@ const GlobalStyles = createGlobalStyle`
     & > a {
       display: inline-block;
       position: relative;
-      color: ${({ theme }) => theme.colors.green};
-      transition: ${({ theme }) => theme.transition};
+      color: ${colors.green};
+      transition: ${transition};
 
       &:after {
         content: '';
@@ -290,11 +297,11 @@ const GlobalStyles = createGlobalStyle`
         height: 1px;
         position: relative;
         bottom: 0.37em;
-        background-color: ${({ theme }) => theme.colors.green};
+        background-color: ${colors.green};
         opacity: 0.5;
 
         @media (prefers-reduced-motion: no-preference) {
-          transition: ${({ theme }) => theme.transition};
+          transition: ${transition};
         }
       }
 
@@ -305,10 +312,10 @@ const GlobalStyles = createGlobalStyle`
     }
 
     & > code {
-      background-color: ${({ theme }) => theme.colors.lightNavy};
-      color: ${({ theme }) => theme.colors.white};
-      font-size: ${({ theme }) => theme.fontSizes.sm};
-      border-radius: ${({ theme }) => theme.sizes.borderRadius};
+      background-color: ${colors.lightNavy};
+      color: ${colors.white};
+      font-size: ${fontSizes.sm};
+      border-radius: ${sizes.borderRadius};
       padding: 0.3em 0.5em;
     }
   }
@@ -317,7 +324,7 @@ const GlobalStyles = createGlobalStyle`
     padding: 0;
     margin: 0;
     list-style: none;
-    font-size: ${({ theme }) => theme.fontSizes.lg};
+    font-size: ${fontSizes.lg};
 
     li {
       position: relative;
@@ -328,13 +335,13 @@ const GlobalStyles = createGlobalStyle`
         content: '▹';
         position: absolute;
         left: 0;
-        color: ${({ theme }) => theme.colors.green};
+        color: ${colors.green};
       }
     }
   }
 
   blockquote {
-    border-left: 1px solid ${({ theme }) => theme.colors.green};
+    border-left: 1px solid ${colors.green};
     margin-left: 0;
     margin-right: 0;
     padding-left: 1.5rem;
@@ -346,51 +353,51 @@ const GlobalStyles = createGlobalStyle`
   }
 
   hr {
-    background-color: ${({ theme }) => theme.colors.lightestNavy};
+    background-color: ${colors.lightestNavy};
     height: 1px;
     border: 0;
     margin: 1rem;
   }
 
   code {
-    font-family: ${({ theme }) => theme.fonts.mono};
-    font-size: ${({ theme }) => theme.fontSizes.md};
+    font-family: ${fonts.mono};
+    font-size: ${fontSizes.md};
   }
 
   .overline {
-    color: ${({ theme }) => theme.colors.green};
-    font-family: ${({ theme }) => theme.fonts.mono};
-    font-size: ${({ theme }) => theme.fontSizes.md};
+    color: ${colors.green};
+    font-family: ${fonts.mono};
+    font-size: ${fontSizes.md};
     font-weight: 400;
   }
 
   .subtitle {
-    color: ${({ theme }) => theme.colors.green};
+    color: ${colors.green};
     margin: 0 0 20px 0;
-    font-size: ${({ theme }) => theme.fontSizes.md};
-    font-family: ${({ theme }) => theme.fonts.mono};
+    font-size: ${fontSizes.md};
+    font-family: ${fonts.mono};
     font-weight: 400;
     line-height: 1.5;
 
-    @media ${({ theme }) => theme.media.lg} {
-      font-size: ${({ theme }) => theme.fontSizes.sm};
+    @media ${media.lg} {
+      font-size: ${fontSizes.sm};
     }
-    @media ${({ theme }) => theme.media.md} {
-      font-size: ${({ theme }) => theme.fontSizes.xs};
+    @media ${media.md} {
+      font-size: ${fontSizes.xs};
     }
   }
 
   .skip-to-content {
-    color: ${({ theme }) => theme.colors.green};
+    color: ${colors.green};
     background-color: transparent;
-    border: 1px solid ${({ theme }) => theme.colors.green};
-    border-radius: ${({ theme }) => theme.sizes.borderRadius};
-    font-size: ${({ theme }) => theme.fontSizes.xs};
-    font-family: ${({ theme }) => theme.fonts.mono};
+    border: 1px solid ${colors.green};
+    border-radius: ${sizes.borderRadius};
+    font-size: ${fontSizes.xs};
+    font-family: ${fonts.mono};
     line-height: 1;
     text-decoration: none;
     padding: 1.25rem 1.75rem;
-    transition: ${({ theme }) => theme.transition};
+    transition: ${transition};
     position: absolute;
     top: auto;
     left: -999px;
@@ -401,8 +408,8 @@ const GlobalStyles = createGlobalStyle`
 
     &:hover,
     &:focus {
-      background-color: ${({ theme }) => theme.colors.green};
-      color: ${({ theme }) => theme.colors.navy};
+      background-color: ${colors.green};
+      color: ${colors.navy};
       top: 0;
       left: 0;
       width: auto;
