@@ -2,49 +2,35 @@ import { OtherProject } from '@/types';
 
 const otherProjects: OtherProject[] = [
   {
-    title: '[REPLACE: Markdown Note App]',
+    title: 'HonorLog',
     description:
-      '[REPLACE: A minimalist note-taking app with markdown support, tag-based organization, and local-first storage using IndexedDB.]',
-    techStack: ['React', 'TypeScript', 'IndexedDB'],
-    githubUrl: '[REPLACE: https://github.com/suprateek/notes]',
-    externalUrl: '[REPLACE: https://notes.demo.com]',
+      'A public student achievement display system built for Shorinkai India. A real-time leaderboard and recognition board for martial arts dojo students, tracking achievements, ranks, and milestones.',
+    techStack: ['TypeScript', 'React', 'Supabase'],
+    githubUrl: 'https://github.com/ull0sm/HonorLog',
   },
   {
-    title: '[REPLACE: Weather Dashboard]',
+    title: 'Category Manager',
     description:
-      '[REPLACE: A weather app that displays current conditions and 7-day forecasts using the OpenWeatherMap API with location-based auto-detection.]',
-    techStack: ['JavaScript', 'CSS', 'OpenWeatherMap API'],
-    githubUrl: '[REPLACE: https://github.com/suprateek/weather]',
+      'A category and content management module built as part of the Shorinkai India internal tooling suite. Handles hierarchical content organization with admin controls and live preview.',
+    techStack: ['TypeScript', 'React', 'Node.js'],
   },
   {
-    title: '[REPLACE: Portfolio v1]',
+    title: 'FTP Client with GUI',
     description:
-      '[REPLACE: The first iteration of my personal portfolio website built with vanilla HTML, CSS, and JavaScript.]',
-    techStack: ['HTML', 'CSS', 'JavaScript'],
-    githubUrl: '[REPLACE: https://github.com/suprateek/portfolio-v1]',
-    externalUrl: '[REPLACE: https://v1.suprateekyawagal.in]',
+      'A desktop FTP application with a clean graphical interface for file transfers, directory browsing, and connection management. Supports drag-and-drop uploads and real-time transfer progress.',
+    techStack: ['Python', 'Tkinter', 'ftplib'],
   },
   {
-    title: '[REPLACE: CLI Task Manager]',
+    title: 'IoT Fire Alarm System',
     description:
-      '[REPLACE: A command-line task management tool with support for priorities, deadlines, and Kanban-style status tracking.]',
-    techStack: ['Python', 'Click', 'SQLite'],
-    githubUrl: '[REPLACE: https://github.com/suprateek/taskman]',
+      'A hardware-software IoT solution for fire detection using temperature and smoke sensors. Features real-time alerts, a monitoring dashboard, and automated emergency notifications.',
+    techStack: ['Arduino', 'Python', 'MQTT', 'IoT'],
   },
   {
-    title: '[REPLACE: URL Shortener]',
+    title: 'Point of Sale (POS)',
     description:
-      '[REPLACE: A URL shortening service with analytics, custom aliases, and QR code generation.]',
-    techStack: ['Node.js', 'Express', 'MongoDB', 'React'],
-    githubUrl: '[REPLACE: https://github.com/suprateek/shorturl]',
-    externalUrl: '[REPLACE: https://short.demo.com]',
-  },
-  {
-    title: '[REPLACE: Algorithm Visualizer]',
-    description:
-      '[REPLACE: An interactive tool for visualizing sorting and pathfinding algorithms with step-by-step animation controls.]',
-    techStack: ['React', 'Canvas API', 'TypeScript'],
-    githubUrl: '[REPLACE: https://github.com/suprateek/algoviz]',
+      'A lightweight point-of-sale system with inventory management, sales tracking, receipt generation, and a clean UI for retail workflows.',
+    techStack: ['Python', 'SQLite', 'Tkinter'],
   },
 ];
 

@@ -2,32 +2,30 @@ import { FeaturedProject } from '@/types';
 
 export const featuredProjects: FeaturedProject[] = [
   {
-    title: '[REPLACE: Project Name One]',
+    title: 'GitVital',
     description:
-      '[REPLACE: A web app for visualizing personalized data. Built with React and D3.js, this project pulls data from multiple APIs and presents it in an interactive dashboard with real-time filtering and export capabilities.]',
-    techStack: ['React', 'TypeScript', 'D3.js', 'Node.js', 'PostgreSQL'],
-    githubUrl: '[REPLACE: https://github.com/suprateek/project-1]',
-    externalUrl: '[REPLACE: https://project-1.demo.com]',
-    image: '/images/projects/project-1.png',
-    imageAlt: '[REPLACE: Screenshot of Project One dashboard]',
+      'Is your repo healthy? GitVital transforms raw GitHub data into a living dashboard with risk flags and gamified dev badges — featuring health scoring, bus factor analysis, AI-powered recommendations, and global developer leaderboards.',
+    techStack: ['Next.js', 'TypeScript', 'GitHub API', 'AI/ML', 'PostgreSQL'],
+    githubUrl: 'https://github.com/bugsNburgers/GitVital',
+    image: '/images/projects/gitvital.png',
+    imageAlt: 'GitVital dashboard showing repository health metrics',
   },
   {
-    title: '[REPLACE: Project Name Two]',
+    title: 'AI-Based Personal Stylist',
     description:
-      '[REPLACE: A full-stack e-commerce platform with authentication, payment processing, and an admin dashboard. Features include real-time inventory management, order tracking, and responsive design across all devices.]',
-    techStack: ['Next.js', 'Stripe', 'Prisma', 'Tailwind CSS', 'Supabase'],
-    githubUrl: '[REPLACE: https://github.com/suprateek/project-2]',
-    externalUrl: '[REPLACE: https://project-2.demo.com]',
-    image: '/images/projects/project-2.png',
-    imageAlt: '[REPLACE: Screenshot of Project Two storefront]',
+      'An AI-powered personal stylist that extracts garment-level representations from real images using DeepFashion2 annotations and CLIP embeddings, forming the foundation for outfit compatibility and trend-aware fashion recommendation.',
+    techStack: ['Python', 'CLIP', 'DeepFashion2', 'PyTorch', 'Computer Vision'],
+    githubUrl: 'https://github.com/bugsNburgers/AI-based-personal-stylist',
+    image: '/images/projects/ai-stylist.png',
+    imageAlt: 'AI Personal Stylist garment detection interface',
   },
   {
-    title: '[REPLACE: Project Name Three]',
+    title: 'EntryDesk',
     description:
-      '[REPLACE: A developer tool that simplifies the process of generating boilerplate code. Supports multiple frameworks and languages with customizable templates and a CLI interface.]',
-    techStack: ['Python', 'Click', 'Jinja2', 'GitHub Actions'],
-    githubUrl: '[REPLACE: https://github.com/suprateek/project-3]',
-    image: '/images/projects/project-3.png',
-    imageAlt: '[REPLACE: Screenshot of Project Three CLI output]',
+      'A TypeScript-based dashboard for managing karate and other sports events, built for Shorinkai India. Features separate organizer and coach portals to handle events, participants, and competition entries end to end.',
+    techStack: ['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'REST API'],
+    githubUrl: 'https://github.com/ull0sm/EntryDesk',
+    image: '/images/projects/entrydesk.png',
+    imageAlt: 'EntryDesk sports event management dashboard',
   },
 ];
