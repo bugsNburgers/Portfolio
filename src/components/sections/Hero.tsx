@@ -65,7 +65,7 @@ const StyledTagline = styled.h3`
 
 const StyledDescription = styled.p`
   ${({ theme }) => css`
-    margin: 30px 0 0;
+    margin: 50px 0 0;
     max-width: 540px;
     color: ${theme.colors.slate};
     font-size: ${theme.fontSizes.lg};
