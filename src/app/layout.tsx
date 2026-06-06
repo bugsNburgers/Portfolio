@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Suprateek Yawagal',
     description: 'Suprateek Yawagal is a software engineer who builds things for the web.',
-    url: '[REPLACE: https://suprateekyawagal.in]',
+    url: 'https://suprateekyawagal.in',
     siteName: 'Suprateek Yawagal',
     images: [
       {

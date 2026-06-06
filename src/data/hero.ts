@@ -12,7 +12,7 @@ const heroData: HeroData = {
   },
   ctaSecondary: {
     text: 'Get In Touch',
-    url: 'mailto:suprateek.yawagal@gmail.com',
+    url: 'mailto:hello@suprateekyawagal.in',
   },
 };
 
