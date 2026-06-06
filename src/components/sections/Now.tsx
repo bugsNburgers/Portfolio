@@ -73,30 +73,7 @@ const StyledCard = styled.div`
   `}
 `;
 
-const StyledFooterLine = styled.p`
-  ${({ theme }) => css`
-    margin-top: 30px;
-    text-align: center;
-    font-family: ${theme.fonts.mono};
-    font-size: ${theme.fontSizes.xs};
-    color: ${theme.colors.darkSlate};
 
-    a {
-      color: ${theme.colors.green};
-      text-decoration: none;
-      transition: ${theme.transition};
-
-      &:hover,
-      &:focus {
-        text-decoration: underline;
-      }
-
-      &:after {
-        display: none;
-      }
-    }
-  `}
-`;
 
 // ------------------------------------------------------------------
 // Component
@@ -105,7 +82,7 @@ const StyledFooterLine = styled.p`
 const Now = (): React.ReactElement => {
   const [ref, isInView] = useInView();
   const prefersReducedMotion = usePrefersReducedMotion();
-  const { cards, updatedDate } = nowData;
+  const { cards } = nowData;
 
   return (
     <StyledNowSection id="now" ref={ref as React.RefObject<HTMLElement>}>

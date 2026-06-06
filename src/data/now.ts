@@ -27,7 +27,7 @@ const nowData: NowData = {
         'Contributing to Once UI — an indie design system for Next.js apps. Recently had 2 PRs merged: fixed touch hover behavior for Button components and added numeric sizes shorthand for the Media component.',
     },
   ],
-  updatedDate: 'June 2026',
+
 };
 
 export default nowData;

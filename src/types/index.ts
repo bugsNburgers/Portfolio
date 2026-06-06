@@ -83,7 +83,6 @@ export interface NowCard {
 /** Now section data */
 export interface NowData {
   cards: NowCard[];
-  updatedDate: string;
 }
 
 /** Writing / blog entries */
