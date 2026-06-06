@@ -77,11 +77,11 @@ const StyledCTAWrapper = styled.div`
   ${({ theme }) => css`
     display: flex;
     gap: 20px;
-    margin-top: 50px;
+    margin-top: 30px;
     flex-wrap: wrap;
 
     @media ${theme.media.sm} {
-      margin-top: 30px;
+      margin-top: 20px;
     }
 
     a {
