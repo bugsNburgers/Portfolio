@@ -168,8 +168,8 @@ const Writing = (): React.ReactElement => {
         animate={isInView || prefersReducedMotion ? 'visible' : 'hidden'}
         variants={fadeUpVariants}
       >
-        <h2 className="numbered-heading">Things I&apos;ve Written</h2>
-        <StyledSubtitle>Mostly TILs and half-baked thoughts.</StyledSubtitle>
+        <h2 className="numbered-heading">Open Source Contributions</h2>
+        <StyledSubtitle>Merged PRs to production open source projects.</StyledSubtitle>
 
         <StyledEntryList>
           {writingData.map(({ title, url, date, readTime, excerpt, tags }: WritingEntry) => (
@@ -198,8 +198,8 @@ const Writing = (): React.ReactElement => {
           ))}
         </StyledEntryList>
 
-        <StyledSeeAllLink href="/writing" target="_blank" rel="noopener noreferrer">
-          See all writing →
+        <StyledSeeAllLink href="https://github.com/bugsNburgers" target="_blank" rel="noopener noreferrer">
+          View my GitHub profile →
         </StyledSeeAllLink>
       </motion.div>
     </StyledWritingSection>

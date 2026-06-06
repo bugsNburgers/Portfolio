@@ -102,16 +102,16 @@ const GlobalStyles = createGlobalStyle`
     width: 100%;
     max-width: ${sizes.maxWidth};
     min-height: 100vh;
-    padding: 200px 150px;
+    padding: 0 150px;
 
     @media ${media.lg} {
-      padding: 200px 100px;
+      padding: 0 100px;
     }
     @media ${media.md} {
-      padding: 150px 50px;
+      padding: 0 50px;
     }
     @media ${media.sm} {
-      padding: 125px 25px;
+      padding: 0 25px;
     }
 
     &.fillHeight {
@@ -133,14 +133,14 @@ const GlobalStyles = createGlobalStyle`
 
   section {
     margin: 0 auto;
-    padding: 100px 0;
+    padding: 80px 0;
     max-width: ${sizes.sectionMaxWidth};
 
     @media ${media.md} {
-      padding: 80px 0;
+      padding: 60px 0;
     }
     @media ${media.sm} {
-      padding: 60px 0;
+      padding: 40px 0;
     }
   }
 

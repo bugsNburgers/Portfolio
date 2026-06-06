@@ -18,7 +18,7 @@ const StyledHeroSection = styled.section`
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
-    padding: 0;
+    padding: 80px 0 0 !important;
     max-width: 1000px;
 
     @media ${theme.media.lg} {
