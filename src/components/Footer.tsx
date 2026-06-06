@@ -181,14 +181,12 @@ const Footer = (): React.ReactElement => {
 
       <StyledCredit>
         <a
-          href="https://github.com/bugsNburgers/portfolio"
+          href="https://github.com/bugsNburgers"
           target="_blank"
           rel="noopener noreferrer"
         >
           Designed &amp; Built by Suprateek Yawagal
         </a>
-        <p>Design inspired by Brittany Chiang</p>
-        <p>Built with Next.js &amp; Styled Components</p>
       </StyledCredit>
     </StyledFooter>
   );

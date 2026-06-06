@@ -42,7 +42,7 @@ const StyledOtherProjectsSection = styled.section`
 const StyledHeading = styled.h2`
   font-size: clamp(24px, 5vw, 32px);
   text-align: center;
-  margin: 10px 0 0;
+  margin: 0 0 40px;
   color: ${({ theme }) => theme.colors.lightestSlate};
 `;
 
@@ -238,10 +238,6 @@ const OtherProjects = (): React.ReactElement => {
         variants={fadeUpVariants}
       >
         <StyledHeading>Other Noteworthy Projects</StyledHeading>
-
-        <a className="archive-link" href="/archive">
-          view the archive
-        </a>
       </motion.div>
 
       <StyledProjectsGrid

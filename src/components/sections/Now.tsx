@@ -127,10 +127,7 @@ const Now = (): React.ReactElement => {
         </StyledGrid>
 
         <StyledFooterLine>
-          Updated {updatedDate} · inspired by{' '}
-          <a href="https://nownownow.com" target="_blank" rel="noopener noreferrer">
-            nownownow.com
-          </a>
+          Updated {updatedDate}
         </StyledFooterLine>
       </motion.div>
     </StyledNowSection>

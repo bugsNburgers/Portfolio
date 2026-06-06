@@ -18,11 +18,15 @@ const StyledHeroSection = styled.section`
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
-    padding: 80px 0 0 !important;
+    padding: 100px 0 60px !important;
     max-width: 1000px;
 
     @media ${theme.media.lg} {
       max-width: 100%;
+    }
+
+    @media ${theme.media.sm} {
+      padding: 80px 0 40px !important;
     }
   `}
 `;
