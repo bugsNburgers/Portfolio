@@ -7,7 +7,7 @@ const otherProjects: OtherProject[] = [
       'A real-time public student achievement display system built for Shorinkai India. Live leaderboard tracking martial arts ranks, belts, and milestone achievements for dojo students.',
     techStack: ['TypeScript', 'React', 'Supabase'],
     githubUrl: 'https://github.com/ull0sm/HonorLog',
-    liveUrl: 'https://honorlog.shorinkai.in',
+    externalUrl: 'https://honorlog.shorinkai.in',
   },
   {
     title: 'Category Manager',
