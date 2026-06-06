@@ -126,9 +126,7 @@ const Now = (): React.ReactElement => {
           ))}
         </StyledGrid>
 
-        <StyledFooterLine>
-          Updated {updatedDate}
-        </StyledFooterLine>
+
       </motion.div>
     </StyledNowSection>
   );
