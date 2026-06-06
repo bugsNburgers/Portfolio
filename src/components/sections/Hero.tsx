@@ -56,16 +56,16 @@ const StyledName = styled.h2`
 
 const StyledTagline = styled.h3`
   ${({ theme }) => css`
-    margin: 5px 0 0;
+    margin: 5px 0 20px;
     font-size: clamp(40px, 8vw, 80px);
     color: ${theme.colors.slate};
-    line-height: 1.1;
+    line-height: 1.2;
   `}
 `;
 
 const StyledDescription = styled.p`
   ${({ theme }) => css`
-    margin: 50px 0 0;
+    margin: 0;
     max-width: 540px;
     color: ${theme.colors.slate};
     font-size: ${theme.fontSizes.lg};
