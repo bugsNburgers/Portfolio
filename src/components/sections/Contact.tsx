@@ -96,13 +96,13 @@ const Contact = (): React.ReactElement => {
         animate={isInView || prefersReducedMotion ? 'visible' : 'hidden'}
         variants={fadeUpVariants}
       >
-        <StyledOverline className="overline">06. What&apos;s Next?</StyledOverline>
+        <StyledOverline className="overline">say hello.</StyledOverline>
 
         <StyledTitle className="medium-heading">Get In Touch</StyledTitle>
 
         <StyledDescription>
-          [REPLACE: Whether you have a question, a project in mind, or just want to say hi — my
-          inbox is always open. I&apos;ll do my best to get back to you!]
+          Got a project idea, a question, or just want to talk code (or cats)? My inbox is open.
+          I try to reply to everything, so don&apos;t hesitate.
         </StyledDescription>
 
         <StyledEmailLink href={`mailto:${email}`}>Say Hello</StyledEmailLink>

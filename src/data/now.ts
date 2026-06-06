@@ -4,7 +4,7 @@ const nowData: NowData = {
   cards: [
     {
       category: 'building',
-      title: 'GitVital — GitHub Health Dashboard',
+      title: 'GitVital: GitHub Health Dashboard',
       description:
         'Iterating on GitVital: adding AI-powered repo recommendations, improving the bus factor algorithm, and building out the global developer leaderboard. Live at gitvital.com.',
     },
@@ -12,7 +12,7 @@ const nowData: NowData = {
       category: 'learning',
       title: 'Systems Design & Distributed Systems',
       description:
-        'Deep-diving into distributed systems — consensus algorithms, CAP theorem, and how databases handle replication. Also exploring how these concepts apply to building reliable web APIs.',
+        'Deep-diving into distributed systems: consensus algorithms, CAP theorem, and how databases handle replication. Also exploring how these concepts apply to building reliable web APIs.',
     },
     {
       category: 'reading',
@@ -24,7 +24,7 @@ const nowData: NowData = {
       category: 'exploring',
       title: 'Open Source Contributions',
       description:
-        'Contributing to Once UI — an indie design system for Next.js apps. Recently had 2 PRs merged: fixed touch hover behavior for Button components and added numeric sizes shorthand for the Media component.',
+        'Contributing to Once UI, an indie design system for Next.js apps. Recently had 2 PRs merged: fixed touch hover behavior for Button components and added numeric sizes shorthand for the Media component.',
     },
   ],
 

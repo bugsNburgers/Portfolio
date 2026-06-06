@@ -19,7 +19,7 @@ const otherProjects: OtherProject[] = [
   {
     title: 'FTP Application with GUI',
     description:
-      'A Python client-server FTP application with a clean Tkinter GUI. Supports file uploads/downloads, directory browsing, and real-time transfer progress — all implemented from scratch using raw socket programming.',
+      'A Python client-server FTP application with a clean Tkinter GUI. Supports file uploads/downloads, directory browsing, and real-time transfer progress. Built from scratch using raw socket programming.',
     techStack: ['Python', 'Tkinter', 'Sockets'],
     githubUrl: 'https://github.com/bugsNburgers/FTP-Application-with-GUI',
   },
@@ -33,7 +33,7 @@ const otherProjects: OtherProject[] = [
   {
     title: 'Point of Sale (POS) Simulator',
     description:
-      'A POS simulator implementing core retail transaction workflows — billing, inventory management, receipt generation, and role-based access — built using agile/scrum practices as part of a team project.',
+      'A POS simulator implementing core retail transaction workflows: billing, inventory management, receipt generation, and role-based access. Built using agile/scrum practices as part of a team project.',
     techStack: ['Python', 'Streamlit', 'SQLite'],
     githubUrl: 'https://github.com/bugsNburgers/POS-Point-Of-Sales-Simulator',
   },

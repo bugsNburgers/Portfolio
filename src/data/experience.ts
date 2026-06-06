@@ -5,9 +5,9 @@ const experienceData: Job[] = [
     company: 'Shorinkai India',
     companyUrl: 'https://shorinkai.in',
     title: 'Freelance Software Developer',
-    dateRange: 'Jan 2026 — Present',
+    dateRange: 'Jan 2026 to Present',
     bullets: [
-      'Built and deployed <strong>EntryDesk</strong>, a full-stack TypeScript event management dashboard with separate organizer and coach portals for karate competition entries — actively used at live tournaments.',
+      'Built and deployed <strong>EntryDesk</strong>, a full-stack TypeScript event management dashboard with separate organizer and coach portals for karate competition entries. It is actively used at live tournaments.',
       'Built <strong>HonorLog</strong>, a public real-time student achievement leaderboard for the dojo, tracking ranks, belts, and milestone achievements with live updates.',
       'Built a <strong>Category Management</strong> tool to handle hierarchical bracket seeding and group allocation for multi-discipline sports events, replacing a manual spreadsheet workflow.',
     ],
