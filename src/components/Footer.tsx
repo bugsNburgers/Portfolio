@@ -25,6 +25,26 @@ const StyledFooter = styled.footer`
   `}
 `;
 
+const StyledDivider = styled.hr`
+  ${({ theme }) => css`
+    width: calc(100% - 160px);
+    max-width: 900px;
+    border: none;
+    border-top: 1px solid ${theme.colors.lightestNavy};
+    margin: 0 auto 30px;
+    opacity: 0.5;
+
+    @media ${theme.media.lg} {
+      width: calc(100% - 120px);
+    }
+
+    @media ${theme.media.md} {
+      width: calc(100% - 40px);
+      margin-bottom: 20px;
+    }
+  `}
+`;
+
 const StyledNotInReadme = styled.div`
   ${({ theme }) => css`
     margin-bottom: 20px;
@@ -38,9 +58,9 @@ const StyledNotInReadme = styled.div`
       border: 1px solid ${theme.colors.green};
       border-radius: ${theme.sizes.borderRadius};
       font-family: ${theme.fonts.mono};
-      font-size: ${theme.fontSizes.xs};
+      font-size: ${theme.fontSizes.sm};
       line-height: 1;
-      padding: 8px 16px;
+      padding: 1.25rem 1.75rem;
       text-decoration: none;
       transition: ${theme.transition};
 
@@ -59,10 +79,11 @@ const StyledNotInReadme = styled.div`
     }
 
     p.subtitle {
-      margin-top: 8px;
+      margin-top: 10px;
       font-family: ${theme.fonts.mono};
       font-size: ${theme.fontSizes.xxs};
       color: ${theme.colors.darkSlate};
+      letter-spacing: 0.05em;
     }
   `}
 `;
@@ -150,16 +171,18 @@ const Footer = (): React.ReactElement => {
 
   return (
     <StyledFooter>
+      <StyledDivider />
+
       <StyledNotInReadme>
         <a
           className="not-in-readme-link"
-          href="https://human.suprateekyawagal.in"
+          href="https://vibes.suprateekyawagal.com"
           target="_blank"
           rel="noopener noreferrer"
         >
           Not in the README
         </a>
-        <p className="subtitle">the other side of the internet</p>
+        <p className="subtitle">music · anime · cats — the parts that don&apos;t make it to the CV</p>
       </StyledNotInReadme>
 
       <StyledSocialLinks>
