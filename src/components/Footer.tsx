@@ -182,7 +182,7 @@ const Footer = (): React.ReactElement => {
         >
           Not in the README
         </a>
-        <p className="subtitle">music · anime · cats — the parts that don&apos;t make it to the CV</p>
+        <p className="subtitle">Music · Anime · Cats — the parts that don&apos;t make it to the CV</p>
       </StyledNotInReadme>
 
       <StyledSocialLinks>
@@ -204,7 +204,7 @@ const Footer = (): React.ReactElement => {
 
       <StyledCredit>
         <a
-          href="https://github.com/bugsNburgers"
+          href="https://suprateekyawagal.in"
           target="_blank"
           rel="noopener noreferrer"
         >

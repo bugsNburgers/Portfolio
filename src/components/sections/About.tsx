@@ -21,7 +21,7 @@ const StyledAboutSection = styled.section`
   .inner {
     display: grid;
     grid-template-columns: 3fr 2fr;
-    gap: 70px;
+    gap: 50px;
 
     @media (max-width: 768px) {
       display: block;
@@ -69,7 +69,7 @@ const StyledSkillsGrid = styled.ul`
     grid-template-columns: repeat(2, minmax(140px, 200px));
     gap: 0;
     padding: 0;
-    margin: 30px 0 0;
+    margin: 20px 0 0;
     overflow: hidden;
     list-style: none;
 
