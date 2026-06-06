@@ -1,41 +1,24 @@
 import { WritingEntry } from '@/types';
 
+// Repurposed as OSS Contributions section
 const writingData: WritingEntry[] = [
   {
-    title: "[REPLACE: TIL: How React's reconciler decides what to re-render]",
-    url: '[REPLACE: /blog/react-reconciler]',
-    date: '[REPLACE: May 15, 2026]',
-    readTime: '4 min read',
+    title: 'feat(media): support numeric sizes shorthand',
+    url: 'https://github.com/once-ui-system/core/pull/72',
+    date: 'April 23, 2026',
+    readTime: 'Merged',
     excerpt:
-      '[REPLACE: A deep dive into React fiber architecture and why your component re-renders more than you think.]',
-    tags: ['React', 'Performance', 'TIL'],
+      'Added numeric shorthand support for the Media component\'s sizes prop in Once UI. Passing a number (e.g. sizes={768}) now auto-generates the correct responsive sizes string, eliminating repetitive boilerplate for common use-cases.',
+    tags: ['Once UI', 'TypeScript', 'Component API', 'DX'],
   },
   {
-    title: '[REPLACE: Why I stopped using useEffect for data fetching]',
-    url: '[REPLACE: /blog/useeffect-data-fetching]',
-    date: '[REPLACE: April 28, 2026]',
-    readTime: '6 min read',
+    title: 'Fix touch hover behavior for Button and ToggleButton',
+    url: 'https://github.com/once-ui-system/core/pull/71',
+    date: 'May 4, 2026',
+    readTime: 'Merged',
     excerpt:
-      '[REPLACE: The footguns of useEffect for async data and why React Query (or SWR) is almost always the better choice.]',
-    tags: ['React', 'Hooks', 'Best Practices'],
-  },
-  {
-    title: '[REPLACE: Building a type-safe API layer with Zod and tRPC]',
-    url: '[REPLACE: /blog/zod-trpc]',
-    date: '[REPLACE: March 12, 2026]',
-    readTime: '8 min read',
-    excerpt:
-      '[REPLACE: How end-to-end type safety eliminates an entire category of bugs and makes refactoring fearless.]',
-    tags: ['TypeScript', 'tRPC', 'Zod'],
-  },
-  {
-    title: '[REPLACE: The case for local-first software]',
-    url: '[REPLACE: /blog/local-first]',
-    date: '[REPLACE: February 5, 2026]',
-    readTime: '5 min read',
-    excerpt:
-      '[REPLACE: Why I think CRDTs and local-first architectures will define the next decade of application development.]',
-    tags: ['Architecture', 'CRDTs', 'Opinion'],
+      'Fixed a bug in Once UI where tap interactions on touch devices triggered unintended hover styling on Button and ToggleButton components. Scoped hover styles behind pointer media queries while preserving keyboard focus-visible accessibility behavior.',
+    tags: ['Once UI', 'CSS', 'Accessibility', 'UX'],
   },
 ];
 

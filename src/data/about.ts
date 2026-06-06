@@ -2,22 +2,22 @@ import { AboutData } from '@/types';
 
 const aboutData: AboutData = {
   paragraphs: [
-    "[REPLACE: Hello! My name is Suprateek and I enjoy creating things that live on the internet. My interest in web development started back when I tried customizing my first blog — turns out hacking together a custom layout taught me a lot about HTML & CSS!]",
-    "[REPLACE: Fast-forward to today, and I've had the privilege of working at <a href='#'>a startup</a>, interning at <a href='#'>a tech company</a>, and building things on my own. My main focus these days is building accessible, inclusive products and digital experiences.]",
-    "[REPLACE: I also recently graduated with a degree in Computer Science and I'm actively looking for full-time opportunities where I can contribute, learn, and grow.]",
+    "Hello! I'm Suprateek, a software engineering student at <a href='https://pes.edu' target='_blank' rel='noreferrer'>PES University</a> (Bengaluru, 3rd year) who enjoys building things that live on the internet — and occasionally ripping apart codebases to understand why things break.",
+    "I freelanced for <a href='https://shorinkai.in' target='_blank' rel='noreferrer'>Shorinkai India</a>, a karate organization, where I built their event management suite from scratch: <strong>EntryDesk</strong> (competition entry portal), <strong>HonorLog</strong> (student achievement display), and a <strong>Category management tool</strong> to handle live bracket seeding. Seeing those tools actually used at tournaments was pretty cool.",
+    "Outside freelance, I've been building <a href='https://gitvital.com' target='_blank' rel='noreferrer'>GitVital</a> — a GitHub health dashboard with AI-powered recommendations, bus factor analysis, and dev leaderboards. I also contribute to open source; I've had 2 PRs merged into the <a href='https://github.com/once-ui-system/core' target='_blank' rel='noreferrer'>Once UI</a> design system.",
     "Here are a few technologies I've been working with recently:",
   ],
   skills: [
-    'JavaScript (ES6+)',
     'TypeScript',
-    'React',
-    'Next.js',
+    'React / Next.js',
     'Node.js',
     'Python',
-    'Tailwind CSS',
     'PostgreSQL',
+    'Arduino / ESP32',
+    'Docker',
+    'Git / GitHub',
   ],
-  imageAlt: '[REPLACE: Headshot of Suprateek Yawagal]',
+  imageAlt: 'Headshot of Suprateek Yawagal',
 };
 
 export default aboutData;

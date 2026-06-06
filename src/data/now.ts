@@ -4,30 +4,30 @@ const nowData: NowData = {
   cards: [
     {
       category: 'building',
-      title: '[REPLACE: A personal knowledge base tool]',
+      title: 'GitVital — GitHub Health Dashboard',
       description:
-        '[REPLACE: Working on a local-first PKM app inspired by Obsidian, built with React and CRDTs for offline-first sync.]',
+        'Iterating on GitVital: adding AI-powered repo recommendations, improving the bus factor algorithm, and building out the global developer leaderboard. Live at gitvital.com.',
     },
     {
       category: 'learning',
-      title: '[REPLACE: Systems Design & Distributed Systems]',
+      title: 'Systems Design & Distributed Systems',
       description:
-        '[REPLACE: Deep-diving into distributed systems patterns — consensus algorithms, eventual consistency, and CRDTs.]',
+        'Deep-diving into distributed systems — consensus algorithms, CAP theorem, and how databases handle replication. Also exploring how these concepts apply to building reliable web APIs.',
     },
     {
       category: 'reading',
-      title: '[REPLACE: Designing Data-Intensive Applications]',
+      title: 'Designing Data-Intensive Applications',
       description:
-        "[REPLACE: Martin Kleppmann's magnum opus. Currently on the chapter about replication and partitioning.]",
+        "Martin Kleppmann's book is genuinely excellent. Currently on the chapter covering replication strategies and why eventual consistency is harder than it sounds.",
     },
     {
       category: 'exploring',
-      title: '[REPLACE: WebAssembly & Edge Computing]',
+      title: 'Open Source Contributions',
       description:
-        '[REPLACE: Experimenting with Wasm runtimes and edge functions — the future of server-side computation.]',
+        'Contributing to Once UI — an indie design system for Next.js apps. Recently had 2 PRs merged: fixed touch hover behavior for Button components and added numeric sizes shorthand for the Media component.',
     },
   ],
-  updatedDate: '[REPLACE: June 2026]',
+  updatedDate: 'June 2026',
 };
 
 export default nowData;

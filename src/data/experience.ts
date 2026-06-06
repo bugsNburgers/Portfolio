@@ -2,36 +2,14 @@ import { Job } from '@/types';
 
 const experienceData: Job[] = [
   {
-    company: '[REPLACE: Company Name]',
-    companyUrl: '[REPLACE: https://company.com]',
-    title: '[REPLACE: Software Engineering Intern]',
-    dateRange: '[REPLACE: May 2025 — August 2025]',
+    company: 'Shorinkai India',
+    companyUrl: 'https://shorinkai.in',
+    title: 'Freelance Software Developer',
+    dateRange: 'Jan 2026 — Present',
     bullets: [
-      "[REPLACE: Developed and maintained features for the company's main web application using React, TypeScript, and GraphQL]",
-      '[REPLACE: Collaborated with designers and product managers to implement pixel-perfect UI components]',
-      '[REPLACE: Wrote unit and integration tests with Jest and React Testing Library, improving code coverage by 20%]',
-    ],
-  },
-  {
-    company: '[REPLACE: University Lab]',
-    companyUrl: '[REPLACE: https://university.edu/lab]',
-    title: '[REPLACE: Research Assistant]',
-    dateRange: '[REPLACE: January 2025 — May 2025]',
-    bullets: [
-      '[REPLACE: Built a full-stack data visualization dashboard using Next.js and D3.js for research data analysis]',
-      '[REPLACE: Designed RESTful APIs with Node.js and Express to serve research datasets to frontend applications]',
-      '[REPLACE: Presented findings at the university research symposium to an audience of 50+ faculty and students]',
-    ],
-  },
-  {
-    company: '[REPLACE: Freelance]',
-    companyUrl: '#',
-    title: '[REPLACE: Web Developer]',
-    dateRange: '[REPLACE: June 2024 — December 2024]',
-    bullets: [
-      '[REPLACE: Designed and developed responsive websites for local businesses using modern web technologies]',
-      '[REPLACE: Implemented SEO best practices resulting in 40% increase in organic traffic for clients]',
-      '[REPLACE: Managed client relationships and project timelines across multiple concurrent projects]',
+      'Built and deployed <strong>EntryDesk</strong>, a full-stack TypeScript event management dashboard with separate organizer and coach portals for karate competition entries — actively used at live tournaments.',
+      'Built <strong>HonorLog</strong>, a public real-time student achievement leaderboard for the dojo, tracking ranks, belts, and milestone achievements with live updates.',
+      'Built a <strong>Category Management</strong> tool to handle hierarchical bracket seeding and group allocation for multi-discipline sports events, replacing a manual spreadsheet workflow.',
     ],
   },
 ];

@@ -5,14 +5,14 @@ const heroData: HeroData = {
   name: 'Suprateek Yawagal.',
   tagline: 'I build things for the web.',
   description:
-    "[REPLACE: I'm a software engineer specializing in building (and occasionally designing) exceptional digital experiences. Currently, I'm focused on building accessible, human-centered products.]",
+    "I'm a software engineering student at PES University (3rd year) who loves building useful tools — from developer analytics dashboards to AI-powered fashion systems. I freelance, contribute to open source, and build things that actually ship.",
   ctaPrimary: {
     text: 'Check out my work!',
     url: '/#projects',
   },
   ctaSecondary: {
     text: 'Get In Touch',
-    url: 'mailto:[REPLACE: suprateek@example.com]',
+    url: 'mailto:suprateek.yawagal@gmail.com',
   },
 };
 

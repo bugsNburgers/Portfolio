@@ -4,20 +4,19 @@ const config: SiteConfig = {
   name: 'Suprateek Yawagal',
   title: 'Suprateek Yawagal',
   description:
-    'Suprateek Yawagal is a software engineer who builds things for the web with a focus on crafting accessible, human-centered digital experiences.',
-  siteUrl: '[REPLACE: https://suprateekyawagal.in]',
-  email: '[REPLACE: suprateek@example.com]',
+    'Suprateek Yawagal is a software engineering student at PES University who builds developer tools, web apps, and the occasional IoT project.',
+  siteUrl: 'https://suprateek.dev',
+  email: 'suprateek.yawagal@gmail.com',
   socialLinks: [
-    { name: 'GitHub', url: '[REPLACE: https://github.com/suprateek]' },
-    { name: 'LinkedIn', url: '[REPLACE: https://linkedin.com/in/suprateek]' },
-    { name: 'Twitter', url: '[REPLACE: https://twitter.com/suprateek]' },
+    { name: 'GitHub', url: 'https://github.com/bugsNburgers' },
+    { name: 'LinkedIn', url: 'https://linkedin.com/in/suprateek-yawagal' },
   ],
   navLinks: [
     { name: 'About', url: '/#about' },
     { name: 'Experience', url: '/#experience' },
     { name: 'Projects', url: '/#projects' },
     { name: 'Now', url: '/#now' },
-    { name: 'Writing', url: '/#writing' },
+    { name: 'OSS', url: '/#writing' },
   ],
 };
 
