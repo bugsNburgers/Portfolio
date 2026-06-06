@@ -5,8 +5,8 @@ const config: SiteConfig = {
   title: 'Suprateek Yawagal',
   description:
     'Suprateek Yawagal is a software engineering student at PES University who builds developer tools, web apps, and the occasional IoT project.',
-  siteUrl: 'https://suprateek.dev',
-  email: 'suprateek.yawagal@gmail.com',
+  siteUrl: 'https://suprateekyawagal.in',
+  email: 'prateekyawagal07@gmail.com',
   socialLinks: [
     { name: 'GitHub', url: 'https://github.com/bugsNburgers' },
     { name: 'LinkedIn', url: 'https://linkedin.com/in/suprateek-yawagal' },
