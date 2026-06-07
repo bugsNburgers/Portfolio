@@ -9,11 +9,11 @@ import IconGitHub from '@/components/IconGitHub';
 import IconExternal from '@/components/IconExternal';
 import useInView from '@/hooks/useInView';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
-import { fadeUpVariants } from '@/styles/TransitionStyles';
+import { blurInVariants, staggerContainerVariants, cardVariants } from '@/styles/TransitionStyles';
 import type { FeaturedProject } from '@/types';
 
 // ------------------------------------------------------------------
-// Styled components
+// Bento-grid styled components
 // ------------------------------------------------------------------
 
 const StyledProjectsSection = styled.section`
@@ -22,279 +22,252 @@ const StyledProjectsSection = styled.section`
   `}
 `;
 
-const StyledProjectsList = styled.ul`
-  padding: 0;
-  margin: 0;
-  list-style: none;
-`;
-
-const StyledProject = styled.li`
+const BentoGrid = styled(motion.div)`
   ${({ theme }) => css`
-    position: relative;
     display: grid;
-    grid-gap: 10px;
     grid-template-columns: repeat(12, 1fr);
-    align-items: center;
+    grid-template-rows: auto;
+    gap: 16px;
 
-    &:not(:last-of-type) {
-      margin-bottom: 100px;
-
-      @media ${theme.media.md} {
-        margin-bottom: 70px;
-      }
-
-      @media ${theme.media.sm} {
-        margin-bottom: 30px;
-      }
-    }
-
-    /* Odd: text left, image right */
-    &:nth-of-type(odd) {
-      .project-content {
-        grid-column: 1 / 7;
-        grid-row: 1 / -1;
-        text-align: left;
-
-        @media ${theme.media.md} {
-          grid-column: 1 / -1;
-          padding: 40px 40px 30px;
-          text-align: left;
-        }
-
-        @media ${theme.media.sm} {
-          padding: 25px 25px 20px;
-        }
-      }
-
-      .project-image {
-        grid-column: 6 / -1;
-        grid-row: 1 / -1;
-
-        @media ${theme.media.md} {
-          grid-column: 1 / -1;
-          opacity: 0.25;
-        }
-      }
-
-      .project-tech-list,
-      .project-links {
-        justify-content: flex-start;
-      }
-    }
-
-    /* Even: image left, text right */
-    &:nth-of-type(even) {
-      .project-content {
-        grid-column: 7 / -1;
-        grid-row: 1 / -1;
-        text-align: right;
-
-        @media ${theme.media.md} {
-          grid-column: 1 / -1;
-          padding: 40px 40px 30px;
-          text-align: left;
-        }
-
-        @media ${theme.media.sm} {
-          padding: 25px 25px 20px;
-        }
-      }
-
-      .project-image {
-        grid-column: 1 / 8;
-        grid-row: 1 / -1;
-
-        @media ${theme.media.md} {
-          grid-column: 1 / -1;
-          opacity: 0.25;
-        }
-      }
-
-      .project-tech-list,
-      .project-links {
-        justify-content: flex-end;
-
-        @media ${theme.media.md} {
-          justify-content: flex-start;
-        }
-      }
+    @media ${theme.media.md} {
+      grid-template-columns: 1fr;
     }
   `}
 `;
 
-const StyledProjectContent = styled.div`
+// Each project card spans differently for the bento effect
+const BentoCard = styled(motion.article)<{ $index: number }>`
+  ${({ theme, $index }) => css`
+    position: relative;
+    border-radius: ${theme.sizes.borderRadius};
+    overflow: hidden;
+    background: ${theme.colors.bgSurface};
+    border: 1px solid ${theme.colors.border};
+    transition: ${theme.transition};
+    display: flex;
+    flex-direction: column;
+
+    /* First card: wide */
+    ${$index === 0 && css`
+      grid-column: 1 / 8;
+
+      @media ${theme.media.md} {
+        grid-column: 1 / -1;
+      }
+    `}
+    /* Second card: narrow right */
+    ${$index === 1 && css`
+      grid-column: 8 / -1;
+
+      @media ${theme.media.md} {
+        grid-column: 1 / -1;
+      }
+    `}
+    /* Third card: narrow left */
+    ${$index === 2 && css`
+      grid-column: 1 / 5;
+
+      @media ${theme.media.md} {
+        grid-column: 1 / -1;
+      }
+    `}
+    /* Fourth card: wide right */
+    ${$index === 3 && css`
+      grid-column: 5 / -1;
+
+      @media ${theme.media.md} {
+        grid-column: 1 / -1;
+      }
+    `}
+    /* Fallback for more cards */
+    ${$index >= 4 && css`
+      grid-column: span 6;
+
+      @media ${theme.media.md} {
+        grid-column: 1 / -1;
+      }
+    `}
+
+    &:hover {
+      border-color: ${theme.colors.accent};
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px ${theme.colors.accentGlow};
+
+      .project-image img {
+        transform: scale(1.04);
+      }
+
+      .card-glow {
+        opacity: 1;
+      }
+    }
+
+    /* Top gradient accent stripe */
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, ${theme.colors.accent}, ${theme.colors.secondary});
+      z-index: 2;
+    }
+  `}
+`;
+
+// Glow overlay on hover
+const CardGlow = styled.div`
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(127, 90, 240, 0.05), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+`;
+
+const ProjectImage = styled.div`
   ${({ theme }) => css`
     position: relative;
-    z-index: 2;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    flex-shrink: 0;
 
-    .project-overline {
-      margin: 10px 0;
-      color: ${theme.colors.green};
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    /* Subtle overlay */
+    &:after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, ${theme.colors.bgSurface} 100%);
+    }
+  `}
+`;
+
+const ProjectContent = styled.div`
+  ${({ theme }) => css`
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+
+    .project-category {
       font-family: ${theme.fonts.mono};
-      font-size: ${theme.fontSizes.xs};
-      font-weight: 400;
+      font-size: ${theme.fontSizes.xxs};
+      color: ${theme.colors.accent};
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
 
     .project-title {
-      color: ${theme.colors.lightestSlate};
-      font-size: clamp(24px, 5vw, 28px);
-      margin: 0 0 20px;
+      font-size: ${theme.fontSizes.xxl};
+      font-weight: 700;
+      color: ${theme.colors.textPrimary};
+      letter-spacing: -0.02em;
+      margin: 0;
+      line-height: 1.2;
 
       a {
         color: inherit;
         text-decoration: none;
         transition: ${theme.transition};
 
-        &:hover,
-        &:focus {
-          color: ${theme.colors.green};
+        &:hover {
+          color: ${theme.colors.accent};
         }
 
         &:after {
           display: none;
         }
       }
-
-      @media ${theme.media.md} {
-        margin: 0 0 10px;
-      }
     }
 
     .project-description {
-      box-shadow: 0 10px 30px -15px ${theme.colors.navyShadow};
-      background-color: ${theme.colors.lightNavy};
-      border-radius: ${theme.sizes.borderRadius};
-      padding: 25px;
-      color: ${theme.colors.lightSlate};
-      font-size: ${theme.fontSizes.lg};
-      line-height: 1.5;
-      transition: ${theme.transition};
-
-      @media ${theme.media.md} {
-        padding: 20px 0;
-        background-color: transparent;
-        box-shadow: none;
-      }
+      color: ${theme.colors.textSecondary};
+      font-size: ${theme.fontSizes.sm};
+      line-height: 1.6;
+      flex: 1;
 
       a {
-        color: ${theme.colors.green};
+        color: ${theme.colors.accent};
         text-decoration: none;
       }
-
-      strong {
-        color: ${theme.colors.white};
-        font-weight: 600;
-      }
     }
   `}
 `;
 
-const StyledTechList = styled.ul`
-  ${({ theme }) => css`
-    display: flex;
-    flex-wrap: wrap;
-    position: relative;
-    z-index: 2;
-    margin: 25px 0 10px;
-    padding: 0;
-    list-style: none;
-    gap: 15px;
-
-    li {
-      color: ${theme.colors.lightSlate};
-      font-family: ${theme.fonts.mono};
-      font-size: ${theme.fontSizes.xs};
-      white-space: nowrap;
-    }
-  `}
-`;
-
-const StyledLinkIcons = styled.div`
+const ProjectFooter = styled.div`
   ${({ theme }) => css`
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px 16px;
+    gap: 12px;
     position: relative;
-    margin-top: 10px;
-    gap: 15px;
+    z-index: 1;
+  `}
+`;
 
-    a {
-      padding: 5px;
-      color: ${theme.colors.lightSlate};
-      transition: ${theme.transition};
+const TechStack = styled.div`
+  ${({ theme }) => css`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
 
-      &:hover,
-      &:focus {
-        color: ${theme.colors.green};
-        transform: translateY(-3px);
-      }
-
-      svg {
-        width: 20px;
-        height: 20px;
-      }
-
-      &:after {
-        display: none;
-      }
+    span {
+      font-family: ${theme.fonts.mono};
+      font-size: ${theme.fontSizes.xxs};
+      color: ${theme.colors.textMuted};
+      background: ${theme.colors.bgElevated};
+      border: 1px solid ${theme.colors.border};
+      border-radius: 4px;
+      padding: 2px 8px;
     }
   `}
 `;
 
-const StyledProjectImage = styled.div`
+const ProjectLinks = styled.div`
   ${({ theme }) => css`
-    box-shadow: 0 10px 30px -15px ${theme.colors.navyShadow};
-    transition: ${theme.transition};
-    grid-row: 1 / -1;
-    position: relative;
-    z-index: 1;
-
-    @media ${theme.media.md} {
-      grid-column: 1 / -1;
-      height: 100%;
-      opacity: 0.25;
-    }
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
     a {
-      width: 100%;
-      background-color: ${theme.colors.green};
-      border-radius: ${theme.sizes.borderRadius};
-      display: block;
-      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      color: ${theme.colors.textMuted};
+      background: ${theme.colors.bgElevated};
+      border: 1px solid ${theme.colors.border};
+      transition: ${theme.transition};
 
-      &:hover,
-      &:focus {
-        background: transparent;
-        outline: 0;
-
-        &:before,
-        .img {
-          background: transparent;
-          filter: none;
-        }
-      }
-
-      &:before {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        inset: 0;
-        z-index: 3;
-        transition: ${theme.transition};
-        background-color: ${theme.colors.navy};
-        mix-blend-mode: screen;
+      &:hover {
+        color: ${theme.colors.accent};
+        border-color: ${theme.colors.accent};
+        transform: translateY(-2px);
       }
 
       &:after {
-        display: none;
+        display: none !important;
       }
-    }
 
-    .img {
-      border-radius: ${theme.sizes.borderRadius};
-      mix-blend-mode: multiply;
-      filter: grayscale(100%) contrast(1) brightness(90%);
-      transition: ${theme.transition};
+      svg {
+        width: 15px;
+        height: 15px;
+      }
     }
   `}
 `;
@@ -315,16 +288,33 @@ const Projects = (): React.ReactElement => {
       <motion.div
         initial={prefersReducedMotion ? 'visible' : 'hidden'}
         animate={isInView || prefersReducedMotion ? 'visible' : 'hidden'}
-        variants={fadeUpVariants}
+        variants={staggerContainerVariants}
       >
-        <h2 className="numbered-heading">Some Things I&apos;ve Built</h2>
+        <motion.div variants={blurInVariants}>
+          <h2 className="numbered-heading">Featured Projects</h2>
+        </motion.div>
 
-        <StyledProjectsList>
+        <BentoGrid
+          variants={staggerContainerVariants}
+        >
           {featuredProjects.map(
             ({ title, description, techStack, githubUrl, externalUrl, image, imageAlt }, i) => (
-              <StyledProject key={i}>
-                <StyledProjectContent className="project-content">
-                  <p className="project-overline">Featured Project</p>
+              <BentoCard key={i} $index={i} variants={cardVariants}>
+                <CardGlow className="card-glow" />
+
+                {image && (
+                  <ProjectImage className="project-image">
+                    <Image
+                      src={image}
+                      alt={imageAlt}
+                      fill
+                      style={{ objectFit: 'cover' }}
+                    />
+                  </ProjectImage>
+                )}
+
+                <ProjectContent>
+                  <span className="project-category">Featured Project</span>
 
                   <h3 className="project-title">
                     {externalUrl ? (
@@ -340,14 +330,16 @@ const Projects = (): React.ReactElement => {
                     className="project-description"
                     dangerouslySetInnerHTML={{ __html: description }}
                   />
+                </ProjectContent>
 
-                  <StyledTechList className="project-tech-list">
+                <ProjectFooter>
+                  <TechStack>
                     {techStack.map((tech) => (
-                      <li key={tech}>{tech}</li>
+                      <span key={tech}>{tech}</span>
                     ))}
-                  </StyledTechList>
+                  </TechStack>
 
-                  <StyledLinkIcons className="project-links">
+                  <ProjectLinks>
                     {githubUrl && (
                       <a
                         href={githubUrl}
@@ -368,29 +360,12 @@ const Projects = (): React.ReactElement => {
                         <IconExternal />
                       </a>
                     )}
-                  </StyledLinkIcons>
-                </StyledProjectContent>
-
-                <StyledProjectImage className="project-image">
-                  <a
-                    href={externalUrl ?? githubUrl ?? '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    tabIndex={-1}
-                  >
-                    <Image
-                      className="img"
-                      src={image}
-                      alt={imageAlt}
-                      width={700}
-                      height={438}
-                    />
-                  </a>
-                </StyledProjectImage>
-              </StyledProject>
+                  </ProjectLinks>
+                </ProjectFooter>
+              </BentoCard>
             ),
           )}
-        </StyledProjectsList>
+        </BentoGrid>
       </motion.div>
     </StyledProjectsSection>
   );
