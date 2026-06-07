@@ -1,185 +1,201 @@
 'use client';
 
-import React from 'react';
-import * as Tabs from '@radix-ui/react-tabs';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import experienceData from '@/data/experience';
 import useInView from '@/hooks/useInView';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
-import { fadeUpVariants } from '@/styles/TransitionStyles';
+import { blurInVariants, staggerContainerVariants, cardVariants } from '@/styles/TransitionStyles';
 
 // ------------------------------------------------------------------
-// Styled components
+// Styled components — Vertical timeline / accordion
 // ------------------------------------------------------------------
 
 const StyledExperienceSection = styled.section`
   ${({ theme }) => css`
-    max-width: 700px;
+    max-width: 800px;
   `}
 `;
 
-const StyledTabsRoot = styled(Tabs.Root)`
-  ${({ theme }) => css`
-    display: flex;
-    align-items: flex-start;
-    gap: 30px;
-
-    @media ${theme.media.md} {
-      flex-direction: column;
-    }
-  `}
-`;
-
-const StyledTabsList = styled(Tabs.List)`
+const Timeline = styled.div`
   ${({ theme }) => css`
     position: relative;
-    z-index: 3;
-    width: max-content;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    flex-shrink: 0;
     display: flex;
     flex-direction: column;
+    gap: 4px;
 
-    @media ${theme.media.md} {
-      flex-direction: row;
-      overflow-x: auto;
-      width: 100%;
-      margin-bottom: 30px;
-      padding-bottom: 2px;
-      border-left: none;
-      border-bottom: 2px solid ${theme.colors.lightestNavy};
-    }
-  `}
-`;
-
-const StyledTabTrigger = styled(Tabs.Trigger)`
-  ${({ theme }) => css`
-    text-decoration: none;
-    text-decoration-skip-ink: auto;
-    position: relative;
-    transition: ${theme.transition};
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: ${theme.sizes.tabHeight};
-    padding: 0 20px 2px;
-    border-left: 2px solid ${theme.colors.lightestNavy};
-    background-color: transparent;
-    color: ${theme.colors.slate};
-    font-family: ${theme.fonts.mono};
-    font-size: ${theme.fontSizes.xs};
-    text-align: left;
-    white-space: nowrap;
-    border-bottom: none;
-    border-top: none;
-    border-right: none;
-    cursor: pointer;
-
-    @media ${theme.media.md} {
-      padding: 0 15px 2px;
-      border-left: none;
-      border-bottom: 2px solid ${theme.colors.lightestNavy};
-      min-width: 120px;
-      text-align: center;
-      justify-content: center;
-    }
-
-    &:hover,
-    &:focus-visible {
-      background-color: ${theme.colors.greenTint};
-      color: ${theme.colors.green};
-      outline: none;
-    }
-
-    &[data-state='active'] {
-      color: ${theme.colors.green};
-      border-left-color: ${theme.colors.green};
+    /* Vertical track */
+    &:before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 28px;
+      bottom: 28px;
+      width: 1px;
+      background: linear-gradient(to bottom, ${theme.colors.accent}, ${theme.colors.secondary}, ${theme.colors.border});
 
       @media ${theme.media.md} {
-        border-bottom-color: ${theme.colors.green};
-        border-left-color: transparent;
+        display: none;
       }
     }
   `}
 `;
 
-const StyledTabContent = styled(Tabs.Content)`
-  ${({ theme }) => css`
+const TimelineItem = styled.div<{ $isActive: boolean }>`
+  ${({ theme, $isActive }) => css`
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 0;
+
+    @media ${theme.media.md} {
+      grid-template-columns: 1fr;
+    }
+  `}
+`;
+
+const TimelineDot = styled.div<{ $isActive: boolean }>`
+  ${({ theme, $isActive }) => css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+
+    @media ${theme.media.md} {
+      display: none;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: ${$isActive ? theme.colors.accent : theme.colors.border};
+      border: 2px solid ${$isActive ? theme.colors.accent : theme.colors.bgBase};
+      box-shadow: ${$isActive ? `0 0 12px ${theme.colors.accentGlowStrong}` : 'none'};
+      transition: ${theme.transition};
+      flex-shrink: 0;
+    }
+  `}
+`;
+
+const JobCard = styled.button<{ $isActive: boolean }>`
+  ${({ theme, $isActive }) => css`
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    background: ${$isActive ? theme.colors.bgSurface : 'transparent'};
+    border: 1px solid ${$isActive ? theme.colors.border : 'transparent'};
+    border-radius: ${theme.sizes.borderRadius};
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: ${theme.transition};
     width: 100%;
 
-    &[data-state='active'] {
-      animation: fadeIn 0.2s ease;
+    &:hover {
+      background: ${theme.colors.bgSurface};
+      border-color: ${theme.colors.border};
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(5px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: ${$isActive ? '4px' : '0'};
     }
-  `}
-`;
 
-const StyledJobTitle = styled.h3`
-  ${({ theme }) => css`
-    margin-bottom: 2px;
-    font-size: ${theme.fontSizes.xxl};
-    font-weight: 500;
-    color: ${theme.colors.lightestSlate};
-    line-height: 1.3;
+    .job-title-company {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .job-title {
+      font-size: ${theme.fontSizes.lg};
+      font-weight: 600;
+      color: ${theme.colors.textPrimary};
+      letter-spacing: -0.01em;
+    }
+
+    .at {
+      color: ${theme.colors.textFaint};
+      font-size: ${theme.fontSizes.sm};
+    }
 
     .company {
-      color: ${theme.colors.green};
+      color: ${theme.colors.accent};
+      font-size: ${theme.fontSizes.md};
+      font-weight: 500;
+      text-decoration: none;
+      transition: ${theme.transition};
 
-      a {
-        color: ${theme.colors.green};
-        transition: ${theme.transition};
-        text-decoration: none;
-
-        &:hover,
-        &:focus {
-          color: ${theme.colors.green};
-          text-decoration: underline;
-        }
+      &:hover {
+        text-decoration: underline;
       }
+
+      &:after {
+        display: none !important;
+      }
+    }
+
+    .date-range {
+      font-family: ${theme.fonts.mono};
+      font-size: ${theme.fontSizes.xxs};
+      color: ${theme.colors.textFaint};
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .expand-icon {
+      font-size: ${theme.fontSizes.xs};
+      color: ${theme.colors.accent};
+      transition: transform 0.3s ease;
+      transform: ${$isActive ? 'rotate(180deg)' : 'rotate(0deg)'};
+      flex-shrink: 0;
     }
   `}
 `;
 
-const StyledJobRange = styled.p`
+const JobDetails = styled(motion.div)`
   ${({ theme }) => css`
-    margin-bottom: 25px;
-    color: ${theme.colors.lightSlate};
-    font-family: ${theme.fonts.mono};
-    font-size: ${theme.fontSizes.xs};
-  `}
-`;
+    overflow: hidden;
+    padding: 0 20px;
 
-const StyledBulletList = styled.ul`
-  ${({ theme }) => css`
-    padding: 0;
-    margin: 0;
-    list-style: none;
+    ul {
+      padding: 0;
+      margin: 8px 0 16px;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
     li {
       position: relative;
-      padding-left: 30px;
-      margin-bottom: 10px;
-      color: ${theme.colors.slate};
-      font-size: ${theme.fontSizes.lg};
+      padding-left: 20px;
+      color: ${theme.colors.textSecondary};
+      font-size: ${theme.fontSizes.md};
+      line-height: 1.65;
 
       &:before {
-        content: '▹';
+        content: '—';
         position: absolute;
         left: 0;
-        color: ${theme.colors.green};
+        color: ${theme.colors.accent};
+        font-size: ${theme.fontSizes.xs};
+        top: 3px;
+      }
+
+      a {
+        color: ${theme.colors.accent};
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   `}
@@ -192,6 +208,7 @@ const StyledBulletList = styled.ul`
 const Experience = (): React.ReactElement => {
   const [ref, isInView] = useInView();
   const prefersReducedMotion = usePrefersReducedMotion();
+  const [activeIndex, setActiveIndex] = useState(0);
 
   return (
     <StyledExperienceSection
@@ -201,42 +218,70 @@ const Experience = (): React.ReactElement => {
       <motion.div
         initial={prefersReducedMotion ? 'visible' : 'hidden'}
         animate={isInView || prefersReducedMotion ? 'visible' : 'hidden'}
-        variants={fadeUpVariants}
+        variants={staggerContainerVariants}
       >
-        <h2 className="numbered-heading">Where I&apos;ve Worked</h2>
+        <motion.div variants={blurInVariants}>
+          <h2 className="numbered-heading">Experience</h2>
+        </motion.div>
 
-        <StyledTabsRoot defaultValue={experienceData[0]?.company ?? ''}>
-          <StyledTabsList aria-label="Job tabs">
-            {experienceData.map(({ company }) => (
-              <StyledTabTrigger key={company} value={company}>
-                {company}
-              </StyledTabTrigger>
+        <motion.div variants={blurInVariants}>
+          <Timeline>
+            {experienceData.map(({ company, companyUrl, title, dateRange, bullets }, i) => (
+              <TimelineItem key={company} $isActive={activeIndex === i}>
+                <TimelineDot $isActive={activeIndex === i}>
+                  <span className="dot" />
+                </TimelineDot>
+
+                <div>
+                  <JobCard
+                    $isActive={activeIndex === i}
+                    onClick={() => setActiveIndex(activeIndex === i ? -1 : i)}
+                    aria-expanded={activeIndex === i}
+                  >
+                    <div className="job-header">
+                      <div className="job-title-company">
+                        <span className="job-title">{title}</span>
+                        <span className="at">@</span>
+                        <a
+                          href={companyUrl}
+                          className="company"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {company}
+                        </a>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <span className="date-range">{dateRange}</span>
+                        <span className="expand-icon">▾</span>
+                      </div>
+                    </div>
+                  </JobCard>
+
+                  <AnimatePresence initial={false}>
+                    {activeIndex === i && (
+                      <JobDetails
+                        key="content"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        <ul>
+                          {bullets.map((bullet, j) => (
+                            // eslint-disable-next-line react/no-danger
+                            <li key={j} dangerouslySetInnerHTML={{ __html: bullet }} />
+                          ))}
+                        </ul>
+                      </JobDetails>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </TimelineItem>
             ))}
-          </StyledTabsList>
-
-          {experienceData.map(({ company, companyUrl, title, dateRange, bullets }) => (
-            <StyledTabContent key={company} value={company}>
-              <StyledJobTitle>
-                <span>{title}&nbsp;</span>
-                <span className="company">
-                  @{' '}
-                  <a href={companyUrl} target="_blank" rel="noopener noreferrer">
-                    {company}
-                  </a>
-                </span>
-              </StyledJobTitle>
-
-              <StyledJobRange>{dateRange}</StyledJobRange>
-
-              <StyledBulletList>
-                {bullets.map((bullet, i) => (
-                  // eslint-disable-next-line react/no-danger
-                  <li key={i} dangerouslySetInnerHTML={{ __html: bullet }} />
-                ))}
-              </StyledBulletList>
-            </StyledTabContent>
-          ))}
-        </StyledTabsRoot>
+          </Timeline>
+        </motion.div>
       </motion.div>
     </StyledExperienceSection>
   );
