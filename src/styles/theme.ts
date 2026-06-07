@@ -1,30 +1,63 @@
-// Design tokens — extracted directly from v4.brittanychiang.com
-// Every value here is intentional. Do not approximate.
+// Design tokens for Suprateek Yawagal's portfolio
+// Custom palette: charcoal + electric violet + warm amber
 
 const colors = {
-  darkNavy: '#020c1b',
-  navy: '#0a192f',
-  lightNavy: '#112240',
-  lightestNavy: '#233554',
-  navyShadow: 'rgba(2, 12, 27, 0.7)',
-  darkSlate: '#495670',
-  slate: '#8892b0',
-  lightSlate: '#a8b2d1',
-  lightestSlate: '#ccd6f6',
-  white: '#e6f1ff',
-  green: '#64ffda',
-  greenTint: 'rgba(100, 255, 218, 0.1)',
-  pink: '#f57dff',
-  blue: '#57cbff',
+  // Backgrounds
+  bgDeep: '#08080b',
+  bgBase: '#0c0c0f',
+  bgSurface: '#16161a',
+  bgElevated: '#1e1e24',
+  bgHover: '#252530',
+
+  // Borders
+  border: '#2a2a35',
+  borderLight: '#3a3a48',
+
+  // Text
+  textPrimary: '#fffffe',
+  textSecondary: '#94a1b2',
+  textMuted: '#72768a',
+  textFaint: '#4a4d5e',
+
+  // Accent — Electric Violet
+  accent: '#7f5af0',
+  accentLight: '#9d7ef5',
+  accentGlow: 'rgba(127, 90, 240, 0.15)',
+  accentGlowStrong: 'rgba(127, 90, 240, 0.3)',
+
+  // Secondary — Warm Amber
+  secondary: '#f5a623',
+  secondaryLight: '#f7b94a',
+  secondaryGlow: 'rgba(245, 166, 35, 0.12)',
+
+  // Utility
+  success: '#2cb67d',
+  error: '#e53170',
+  white: '#fffffe',
+  shadow: 'rgba(8, 8, 11, 0.8)',
+  shadowLight: 'rgba(8, 8, 11, 0.4)',
+
+  // Legacy aliases (used sparingly in transitioned components)
+  green: '#7f5af0',
+  greenTint: 'rgba(127, 90, 240, 0.1)',
+  lightSlate: '#94a1b2',
+  lightestSlate: '#fffffe',
+  slate: '#94a1b2',
+  darkSlate: '#4a4d5e',
+  lightNavy: '#16161a',
+  lightestNavy: '#2a2a35',
+  navy: '#0c0c0f',
+  darkNavy: '#08080b',
+  navyShadow: 'rgba(8, 8, 11, 0.8)',
 } as const;
 
 const fonts = {
-  sans: "'Calibre', 'Inter', 'San Francisco', 'SF Pro Text', -apple-system, system-ui, sans-serif",
-  mono: "'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace",
+  sans: "'Inter', 'Outfit', -apple-system, system-ui, sans-serif",
+  mono: "'JetBrains Mono', 'Fira Code', 'Fira Mono', monospace",
 } as const;
 
 const fontSizes = {
-  xxs: '12px',
+  xxs: '11px',
   xs: '13px',
   sm: '14px',
   md: '16px',
@@ -35,12 +68,14 @@ const fontSizes = {
 } as const;
 
 const sizes = {
-  borderRadius: '4px',
-  navHeight: '100px',
-  navScrollHeight: '70px',
+  borderRadius: '10px',
+  borderRadiusSm: '6px',
+  borderRadiusLg: '16px',
+  navHeight: '80px',
+  navScrollHeight: '60px',
   tabHeight: '42px',
   tabWidth: '120px',
-  hamburgerWidth: '30px',
+  hamburgerWidth: '28px',
   maxWidth: '1600px',
   sectionMaxWidth: '1000px',
 } as const;
@@ -59,15 +94,15 @@ const media = {
   xl: `(max-width: ${breakpoints.xl})`,
 } as const;
 
-const easing = 'cubic-bezier(0.645, 0.045, 0.355, 1)';
-const transition = `all 0.25s ${easing}`;
+// New easing — snappier, spring-like feel
+const easing = 'cubic-bezier(0.16, 1, 0.3, 1)';
+const transition = `all 0.3s ${easing}`;
 
 const hamburgerAnimations = {
-  hamBefore: 'top 0.1s ease-in 0.25s, opacity 0.1s ease-in',
+  hamBefore: 'top 0.1s ease-in 0.2s, opacity 0.1s ease-in',
   hamBeforeActive: 'top 0.1s ease-out, opacity 0.1s ease-out 0.12s',
-  hamAfter: 'bottom 0.1s ease-in 0.25s, transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19)',
-  hamAfterActive:
-    'bottom 0.1s ease-out, transform 0.22s cubic-bezier(0.215, 0.61, 0.355, 1) 0.12s',
+  hamAfter: 'bottom 0.1s ease-in 0.2s, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
+  hamAfterActive: 'bottom 0.1s ease-out, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1) 0.12s',
 } as const;
 
 export const theme = {

@@ -5,28 +5,24 @@ import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
 import IconGitHub from '@/components/IconGitHub';
 import IconLinkedIn from '@/components/IconLinkedIn';
-import IconTwitter from '@/components/IconTwitter';
 import config from '@/data/config';
-import { sidebarSlideUpVariants } from '@/styles/TransitionStyles';
+import { slideUpVariants } from '@/styles/TransitionStyles';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
 
 // ------------------------------------------------------------------
-// Styled components
+// Floating Action Button cluster — replaces fixed sidebars
 // ------------------------------------------------------------------
 
-const StyledSideElement = styled.div`
+const StyledFABWrapper = styled.div`
   ${({ theme }) => css`
-    width: 40px;
     position: fixed;
-    bottom: 0;
-    left: 40px;
-    right: auto;
-    z-index: 10;
-    color: ${theme.colors.lightSlate};
-
-    @media ${theme.media.lg} {
-      left: 20px;
-    }
+    bottom: 32px;
+    right: 32px;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
 
     @media ${theme.media.md} {
       display: none;
@@ -34,47 +30,47 @@ const StyledSideElement = styled.div`
   `}
 `;
 
-const StyledSocialList = styled.ul`
+const SocialLink = styled.a`
   ${({ theme }) => css`
     display: flex;
-    flex-direction: column;
     align-items: center;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: ${theme.colors.bgSurface};
+    border: 1px solid ${theme.colors.border};
+    color: ${theme.colors.textMuted};
+    transition: ${theme.transition};
+    backdrop-filter: blur(8px);
+
+    &:hover,
+    &:focus {
+      color: ${theme.colors.accent};
+      border-color: ${theme.colors.accent};
+      background: ${theme.colors.accentGlow};
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px ${theme.colors.accentGlow};
+      outline: none;
+    }
 
     &:after {
-      content: '';
-      display: block;
-      width: 1px;
-      height: 90px;
-      margin: 0 auto;
-      background-color: ${theme.colors.lightSlate};
+      display: none !important;
     }
 
-    li {
-      &:last-of-type {
-        margin-bottom: 20px;
-      }
-
-      a {
-        padding: 10px;
-        display: inline-block;
-        color: ${theme.colors.lightSlate};
-        transition: ${theme.transition};
-
-        &:hover,
-        &:focus {
-          color: ${theme.colors.green};
-          transform: translateY(-3px);
-        }
-
-        svg {
-          width: 20px;
-          height: 20px;
-        }
-      }
+    svg {
+      width: 18px;
+      height: 18px;
     }
+  `}
+`;
+
+const LineDivider = styled.div`
+  ${({ theme }) => css`
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, ${theme.colors.border}, transparent);
+    margin-top: 4px;
   `}
 `;
 
@@ -85,7 +81,6 @@ const StyledSocialList = styled.ul`
 const iconMap: Record<string, React.ReactElement> = {
   GitHub: <IconGitHub />,
   LinkedIn: <IconLinkedIn />,
-  Twitter: <IconTwitter />,
 };
 
 // ------------------------------------------------------------------
@@ -97,28 +92,29 @@ const SocialSidebar = (): React.ReactElement => {
   const { socialLinks } = config;
 
   return (
-    <StyledSideElement>
+    <StyledFABWrapper>
       <motion.div
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}
         initial={prefersReducedMotion ? 'visible' : 'hidden'}
         animate="visible"
-        variants={sidebarSlideUpVariants}
+        variants={slideUpVariants}
       >
-        <StyledSocialList>
-          {socialLinks.map(({ name, url }) => (
-            <li key={name}>
-              <a
-                href={url}
-                aria-label={name}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {iconMap[name] ?? null}
-              </a>
-            </li>
+        {socialLinks
+          .filter(({ name }) => iconMap[name])
+          .map(({ name, url }) => (
+            <SocialLink
+              key={name}
+              href={url}
+              aria-label={name}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {iconMap[name]}
+            </SocialLink>
           ))}
-        </StyledSocialList>
+        <LineDivider />
       </motion.div>
-    </StyledSideElement>
+    </StyledFABWrapper>
   );
 };
 

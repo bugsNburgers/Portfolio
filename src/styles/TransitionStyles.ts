@@ -1,90 +1,138 @@
 import { css } from 'styled-components';
 
-// CSS transition classes for mount/unmount animations
-// Used with CSSTransition from react-transition-group or custom implementations
+// Timing constants
+export const LOADER_DELAY = 2000; // ms — total loader animation duration
+export const navDelay = 800;      // ms — delay before nav starts animating in
+export const loaderDelay = 1600;  // ms — delay for page content after loader
 
-export const LOADER_DELAY = 2500; // ms — total loader animation duration
+// New spring-like easing
+const ease = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
-export const navDelay = 1000; // ms — delay before nav starts animating in
-export const loaderDelay = 2000; // ms — delay for page content after loader
+// ----------------------------------------------------------------
+// Framer Motion variants
+// ----------------------------------------------------------------
 
-export const fadeUpVariants = {
-  hidden: { opacity: 0, y: 20 },
+// Blur-in reveal (replaces Brittany's fadeUp)
+export const blurInVariants = {
+  hidden: { opacity: 0, filter: 'blur(8px)', y: 12 },
   visible: {
     opacity: 1,
+    filter: 'blur(0px)',
     y: 0,
     transition: {
-      duration: 0.3,
-      ease: [0.645, 0.045, 0.355, 1] as [number, number, number, number],
+      duration: 0.5,
+      ease,
     },
   },
 };
 
+// Backward compatibility alias used in existing sections
+export const fadeUpVariants = blurInVariants;
+
+// Fade down for nav items
 export const fadeDownVariants = {
-  hidden: { opacity: 0, y: -20 },
+  hidden: { opacity: 0, y: -16 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.3,
-      ease: [0.645, 0.045, 0.355, 1] as [number, number, number, number],
+      duration: 0.4,
+      ease,
     },
   },
 };
 
+// Stagger container
 export const staggerContainerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.1,
+      staggerChildren: 0.08,
+      delayChildren: 0.05,
     },
   },
 };
 
+// Nav stagger
 export const navStaggerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.3,
+      staggerChildren: 0.08,
+      delayChildren: 0.2,
     },
   },
 };
 
-export const sidebarSlideUpVariants = {
-  hidden: { opacity: 0, y: 20 },
+// Slide in from bottom (for FAB / social links)
+export const slideUpVariants = {
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.3,
-      delay: 1.5,
-      ease: [0.645, 0.045, 0.355, 1] as [number, number, number, number],
+      duration: 0.5,
+      delay: 1.2,
+      ease,
     },
   },
 };
 
-// CSS string for fade-up transition (for use with TransitionGroup if needed)
+// Legacy alias
+export const sidebarSlideUpVariants = slideUpVariants;
+
+// Clip-path reveal (left to right)
+export const clipRevealVariants = {
+  hidden: { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
+  visible: {
+    clipPath: 'inset(0 0% 0 0)',
+    opacity: 1,
+    transition: {
+      duration: 0.6,
+      ease,
+    },
+  },
+};
+
+// Scale + fade for cards
+export const cardVariants = {
+  hidden: { opacity: 0, scale: 0.96, y: 16 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease,
+    },
+  },
+};
+
+// ----------------------------------------------------------------
+// CSS transition strings (legacy / CSSTransition usage)
+// ----------------------------------------------------------------
+
 export const fadeUpTransition = css`
-  transition: opacity 300ms ease, transform 300ms ease;
+  transition: opacity 400ms ease, transform 400ms ease, filter 400ms ease;
 
   &.fade-up-enter {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
+    filter: blur(4px);
   }
   &.fade-up-enter-active {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0px);
   }
   &.fade-up-exit {
     opacity: 1;
   }
   &.fade-up-exit-active {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-12px);
   }
 `;
 
