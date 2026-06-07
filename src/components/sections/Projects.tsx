@@ -9,84 +9,37 @@ import IconGitHub from '@/components/IconGitHub';
 import IconExternal from '@/components/IconExternal';
 import useInView from '@/hooks/useInView';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
-import { fadeUpVariants } from '@/styles/TransitionStyles';
-import type { FeaturedProject } from '@/types';
+import { blurInVariants, staggerContainerVariants } from '@/styles/TransitionStyles';
 
 // ------------------------------------------------------------------
-// Styled components
+// Styled components — Brittany's alternating featured project layout
 // ------------------------------------------------------------------
 
 const StyledProjectsSection = styled.section`
   ${({ theme }) => css`
-    max-width: 1000px;
+    max-width: ${theme.sizes.sectionMaxWidth};
   `}
 `;
 
-const StyledProjectsList = styled.ul`
-  padding: 0;
-  margin: 0;
-  list-style: none;
-`;
-
-const StyledProject = styled.li`
+const StyledProject = styled.div`
   ${({ theme }) => css`
-    position: relative;
     display: grid;
     grid-gap: 10px;
     grid-template-columns: repeat(12, 1fr);
     align-items: center;
+    margin-bottom: 80px;
 
-    &:not(:last-of-type) {
-      margin-bottom: 100px;
-
-      @media ${theme.media.md} {
-        margin-bottom: 70px;
-      }
-
-      @media ${theme.media.sm} {
-        margin-bottom: 30px;
-      }
+    @media ${theme.media.md} {
+      margin-bottom: 60px;
     }
 
-    /* Odd: text left, image right */
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
     &:nth-of-type(odd) {
       .project-content {
-        grid-column: 1 / 7;
-        grid-row: 1 / -1;
-        text-align: left;
-
-        @media ${theme.media.md} {
-          grid-column: 1 / -1;
-          padding: 40px 40px 30px;
-          text-align: left;
-        }
-
-        @media ${theme.media.sm} {
-          padding: 25px 25px 20px;
-        }
-      }
-
-      .project-image {
-        grid-column: 6 / -1;
-        grid-row: 1 / -1;
-
-        @media ${theme.media.md} {
-          grid-column: 1 / -1;
-          opacity: 0.25;
-        }
-      }
-
-      .project-tech-list,
-      .project-links {
-        justify-content: flex-start;
-      }
-    }
-
-    /* Even: image left, text right */
-    &:nth-of-type(even) {
-      .project-content {
         grid-column: 7 / -1;
-        grid-row: 1 / -1;
         text-align: right;
 
         @media ${theme.media.md} {
@@ -100,17 +53,14 @@ const StyledProject = styled.li`
         }
       }
 
-      .project-image {
-        grid-column: 1 / 8;
-        grid-row: 1 / -1;
+      .project-tech-list {
+        justify-content: flex-end;
 
         @media ${theme.media.md} {
-          grid-column: 1 / -1;
-          opacity: 0.25;
+          justify-content: flex-start;
         }
       }
 
-      .project-tech-list,
       .project-links {
         justify-content: flex-end;
 
@@ -118,14 +68,51 @@ const StyledProject = styled.li`
           justify-content: flex-start;
         }
       }
-    }
-  `}
-`;
 
-const StyledProjectContent = styled.div`
-  ${({ theme }) => css`
-    position: relative;
-    z-index: 2;
+      .project-image {
+        grid-column: 1 / 8;
+
+        @media ${theme.media.md} {
+          grid-column: 1 / -1;
+        }
+      }
+    }
+
+    &:nth-of-type(even) {
+      .project-content {
+        grid-column: 1 / 7;
+        text-align: left;
+
+        @media ${theme.media.md} {
+          grid-column: 1 / -1;
+          padding: 40px 40px 30px;
+        }
+
+        @media ${theme.media.sm} {
+          padding: 25px 25px 20px;
+        }
+      }
+
+      .project-image {
+        grid-column: 6 / -1;
+
+        @media ${theme.media.md} {
+          grid-column: 1 / -1;
+        }
+      }
+    }
+
+    .project-content {
+      position: relative;
+      grid-row: 1 / -1;
+
+      @media ${theme.media.md} {
+        grid-row: auto;
+        background-color: ${theme.colors.lightNavy};
+        z-index: 5;
+        border-radius: ${theme.sizes.borderRadius};
+      }
+    }
 
     .project-overline {
       margin: 10px 0;
@@ -141,7 +128,7 @@ const StyledProjectContent = styled.div`
       margin: 0 0 20px;
 
       a {
-        color: inherit;
+        color: ${theme.colors.lightestSlate};
         text-decoration: none;
         transition: ${theme.transition};
 
@@ -154,147 +141,165 @@ const StyledProjectContent = styled.div`
           display: none;
         }
       }
-
-      @media ${theme.media.md} {
-        margin: 0 0 10px;
-      }
     }
 
     .project-description {
       box-shadow: 0 10px 30px -15px ${theme.colors.navyShadow};
-      background-color: ${theme.colors.lightNavy};
-      border-radius: ${theme.sizes.borderRadius};
-      padding: 25px;
-      color: ${theme.colors.lightSlate};
-      font-size: ${theme.fontSizes.lg};
-      line-height: 1.5;
       transition: ${theme.transition};
+      position: relative;
+      z-index: 2;
+      padding: 25px;
+      border-radius: ${theme.sizes.borderRadius};
+      background-color: ${theme.colors.lightNavy};
+      color: ${theme.colors.lightSlate};
+      font-size: ${theme.fontSizes.md};
+      line-height: 1.6;
 
-      @media ${theme.media.md} {
-        padding: 20px 0;
-        background-color: transparent;
-        box-shadow: none;
+      &:hover,
+      &:focus-within {
+        box-shadow: 0 20px 30px -15px ${theme.colors.navyShadow};
       }
 
       a {
+        display: inline-block;
+        position: relative;
         color: ${theme.colors.green};
         text-decoration: none;
-      }
+        transition: ${theme.transition};
 
-      strong {
-        color: ${theme.colors.white};
-        font-weight: 600;
-      }
-    }
-  `}
-`;
+        &:hover,
+        &:focus {
+          color: ${theme.colors.green};
+        }
 
-const StyledTechList = styled.ul`
-  ${({ theme }) => css`
-    display: flex;
-    flex-wrap: wrap;
-    position: relative;
-    z-index: 2;
-    margin: 25px 0 10px;
-    padding: 0;
-    list-style: none;
-    gap: 15px;
-
-    li {
-      color: ${theme.colors.lightSlate};
-      font-family: ${theme.fonts.mono};
-      font-size: ${theme.fontSizes.xs};
-      white-space: nowrap;
-    }
-  `}
-`;
-
-const StyledLinkIcons = styled.div`
-  ${({ theme }) => css`
-    display: flex;
-    align-items: center;
-    position: relative;
-    margin-top: 10px;
-    gap: 15px;
-
-    a {
-      padding: 5px;
-      color: ${theme.colors.lightSlate};
-      transition: ${theme.transition};
-
-      &:hover,
-      &:focus {
-        color: ${theme.colors.green};
-        transform: translateY(-3px);
-      }
-
-      svg {
-        width: 20px;
-        height: 20px;
-      }
-
-      &:after {
-        display: none;
+        &:after {
+          display: none;
+        }
       }
     }
-  `}
-`;
 
-const StyledProjectImage = styled.div`
-  ${({ theme }) => css`
-    box-shadow: 0 10px 30px -15px ${theme.colors.navyShadow};
-    transition: ${theme.transition};
-    grid-row: 1 / -1;
-    position: relative;
-    z-index: 1;
-
-    @media ${theme.media.md} {
-      grid-column: 1 / -1;
-      height: 100%;
-      opacity: 0.25;
-    }
-
-    a {
-      width: 100%;
-      background-color: ${theme.colors.green};
-      border-radius: ${theme.sizes.borderRadius};
-      display: block;
+    .project-tech-list {
+      display: flex;
+      flex-wrap: wrap;
       position: relative;
+      z-index: 2;
+      margin: 25px 0 10px;
+      padding: 0;
+      list-style: none;
+      gap: 20px;
+
+      li {
+        font-family: ${theme.fonts.mono};
+        font-size: ${theme.fontSizes.xs};
+        color: ${theme.colors.lightSlate};
+        white-space: nowrap;
+      }
+    }
+
+    .project-links {
+      display: flex;
+      align-items: center;
+      position: relative;
+      margin-top: 10px;
+      margin-left: -10px;
+      color: ${theme.colors.lightestSlate};
+      gap: 5px;
+
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        color: ${theme.colors.lightSlate};
+        transition: ${theme.transition};
+
+        &:hover,
+        &:focus {
+          color: ${theme.colors.green};
+          transform: translateY(-3px);
+        }
+
+        &:after {
+          display: none !important;
+        }
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
+    .project-image {
+      grid-row: 1 / -1;
+      box-shadow: 0 10px 30px -15px ${theme.colors.navyShadow};
+      transition: ${theme.transition};
+      position: relative;
+      z-index: 1;
+
+      @media ${theme.media.md} {
+        grid-row: auto;
+        height: 100%;
+        opacity: 0.25;
+      }
 
       &:hover,
-      &:focus {
-        background: transparent;
-        outline: 0;
+      &:focus-within {
+        box-shadow: 0 20px 30px -15px ${theme.colors.navyShadow};
+      }
 
-        &:before,
-        .img {
-          background: transparent;
-          filter: none;
+      a {
+        width: 100%;
+        height: 100%;
+        background-color: ${theme.colors.green};
+        border-radius: ${theme.sizes.borderRadius};
+        vertical-align: middle;
+        text-decoration: none;
+        transition: ${theme.transition};
+
+        &:after {
+          display: none !important;
         }
       }
 
-      &:before {
-        content: '';
-        position: absolute;
+      .img-wrapper {
+        position: relative;
+        border-radius: ${theme.sizes.borderRadius};
+        overflow: hidden;
         width: 100%;
-        height: 100%;
-        inset: 0;
-        z-index: 3;
-        transition: ${theme.transition};
-        background-color: ${theme.colors.navy};
-        mix-blend-mode: screen;
-      }
 
-      &:after {
-        display: none;
-      }
-    }
+        &:before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background-color: ${theme.colors.navy};
+          mix-blend-mode: screen;
+          z-index: 3;
+          border-radius: ${theme.sizes.borderRadius};
+          transition: ${theme.transition};
+        }
 
-    .img {
-      border-radius: ${theme.sizes.borderRadius};
-      mix-blend-mode: multiply;
-      filter: grayscale(100%) contrast(1) brightness(90%);
-      transition: ${theme.transition};
+        img {
+          filter: grayscale(100%) contrast(1) brightness(90%);
+          mix-blend-mode: multiply;
+          transition: ${theme.transition};
+        }
+
+        &:hover,
+        &:focus {
+          background: transparent;
+
+          &:before {
+            background: transparent;
+            mix-blend-mode: normal;
+          }
+
+          img {
+            filter: none;
+            mix-blend-mode: normal;
+          }
+        }
+      }
     }
   `}
 `;
@@ -315,82 +320,89 @@ const Projects = (): React.ReactElement => {
       <motion.div
         initial={prefersReducedMotion ? 'visible' : 'hidden'}
         animate={isInView || prefersReducedMotion ? 'visible' : 'hidden'}
-        variants={fadeUpVariants}
+        variants={staggerContainerVariants}
       >
-        <h2 className="numbered-heading">Some Things I&apos;ve Built</h2>
+        <motion.div variants={blurInVariants}>
+          <h2 className="numbered-heading">Some Things I&apos;ve Built</h2>
+        </motion.div>
 
-        <StyledProjectsList>
+        <div>
           {featuredProjects.map(
             ({ title, description, techStack, githubUrl, externalUrl, image, imageAlt }, i) => (
               <StyledProject key={i}>
-                <StyledProjectContent className="project-content">
-                  <p className="project-overline">Featured Project</p>
+                <div className="project-content">
+                  <div>
+                    <p className="project-overline">Featured Project</p>
+                    <h3 className="project-title">
+                      {externalUrl ? (
+                        <a href={externalUrl} target="_blank" rel="noopener noreferrer">
+                          {title}
+                        </a>
+                      ) : (
+                        <a href={githubUrl} target="_blank" rel="noopener noreferrer">
+                          {title}
+                        </a>
+                      )}
+                    </h3>
+                    <div
+                      className="project-description"
+                      dangerouslySetInnerHTML={{ __html: description }}
+                    />
+                    <ul className="project-tech-list">
+                      {techStack.map((tech) => (
+                        <li key={tech}>{tech}</li>
+                      ))}
+                    </ul>
+                    <div className="project-links">
+                      {githubUrl && (
+                        <a
+                          href={githubUrl}
+                          aria-label="GitHub Link"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <IconGitHub />
+                        </a>
+                      )}
+                      {externalUrl && (
+                        <a
+                          href={externalUrl}
+                          aria-label="External Link"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <IconExternal />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
 
-                  <h3 className="project-title">
-                    {externalUrl ? (
-                      <a href={externalUrl} target="_blank" rel="noopener noreferrer">
-                        {title}
-                      </a>
-                    ) : (
-                      title
-                    )}
-                  </h3>
-
-                  <div
-                    className="project-description"
-                    dangerouslySetInnerHTML={{ __html: description }}
-                  />
-
-                  <StyledTechList className="project-tech-list">
-                    {techStack.map((tech) => (
-                      <li key={tech}>{tech}</li>
-                    ))}
-                  </StyledTechList>
-
-                  <StyledLinkIcons className="project-links">
-                    {githubUrl && (
-                      <a
-                        href={githubUrl}
-                        aria-label="GitHub Link"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <IconGitHub />
-                      </a>
-                    )}
-                    {externalUrl && (
-                      <a
-                        href={externalUrl}
-                        aria-label="External Link"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <IconExternal />
-                      </a>
-                    )}
-                  </StyledLinkIcons>
-                </StyledProjectContent>
-
-                <StyledProjectImage className="project-image">
+                <div className="project-image">
                   <a
                     href={externalUrl ?? githubUrl ?? '#'}
                     target="_blank"
                     rel="noopener noreferrer"
                     tabIndex={-1}
+                    aria-label={title}
                   >
-                    <Image
-                      className="img"
-                      src={image}
-                      alt={imageAlt}
-                      width={700}
-                      height={438}
-                    />
+                    <div className="img-wrapper">
+                      {image && (
+                        <Image
+                          src={image}
+                          alt={imageAlt}
+                          width={700}
+                          height={438}
+                          style={{ objectFit: 'cover' }}
+                        />
+                      )}
+                    </div>
                   </a>
-                </StyledProjectImage>
+                </div>
               </StyledProject>
             ),
           )}
-        </StyledProjectsList>
+        </div>
       </motion.div>
     </StyledProjectsSection>
   );

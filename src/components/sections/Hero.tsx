@@ -5,10 +5,11 @@ import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
 import heroData from '@/data/hero';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
-import { fadeUpVariants, staggerContainerVariants } from '@/styles/TransitionStyles';
+import { blurInVariants, staggerContainerVariants } from '@/styles/TransitionStyles';
+import mixins from '@/styles/mixins';
 
 // ------------------------------------------------------------------
-// Styled components
+// Styled components — Brittany-style left-aligned single column
 // ------------------------------------------------------------------
 
 const StyledHeroSection = styled.section`
@@ -18,25 +19,22 @@ const StyledHeroSection = styled.section`
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
-    padding: 100px 0 60px !important;
     max-width: 1000px;
-
-    @media ${theme.media.lg} {
-      max-width: 100%;
-    }
+    padding: 0 !important;
 
     @media ${theme.media.sm} {
-      padding: 80px 0 40px !important;
+      min-height: auto;
+      padding-top: 80px !important;
     }
   `}
 `;
 
-const StyledGreeting = styled.h1`
+const StyledOverline = styled.h1`
   ${({ theme }) => css`
-    margin: 0 0 30px 4px;
+    margin: 0 0 20px 4px;
     color: ${theme.colors.green};
     font-family: ${theme.fonts.mono};
-    font-size: ${theme.fontSizes.md};
+    font-size: clamp(${theme.fontSizes.sm}, 5vw, ${theme.fontSizes.md});
     font-weight: 400;
 
     @media ${theme.media.sm} {
@@ -45,7 +43,7 @@ const StyledGreeting = styled.h1`
   `}
 `;
 
-const StyledName = styled.h2`
+const StyledTitle = styled.h2`
   ${({ theme }) => css`
     margin: 0;
     font-size: clamp(40px, 8vw, 80px);
@@ -54,59 +52,53 @@ const StyledName = styled.h2`
   `}
 `;
 
-const StyledTagline = styled.h3`
+const StyledSubtitle = styled.h3`
   ${({ theme }) => css`
-    margin: 5px 0 20px;
-    font-size: clamp(40px, 8vw, 80px);
+    margin-top: 5px;
     color: ${theme.colors.slate};
-    line-height: 1.2;
+    line-height: 0.9;
+    font-size: clamp(40px, 8vw, 80px);
   `}
 `;
 
-const StyledDescription = styled.p`
+const StyledDescription = styled.div`
   ${({ theme }) => css`
-    margin: 0;
+    margin-top: 20px;
     max-width: 540px;
     color: ${theme.colors.slate};
     font-size: ${theme.fontSizes.lg};
-    line-height: 1.5;
+    line-height: 1.6;
+
+    a {
+      display: inline-block;
+      position: relative;
+      color: ${theme.colors.green};
+      transition: ${theme.transition};
+
+      &:after {
+        content: '';
+        display: block;
+        width: 0;
+        height: 1px;
+        position: relative;
+        bottom: 0.37em;
+        background-color: ${theme.colors.green};
+        opacity: 0.5;
+        transition: ${theme.transition};
+      }
+
+      &:hover:after,
+      &:focus-visible:after {
+        width: 100%;
+      }
+    }
   `}
 `;
 
-const StyledCTAWrapper = styled.div`
+const StyledEmailLink = styled.a`
   ${({ theme }) => css`
-    display: flex;
-    gap: 20px;
-    margin-top: 30px;
-    flex-wrap: wrap;
-
-    @media ${theme.media.sm} {
-      margin-top: 20px;
-    }
-
-    a {
-      color: ${theme.colors.green};
-      background-color: transparent;
-      border: 1px solid ${theme.colors.green};
-      border-radius: ${theme.sizes.borderRadius};
-      padding: 1.25rem 1.75rem;
-      font-size: ${theme.fontSizes.sm};
-      font-family: ${theme.fonts.mono};
-      line-height: 1;
-      text-decoration: none;
-      transition: ${theme.transition};
-
-      &:hover,
-      &:focus-visible {
-        background-color: ${theme.colors.greenTint};
-        outline: none;
-        color: ${theme.colors.green};
-      }
-
-      &:after {
-        display: none !important;
-      }
-    }
+    ${mixins.bigButton};
+    margin-top: 50px;
   `}
 `;
 
@@ -116,7 +108,7 @@ const StyledCTAWrapper = styled.div`
 
 const Hero = (): React.ReactElement => {
   const prefersReducedMotion = usePrefersReducedMotion();
-  const { greeting, name, tagline, description, ctaPrimary, ctaSecondary } = heroData;
+  const { greeting, name, tagline, description, ctaPrimary } = heroData;
 
   return (
     <StyledHeroSection>
@@ -125,27 +117,43 @@ const Hero = (): React.ReactElement => {
         animate="visible"
         variants={staggerContainerVariants}
       >
-        <motion.div variants={fadeUpVariants} transition={{ delay: prefersReducedMotion ? 0 : 0.1 }}>
-          <StyledGreeting>{greeting}</StyledGreeting>
+        <motion.div
+          variants={blurInVariants}
+          transition={{ delay: prefersReducedMotion ? 0 : 0.1 }}
+        >
+          <StyledOverline>{greeting}</StyledOverline>
         </motion.div>
 
-        <motion.div variants={fadeUpVariants} transition={{ delay: prefersReducedMotion ? 0 : 0.2 }}>
-          <StyledName>{name}</StyledName>
+        <motion.div
+          variants={blurInVariants}
+          transition={{ delay: prefersReducedMotion ? 0 : 0.2 }}
+        >
+          <StyledTitle>{name}</StyledTitle>
         </motion.div>
 
-        <motion.div variants={fadeUpVariants} transition={{ delay: prefersReducedMotion ? 0 : 0.3 }}>
-          <StyledTagline>{tagline}</StyledTagline>
+        <motion.div
+          variants={blurInVariants}
+          transition={{ delay: prefersReducedMotion ? 0 : 0.3 }}
+        >
+          <StyledSubtitle>{tagline}</StyledSubtitle>
         </motion.div>
 
-        <motion.div variants={fadeUpVariants} transition={{ delay: prefersReducedMotion ? 0 : 0.4 }}>
-          <StyledDescription>{description}</StyledDescription>
+        <motion.div
+          variants={blurInVariants}
+          transition={{ delay: prefersReducedMotion ? 0 : 0.4 }}
+        >
+          <StyledDescription
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
         </motion.div>
 
-        <motion.div variants={fadeUpVariants} transition={{ delay: prefersReducedMotion ? 0 : 0.5 }}>
-          <StyledCTAWrapper>
-            <a href={ctaPrimary.url}>{ctaPrimary.text}</a>
-            <a href={ctaSecondary.url}>{ctaSecondary.text}</a>
-          </StyledCTAWrapper>
+        <motion.div
+          variants={blurInVariants}
+          transition={{ delay: prefersReducedMotion ? 0 : 0.5 }}
+        >
+          <StyledEmailLink href={ctaPrimary.url}>
+            {ctaPrimary.text}
+          </StyledEmailLink>
         </motion.div>
       </motion.div>
     </StyledHeroSection>

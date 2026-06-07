@@ -1,11 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import { theme } from './theme';
 
-// Note: We import theme directly instead of using props interpolations
-// because createGlobalStyle's SSR rendering happens outside ThemeProvider
-// context during Next.js static prerender. Theme values are static constants
-// so direct import is safe and avoids SSR runtime errors.
-
 const { colors, fonts, fontSizes, sizes, media, transition } = theme;
 
 const GlobalStyles = createGlobalStyle`
@@ -14,7 +9,7 @@ const GlobalStyles = createGlobalStyle`
     width: 100%;
     scroll-behavior: smooth;
     scrollbar-width: thin;
-    scrollbar-color: ${colors.darkSlate} ${colors.navy};
+    scrollbar-color: ${colors.lightestNavy} ${colors.navy};
   }
 
   *,
@@ -23,40 +18,40 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: inherit;
   }
 
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: ${colors.navy};
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: ${colors.lightestNavy};
+    border: 3px solid ${colors.navy};
+    border-radius: 10px;
+  }
+
+  /* Selection */
   ::selection {
     background-color: ${colors.lightestNavy};
     color: ${colors.lightestSlate};
   }
 
+  /* Focus */
   :focus {
     outline: 2px dashed ${colors.green};
     outline-offset: 3px;
   }
-
   :focus:not(:focus-visible) {
     outline: none;
-    outline-offset: 0px;
+    outline-offset: 0;
   }
-
   :focus-visible {
     outline: 2px dashed ${colors.green};
     outline-offset: 3px;
   }
 
-  ::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: ${colors.navy};
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: ${colors.darkSlate};
-    border: 3px solid ${colors.navy};
-    border-radius: 10px;
-  }
-
+  /* Body */
   body {
     margin: 0;
     width: 100%;
@@ -127,29 +122,22 @@ const GlobalStyles = createGlobalStyle`
         padding: 0 25px;
       }
     }
-
-    counter-reset: section;
   }
 
   section {
     margin: 0 auto;
-    padding: 80px 0;
+    padding: 100px 0;
     max-width: ${sizes.sectionMaxWidth};
 
     @media ${media.md} {
-      padding: 60px 0;
+      padding: 80px 0;
     }
     @media ${media.sm} {
-      padding: 40px 0;
+      padding: 60px 0;
     }
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h1, h2, h3, h4, h5, h6 {
     margin: 0 0 10px 0;
     font-weight: 600;
     color: ${colors.lightestSlate};
@@ -166,31 +154,16 @@ const GlobalStyles = createGlobalStyle`
     font-size: clamp(40px, 8vw, 60px);
   }
 
+  /* Section heading — clean line after, no numbered prefix */
   .numbered-heading {
     display: flex;
     align-items: center;
     position: relative;
     margin: 10px 0 40px;
     width: 100%;
-    font-size: clamp(26px, 5vw, ${fontSizes.heading});
+    font-size: clamp(26px, 5vw, 32px);
     white-space: nowrap;
-
-    &:before {
-      position: relative;
-      bottom: 4px;
-      counter-increment: section;
-      content: '0' counter(section) '.';
-      margin-right: 10px;
-      color: ${colors.green};
-      font-family: ${fonts.mono};
-      font-size: clamp(${fontSizes.md}, 3vw, ${fontSizes.xl});
-      font-weight: 400;
-
-      @media ${media.sm} {
-        margin-bottom: -3px;
-        margin-right: 5px;
-      }
-    }
+    color: ${colors.lightestSlate};
 
     &:after {
       content: '';
@@ -202,20 +175,13 @@ const GlobalStyles = createGlobalStyle`
       margin-left: 20px;
       background-color: ${colors.lightestNavy};
 
-      @media ${media.lg} {
-        width: 200px;
-      }
       @media ${media.md} {
         width: 100%;
-      }
-      @media (max-width: 600px) {
-        margin-left: 10px;
       }
     }
   }
 
-  img,
-  svg {
+  img, svg {
     width: 100%;
     max-width: 100%;
     vertical-align: middle;
@@ -243,6 +209,7 @@ const GlobalStyles = createGlobalStyle`
     }
 
     &.inline-link {
+      ${'' /* inlineLink mixin */}
       display: inline-block;
       position: relative;
       color: ${colors.green};
@@ -274,6 +241,22 @@ const GlobalStyles = createGlobalStyle`
     cursor: pointer;
     border: 0;
     border-radius: 0;
+  }
+
+  input, textarea {
+    border-radius: ${sizes.borderRadius};
+    outline: 0;
+
+    &:focus {
+      outline: 0;
+    }
+
+    &:focus,
+    &:active {
+      &::placeholder {
+        opacity: 0.5;
+      }
+    }
   }
 
   p {
@@ -320,28 +303,8 @@ const GlobalStyles = createGlobalStyle`
     }
   }
 
-  ul.fancy-list {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    font-size: ${fontSizes.lg};
-
-    li {
-      position: relative;
-      padding-left: 30px;
-      margin-bottom: 10px;
-
-      &:before {
-        content: '▹';
-        position: absolute;
-        left: 0;
-        color: ${colors.green};
-      }
-    }
-  }
-
   blockquote {
-    border-left: 1px solid ${colors.green};
+    border-left: 2px solid ${colors.green};
     margin-left: 0;
     margin-right: 0;
     padding-left: 1.5rem;
@@ -367,36 +330,20 @@ const GlobalStyles = createGlobalStyle`
   .overline {
     color: ${colors.green};
     font-family: ${fonts.mono};
-    font-size: ${fontSizes.md};
+    font-size: ${fontSizes.xs};
     font-weight: 400;
-  }
-
-  .subtitle {
-    color: ${colors.green};
-    margin: 0 0 20px 0;
-    font-size: ${fontSizes.md};
-    font-family: ${fonts.mono};
-    font-weight: 400;
-    line-height: 1.5;
-
-    @media ${media.lg} {
-      font-size: ${fontSizes.sm};
-    }
-    @media ${media.md} {
-      font-size: ${fontSizes.xs};
-    }
   }
 
   .skip-to-content {
     color: ${colors.green};
-    background-color: transparent;
+    background-color: ${colors.navy};
     border: 1px solid ${colors.green};
     border-radius: ${sizes.borderRadius};
+    padding: 1.25rem 1.75rem;
     font-size: ${fontSizes.xs};
     font-family: ${fonts.mono};
     line-height: 1;
     text-decoration: none;
-    padding: 1.25rem 1.75rem;
     transition: ${transition};
     position: absolute;
     top: auto;
@@ -408,14 +355,13 @@ const GlobalStyles = createGlobalStyle`
 
     &:hover,
     &:focus {
-      background-color: ${colors.green};
-      color: ${colors.navy};
+      background-color: ${colors.greenTint};
       top: 0;
       left: 0;
       width: auto;
       height: auto;
       overflow: auto;
-      z-index: 99;
+      z-index: 999;
     }
 
     &:after {

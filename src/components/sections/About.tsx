@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import aboutData from '@/data/about';
 import useInView from '@/hooks/useInView';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
-import { fadeUpVariants } from '@/styles/TransitionStyles';
+import { blurInVariants, staggerContainerVariants } from '@/styles/TransitionStyles';
 
 // ------------------------------------------------------------------
 // Styled components
@@ -17,27 +17,32 @@ const StyledAboutSection = styled.section`
   ${({ theme }) => css`
     max-width: 900px;
   `}
+`;
 
-  .inner {
+const StyledInner = styled.div`
+  ${({ theme }) => css`
     display: grid;
     grid-template-columns: 3fr 2fr;
-    gap: 50px;
+    gap: 60px;
+    align-items: start;
 
-    @media (max-width: 768px) {
-      display: block;
+    @media ${theme.media.md} {
+      grid-template-columns: 1fr;
+      gap: 40px;
     }
-  }
+  `}
 `;
 
 const StyledText = styled.div`
   ${({ theme }) => css`
     & > p {
-      margin: 0 0 15px;
-      color: ${theme.colors.lightSlate};
-      font-size: ${theme.fontSizes.lg};
+      margin: 0 0 16px;
+      color: ${theme.colors.textSecondary};
+      font-size: ${theme.fontSizes.md};
+      line-height: 1.75;
 
       a {
-        color: ${theme.colors.green};
+        color: ${theme.colors.accent};
         text-decoration: none;
         position: relative;
         transition: ${theme.transition};
@@ -49,8 +54,8 @@ const StyledText = styled.div`
           height: 1px;
           position: relative;
           bottom: 0.37em;
-          background-color: ${theme.colors.green};
-          opacity: 0.5;
+          background: linear-gradient(90deg, ${theme.colors.accent}, ${theme.colors.secondary});
+          opacity: 0.6;
           transition: ${theme.transition};
         }
 
@@ -59,104 +64,118 @@ const StyledText = styled.div`
           width: 100%;
         }
       }
-    }
-  `}
-`;
 
-const StyledSkillsGrid = styled.ul`
-  ${({ theme }) => css`
-    display: grid;
-    grid-template-columns: repeat(2, minmax(140px, 200px));
-    gap: 0;
-    padding: 0;
-    margin: 20px 0 0;
-    overflow: hidden;
-    list-style: none;
-
-    li {
-      position: relative;
-      margin-bottom: 10px;
-      padding-left: 20px;
-      font-family: ${theme.fonts.mono};
-      font-size: ${theme.fontSizes.xs};
-      color: ${theme.colors.slate};
-
-      &:before {
-        content: '▹';
-        position: absolute;
-        left: 0;
-        color: ${theme.colors.green};
-        font-size: ${theme.fontSizes.sm};
-        line-height: 12px;
+      strong {
+        color: ${theme.colors.textPrimary};
+        font-weight: 600;
       }
     }
   `}
 `;
 
+// Pill-based skills grid — replaces Brittany's ▹ arrow list
+const StyledSkillsGrid = styled.div`
+  ${({ theme }) => css`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+  `}
+`;
+
+const SkillPill = styled.span`
+  ${({ theme }) => css`
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    background: ${theme.colors.accentGlow};
+    border: 1px solid rgba(127, 90, 240, 0.25);
+    border-radius: 100px;
+    font-family: ${theme.fonts.mono};
+    font-size: ${theme.fontSizes.xxs};
+    color: ${theme.colors.accentLight};
+    letter-spacing: 0.04em;
+    transition: ${theme.transition};
+
+    &:hover {
+      background: ${theme.colors.accentGlowStrong};
+      border-color: ${theme.colors.accent};
+      transform: translateY(-1px);
+    }
+  `}
+`;
+
+// Photo with gradient border — replaces Brittany's green-tinted offset frame
 const StyledPhotoWrapper = styled.div`
   ${({ theme }) => css`
     position: relative;
-    max-width: 300px;
+    max-width: 280px;
 
     @media ${theme.media.md} {
-      margin: 50px auto 0;
+      max-width: 240px;
+      margin: 0;
     }
 
-    .wrapper {
-      display: block;
+    /* Gradient border */
+    &:before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: ${theme.sizes.borderRadiusLg};
+      background: linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.secondary});
+      z-index: -1;
+    }
+
+    .img-frame {
       position: relative;
-      width: 100%;
       border-radius: ${theme.sizes.borderRadius};
-      background-color: ${theme.colors.green};
-      transition: ${theme.transition};
+      overflow: hidden;
+      background: ${theme.colors.bgSurface};
 
-      &:hover,
-      &:focus {
-        outline: 0;
-        background: transparent;
-
-        &:after {
-          top: 15px;
-          left: 15px;
-        }
-
-        .img {
-          filter: none;
-          mix-blend-mode: normal;
-        }
-      }
-
-      .img {
-        position: relative;
-        border-radius: ${theme.sizes.borderRadius};
-        mix-blend-mode: multiply;
-        filter: grayscale(100%) contrast(1);
-        transition: ${theme.transition};
-      }
-
-      &:before,
-      &:after {
-        content: '';
+      /* Photo is shown in color, no grayscale filter */
+      img {
         display: block;
-        position: absolute;
         width: 100%;
-        height: 100%;
-        border-radius: ${theme.sizes.borderRadius};
+        height: auto;
         transition: ${theme.transition};
+        transform: scale(1.0);
       }
+
+      &:hover img {
+        transform: scale(1.03);
+      }
+    }
+
+    /* Subtle floating label */
+    .status-badge {
+      position: absolute;
+      bottom: -12px;
+      right: -12px;
+      background: ${theme.colors.bgSurface};
+      border: 1px solid ${theme.colors.border};
+      border-radius: ${theme.sizes.borderRadius};
+      padding: 6px 12px;
+      font-family: ${theme.fonts.mono};
+      font-size: ${theme.fontSizes.xxs};
+      color: ${theme.colors.success};
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      z-index: 1;
 
       &:before {
-        top: 0;
-        left: 0;
-        background-color: ${theme.colors.navy};
-        mix-blend-mode: screen;
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: ${theme.colors.success};
+        animation: pulse 2s ease-in-out infinite;
       }
 
-      &:after {
-        border: 2px solid ${theme.colors.green};
-        top: 20px;
-        left: 20px;
-        z-index: -1;
+      @keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(0.85); }
       }
     }
   `}
@@ -174,41 +193,47 @@ const About = (): React.ReactElement => {
   const { paragraphs, skills, imageAlt } = aboutData;
 
   return (
-    <StyledAboutSection id="about" ref={sectionRef as React.RefObject<HTMLElement>}>
+    <StyledAboutSection id="about" ref={sectionRef}>
       <motion.div
         initial={prefersReducedMotion ? 'visible' : 'hidden'}
         animate={isInView || prefersReducedMotion ? 'visible' : 'hidden'}
-        variants={fadeUpVariants}
+        variants={staggerContainerVariants}
       >
-        <h2 className="numbered-heading">About Me</h2>
+        <motion.div variants={blurInVariants}>
+          <h2 className="numbered-heading">About Me</h2>
+        </motion.div>
 
-        <div className="inner">
-          <StyledText>
-            {paragraphs.map((para, i) => (
-              // eslint-disable-next-line react/no-danger
-              <p key={i} dangerouslySetInnerHTML={{ __html: para }} />
-            ))}
-
-            <StyledSkillsGrid>
-              {skills.map((skill) => (
-                <li key={skill}>{skill}</li>
+        <StyledInner>
+          <motion.div variants={blurInVariants}>
+            <StyledText>
+              {paragraphs.map((para, i) => (
+                // eslint-disable-next-line react/no-danger
+                <p key={i} dangerouslySetInnerHTML={{ __html: para }} />
               ))}
-            </StyledSkillsGrid>
-          </StyledText>
 
-          <StyledPhotoWrapper>
-            <div className="wrapper">
-              <Image
-                className="img"
-                src="/images/headshot.jpg"
-                alt={imageAlt}
-                width={500}
-                height={500}
-                priority={false}
-              />
-            </div>
-          </StyledPhotoWrapper>
-        </div>
+              <StyledSkillsGrid>
+                {skills.map((skill) => (
+                  <SkillPill key={skill}>{skill}</SkillPill>
+                ))}
+              </StyledSkillsGrid>
+            </StyledText>
+          </motion.div>
+
+          <motion.div variants={blurInVariants}>
+            <StyledPhotoWrapper>
+              <div className="img-frame">
+                <Image
+                  src="/images/headshot.jpg"
+                  alt={imageAlt}
+                  width={500}
+                  height={500}
+                  priority={false}
+                />
+              </div>
+              <div className="status-badge">Open to opportunities</div>
+            </StyledPhotoWrapper>
+          </motion.div>
+        </StyledInner>
       </motion.div>
     </StyledAboutSection>
   );

@@ -15,8 +15,8 @@ const config: SiteConfig = {
     { name: 'About', url: '/#about' },
     { name: 'Experience', url: '/#experience' },
     { name: 'Projects', url: '/#projects' },
-    { name: 'Now', url: '/#now' },
-    { name: 'OSS', url: '/#writing' },
+    { name: 'Skills', url: '/#skills' },
+    { name: 'Contact', url: '/#contact' },
   ],
 };
 

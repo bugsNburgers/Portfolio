@@ -4,12 +4,13 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
 import config from '@/data/config';
+import mixins from '@/styles/mixins';
 import useInView from '@/hooks/useInView';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
-import { fadeUpVariants } from '@/styles/TransitionStyles';
+import { blurInVariants } from '@/styles/TransitionStyles';
 
 // ------------------------------------------------------------------
-// Styled components
+// Styled components — simple centered CTA (no card, no border)
 // ------------------------------------------------------------------
 
 const StyledContactSection = styled.section`
@@ -19,7 +20,7 @@ const StyledContactSection = styled.section`
     text-align: center;
 
     @media ${theme.media.md} {
-      margin: 0 auto 50px;
+      margin: 0 auto 60px;
     }
   `}
 `;
@@ -37,9 +38,11 @@ const StyledOverline = styled.p`
 
 const StyledTitle = styled.h2`
   ${({ theme }) => css`
-    font-size: clamp(40px, 8vw, 60px);
+    font-size: clamp(40px, 5vw, 60px);
     color: ${theme.colors.lightestSlate};
     margin: 0 0 20px;
+    font-weight: 600;
+    line-height: 1.1;
   `}
 `;
 
@@ -48,35 +51,13 @@ const StyledDescription = styled.p`
     color: ${theme.colors.slate};
     font-size: ${theme.fontSizes.lg};
     line-height: 1.6;
-    margin: 0;
+    margin: 0 0 40px;
   `}
 `;
 
-const StyledEmailLink = styled.a`
+const StyledCTA = styled.a`
   ${({ theme }) => css`
-    display: inline-block;
-    margin-top: 50px;
-    color: ${theme.colors.green};
-    background-color: transparent;
-    border: 1px solid ${theme.colors.green};
-    border-radius: ${theme.sizes.borderRadius};
-    padding: 1.25rem 1.75rem;
-    font-size: ${theme.fontSizes.sm};
-    font-family: ${theme.fonts.mono};
-    line-height: 1;
-    text-decoration: none;
-    transition: ${theme.transition};
-
-    &:hover,
-    &:focus-visible {
-      background-color: ${theme.colors.greenTint};
-      outline: none;
-      color: ${theme.colors.green};
-    }
-
-    &:after {
-      display: none !important;
-    }
+    ${mixins.bigButton};
   `}
 `;
 
@@ -94,18 +75,21 @@ const Contact = (): React.ReactElement => {
       <motion.div
         initial={prefersReducedMotion ? 'visible' : 'hidden'}
         animate={isInView || prefersReducedMotion ? 'visible' : 'hidden'}
-        variants={fadeUpVariants}
+        variants={blurInVariants}
       >
-        <StyledOverline className="overline">say hello.</StyledOverline>
+        <StyledOverline>What&apos;s Next?</StyledOverline>
 
-        <StyledTitle className="medium-heading">Get In Touch</StyledTitle>
+        <StyledTitle>Get In Touch</StyledTitle>
 
         <StyledDescription>
-          Got a project idea, a question, or just want to talk code (or cats)? My inbox is open.
-          I try to reply to everything, so don&apos;t hesitate.
+          I&apos;m currently open to new opportunities — whether it&apos;s freelance work,
+          a full-time role, or just a chat. My inbox is always open. I&apos;ll do my best
+          to get back to you!
         </StyledDescription>
 
-        <StyledEmailLink href={`mailto:${email}`}>Say Hello</StyledEmailLink>
+        <StyledCTA href={`mailto:${email}`}>
+          Say Hello
+        </StyledCTA>
       </motion.div>
     </StyledContactSection>
   );

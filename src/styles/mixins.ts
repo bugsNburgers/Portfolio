@@ -137,6 +137,32 @@ const mixins = {
     padding: 0;
     margin: 0;
   `,
+
+  // Glass card (kept for components that use it, now uses navy palette)
+  glassCard: css`
+    background: ${({ theme }) => theme.colors.lightNavy};
+    border: 1px solid ${({ theme }) => theme.colors.lightestNavy};
+    border-radius: ${({ theme }) => theme.sizes.borderRadius};
+  `,
+
+  // Pill tag (kept for About skills)
+  pillTag: css`
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    background: ${({ theme }) => theme.colors.greenTint};
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    border-radius: 100px;
+    font-family: ${({ theme }) => theme.fonts.mono};
+    font-size: ${({ theme }) => theme.fontSizes.xxs};
+    color: ${({ theme }) => theme.colors.green};
+    letter-spacing: 0.04em;
+    transition: ${({ theme }) => theme.transition};
+
+    &:hover {
+      background: rgba(100, 255, 218, 0.15);
+    }
+  `,
 } as const;
 
 export default mixins;

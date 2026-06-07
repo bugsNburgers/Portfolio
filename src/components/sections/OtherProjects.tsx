@@ -2,212 +2,190 @@
 
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import otherProjects from '@/data/otherProjects';
 import IconGitHub from '@/components/IconGitHub';
 import IconExternal from '@/components/IconExternal';
-import IconFolder from '@/components/IconFolder';
 import useInView from '@/hooks/useInView';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
-import { fadeUpVariants, staggerContainerVariants } from '@/styles/TransitionStyles';
+import { blurInVariants, staggerContainerVariants, cardVariants } from '@/styles/TransitionStyles';
 
 // ------------------------------------------------------------------
-// Styled components
+// Styled components — accent stripe card style (no folder icon)
 // ------------------------------------------------------------------
 
-const StyledOtherProjectsSection = styled.section`
+const StyledSection = styled.section`
   max-width: 1000px;
-
-  .archive-link {
-    display: block;
-    text-align: center;
-    margin: -40px 0 50px;
-    font-family: ${({ theme }) => theme.fonts.mono};
-    font-size: ${({ theme }) => theme.fontSizes.sm};
-    color: ${({ theme }) => theme.colors.green};
-    transition: ${({ theme }) => theme.transition};
-
-    &:hover,
-    &:focus {
-      color: ${({ theme }) => theme.colors.green};
-      text-decoration: underline;
-    }
-
-    &:after {
-      display: none;
-    }
-  }
 `;
 
 const StyledHeading = styled.h2`
-  font-size: clamp(24px, 5vw, 32px);
+  font-size: clamp(20px, 4vw, 26px);
+  font-weight: 700;
   text-align: center;
   margin: 0 0 40px;
-  color: ${({ theme }) => theme.colors.lightestSlate};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  letter-spacing: -0.02em;
 `;
 
-const StyledProjectsGrid = styled(motion.ul)`
+const ProjectsGrid = styled(motion.ul)`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 15px;
-  position: relative;
-  margin-top: 0;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
   padding: 0;
+  margin: 0;
   list-style: none;
 `;
 
-const StyledProject = styled(motion.li)`
-  cursor: default;
-  transition: ${({ theme }) => theme.transition};
-
-  &:hover,
-  &:focus-within {
-    .project-inner {
-      transform: translateY(-7px);
-    }
-  }
-
-  a {
+const ProjectCard = styled(motion.li)`
+  ${({ theme }) => `
     position: relative;
-    z-index: 1;
-  }
+    border-radius: ${theme.sizes.borderRadius};
+    overflow: hidden;
+    transition: ${theme.transition};
 
-  .project-inner {
-    box-shadow: 0 10px 30px -15px ${({ theme }) => theme.colors.navyShadow};
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-direction: column;
-    position: relative;
-    height: 100%;
-    padding: 2rem 1.75rem;
-    border-radius: ${({ theme }) => theme.sizes.borderRadius};
-    background-color: ${({ theme }) => theme.colors.lightNavy};
-    transition: ${({ theme }) => theme.transition};
-  }
-
-  .project-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 35px;
-  }
-
-  .folder {
-    color: ${({ theme }) => theme.colors.green};
-
-    svg {
-      width: 40px;
-      height: 40px;
+    &:hover .card-inner {
+      transform: translateY(-5px);
+      border-color: ${theme.colors.accent};
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px ${theme.colors.accentGlow};
     }
-  }
 
-  .project-links {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-right: -10px;
-    color: ${({ theme }) => theme.colors.lightSlate};
-
-    a {
+    .card-inner {
+      height: 100%;
+      background: ${theme.colors.bgSurface};
+      border: 1px solid ${theme.colors.border};
+      border-radius: ${theme.sizes.borderRadius};
+      padding: 1.5rem;
       display: flex;
-      align-items: center;
-      padding: 5px 7px;
-      color: ${({ theme }) => theme.colors.lightSlate};
-      transition: ${({ theme }) => theme.transition};
+      flex-direction: column;
+      gap: 10px;
+      transition: ${theme.transition};
+      position: relative;
+      overflow: hidden;
 
-      &:hover,
-      &:focus {
-        color: ${({ theme }) => theme.colors.green};
-      }
-
-      svg {
-        width: 19px;
-        height: 19px;
-      }
-
-      &:after {
-        display: none;
-      }
-    }
-  }
-
-  .project-title {
-    margin: 0 0 10px;
-    color: ${({ theme }) => theme.colors.lightestSlate};
-    font-size: ${({ theme }) => theme.fontSizes.xxl};
-
-    a {
-      position: static;
-      color: inherit;
-      text-decoration: none;
-      transition: ${({ theme }) => theme.transition};
-
-      &:hover,
-      &:focus {
-        color: ${({ theme }) => theme.colors.green};
-      }
-
+      /* Accent left stripe — replaces Brittany's folder icon pattern */
       &:before {
         content: '';
-        display: block;
         position: absolute;
-        z-index: 0;
-        width: 100%;
-        height: 100%;
         top: 0;
         left: 0;
-      }
-
-      &:after {
-        display: none;
+        width: 3px;
+        height: 100%;
+        background: linear-gradient(to bottom, ${theme.colors.accent}, ${theme.colors.secondary});
+        border-radius: 3px 0 0 3px;
       }
     }
-  }
 
-  .project-description {
-    color: ${({ theme }) => theme.colors.lightSlate};
-    font-size: ${({ theme }) => theme.fontSizes.md};
-    line-height: 1.5;
-  }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
-  .project-tech-list {
-    display: flex;
-    align-items: flex-end;
-    flex-grow: 1;
-    flex-wrap: wrap;
-    padding: 0;
-    margin: 20px 0 0;
-    list-style: none;
-    gap: 10px;
+      .category-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.secondary});
+        flex-shrink: 0;
+      }
 
-    li {
-      font-family: ${({ theme }) => theme.fonts.mono};
-      font-size: ${({ theme }) => theme.fontSizes.xxs};
-      color: ${({ theme }) => theme.colors.slate};
-      line-height: 1.75;
+      .project-links {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        a {
+          display: flex;
+          align-items: center;
+          padding: 4px;
+          color: ${theme.colors.textFaint};
+          transition: ${theme.transition};
+
+          &:hover {
+            color: ${theme.colors.accent};
+            transform: translateY(-2px);
+          }
+
+          &:after {
+            display: none !important;
+          }
+
+          svg {
+            width: 17px;
+            height: 17px;
+          }
+        }
+      }
     }
-  }
+
+    .project-title {
+      font-size: ${theme.fontSizes.lg};
+      font-weight: 600;
+      color: ${theme.colors.textPrimary};
+      letter-spacing: -0.01em;
+      margin: 0;
+
+      a {
+        color: inherit;
+        text-decoration: none;
+        transition: ${theme.transition};
+
+        &:hover {
+          color: ${theme.colors.accent};
+        }
+
+        &:after {
+          display: none !important;
+        }
+      }
+    }
+
+    .project-description {
+      color: ${theme.colors.textSecondary};
+      font-size: ${theme.fontSizes.sm};
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: auto;
+      padding: 0;
+      list-style: none;
+
+      li {
+        font-family: ${theme.fonts.mono};
+        font-size: ${theme.fontSizes.xxs};
+        color: ${theme.colors.textMuted};
+        background: ${theme.colors.bgElevated};
+        border: 1px solid ${theme.colors.border};
+        border-radius: 4px;
+        padding: 2px 7px;
+      }
+    }
+  `}
 `;
 
-const StyledMoreButton = styled.button`
-  display: block;
-  margin: 80px auto 0;
-  color: ${({ theme }) => theme.colors.green};
-  background-color: transparent;
-  border: 1px solid ${({ theme }) => theme.colors.green};
+const MoreButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 48px auto 0;
+  padding: 12px 28px;
+  color: ${({ theme }) => theme.colors.accent};
+  background: transparent;
+  border: 1px solid ${({ theme }) => theme.colors.accent};
   border-radius: ${({ theme }) => theme.sizes.borderRadius};
-  padding: 1.25rem 1.75rem;
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-family: ${({ theme }) => theme.fonts.mono};
-  line-height: 1;
-  text-decoration: none;
-  transition: ${({ theme }) => theme.transition};
   cursor: pointer;
+  transition: ${({ theme }) => theme.transition};
 
   &:hover,
   &:focus-visible {
-    background-color: ${({ theme }) => theme.colors.greenTint};
+    background: ${({ theme }) => theme.colors.accentGlow};
+    box-shadow: 0 0 20px ${({ theme }) => theme.colors.accentGlow};
     outline: none;
   }
 `;
@@ -231,80 +209,67 @@ const OtherProjects = (): React.ReactElement => {
   const hasMore = otherProjects.length > GRID_LIMIT;
 
   return (
-    <StyledOtherProjectsSection ref={ref as React.RefObject<HTMLElement>}>
+    <StyledSection ref={ref as React.RefObject<HTMLElement>}>
       <motion.div
         initial={prefersReducedMotion ? 'visible' : 'hidden'}
         animate={isInView || prefersReducedMotion ? 'visible' : 'hidden'}
-        variants={fadeUpVariants}
+        variants={blurInVariants}
       >
-        <StyledHeading>Other Noteworthy Projects</StyledHeading>
+        <StyledHeading>Other Projects</StyledHeading>
       </motion.div>
 
-      <StyledProjectsGrid
+      <ProjectsGrid
         initial={prefersReducedMotion ? 'visible' : 'hidden'}
         animate={isInView || prefersReducedMotion ? 'visible' : 'hidden'}
         variants={staggerContainerVariants}
       >
-        {projectsToShow.map(({ title, description, techStack, githubUrl, externalUrl }, i) => (
-          <StyledProject key={i} variants={fadeUpVariants}>
-            <div className="project-inner">
-              <header className="project-top">
-                <div className="folder">
-                  <IconFolder />
+        <AnimatePresence>
+          {projectsToShow.map(({ title, description, techStack, githubUrl, externalUrl }, i) => (
+            <ProjectCard key={title} variants={cardVariants} layout>
+              <div className="card-inner">
+                <div className="card-header">
+                  <span className="category-dot" />
+                  <div className="project-links">
+                    {githubUrl && (
+                      <a href={githubUrl} aria-label="GitHub Link" target="_blank" rel="noopener noreferrer">
+                        <IconGitHub />
+                      </a>
+                    )}
+                    {externalUrl && (
+                      <a href={externalUrl} aria-label="External Link" target="_blank" rel="noopener noreferrer">
+                        <IconExternal />
+                      </a>
+                    )}
+                  </div>
                 </div>
 
-                <div className="project-links">
-                  {githubUrl && (
-                    <a
-                      href={githubUrl}
-                      aria-label="GitHub Link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <IconGitHub />
-                    </a>
+                <h3 className="project-title">
+                  {externalUrl ? (
+                    <a href={externalUrl} target="_blank" rel="noopener noreferrer">{title}</a>
+                  ) : (
+                    <span>{title}</span>
                   )}
-                  {externalUrl && (
-                    <a
-                      href={externalUrl}
-                      aria-label="External Link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <IconExternal />
-                    </a>
-                  )}
-                </div>
-              </header>
+                </h3>
 
-              <div className="project-title">
-                {externalUrl ? (
-                  <a href={externalUrl} target="_blank" rel="noopener noreferrer">
-                    {title}
-                  </a>
-                ) : (
-                  <span>{title}</span>
-                )}
+                <p className="project-description">{description}</p>
+
+                <ul className="tech-stack">
+                  {techStack.map((tech) => (
+                    <li key={tech}>{tech}</li>
+                  ))}
+                </ul>
               </div>
-
-              <p className="project-description">{description}</p>
-
-              <ul className="project-tech-list">
-                {techStack.map((tech) => (
-                  <li key={tech}>{tech}</li>
-                ))}
-              </ul>
-            </div>
-          </StyledProject>
-        ))}
-      </StyledProjectsGrid>
+            </ProjectCard>
+          ))}
+        </AnimatePresence>
+      </ProjectsGrid>
 
       {hasMore && (
-        <StyledMoreButton onClick={() => setShowMore((v) => !v)}>
-          {showMore ? 'Show Less' : 'Show More'}
-        </StyledMoreButton>
+        <MoreButton onClick={() => setShowMore((v) => !v)}>
+          {showMore ? '↑ Show Less' : '↓ Show More'}
+        </MoreButton>
       )}
-    </StyledOtherProjectsSection>
+    </StyledSection>
   );
 };
 

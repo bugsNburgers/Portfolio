@@ -6,79 +6,85 @@ import { motion } from 'framer-motion';
 import writingData from '@/data/writing';
 import useInView from '@/hooks/useInView';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
-import { fadeUpVariants } from '@/styles/TransitionStyles';
+import { blurInVariants, staggerContainerVariants, cardVariants } from '@/styles/TransitionStyles';
 import type { WritingEntry } from '@/types';
 
 // ------------------------------------------------------------------
-// Styled components
+// Styled components — card-style entries
 // ------------------------------------------------------------------
 
 const StyledWritingSection = styled.section`
   ${({ theme }) => css`
-    max-width: 700px;
+    max-width: 750px;
   `}
 `;
 
-const StyledSubtitle = styled.p`
+const SubLabel = styled.p`
   ${({ theme }) => css`
-    color: ${theme.colors.green};
+    color: ${theme.colors.lightSlate};
     font-family: ${theme.fonts.mono};
-    font-size: ${theme.fontSizes.md};
-    margin: 0 0 20px;
+    font-size: ${theme.fontSizes.xs};
+    margin: -24px 0 24px;
   `}
 `;
 
-const StyledEntryList = styled.ul`
+const EntryList = styled(motion.ul)`
   padding: 0;
   margin: 0;
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 `;
 
-const StyledEntry = styled.li`
+const EntryCard = styled(motion.li)`
   ${({ theme }) => css`
-    border-bottom: 1px solid ${theme.colors.lightestNavy};
-    padding-left: 0;
+    border-radius: ${theme.sizes.borderRadius};
+    background: ${theme.colors.bgSurface};
+    border: 1px solid ${theme.colors.border};
     transition: ${theme.transition};
+    overflow: hidden;
 
-    &:last-of-type {
-      border-bottom: none;
-    }
+    /* Repo-style accent on left */
+    border-left: 3px solid transparent;
 
     &:hover {
-      border-left: 3px solid ${theme.colors.green};
-      padding-left: 15px;
+      border-left-color: ${theme.colors.accent};
+      transform: translateX(4px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
 
     .entry-inner {
-      padding: 25px 0;
+      padding: 18px 20px;
     }
 
     .entry-title-row {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 20px;
+      gap: 16px;
+      margin-bottom: 8px;
       flex-wrap: wrap;
 
       @media ${theme.media.sm} {
         flex-direction: column;
-        gap: 5px;
+        gap: 4px;
       }
     }
 
     .entry-title {
       margin: 0;
-      font-size: ${theme.fontSizes.xxl};
-      font-weight: 500;
+      font-size: ${theme.fontSizes.lg};
+      font-weight: 600;
+      letter-spacing: -0.01em;
 
       a {
-        color: ${theme.colors.lightestSlate};
+        color: ${theme.colors.textPrimary};
         text-decoration: none;
         transition: ${theme.transition};
 
-        &:hover,
-        &:focus {
-          color: ${theme.colors.green};
+        &:hover {
+          color: ${theme.colors.accent};
         }
 
         &:after {
@@ -90,65 +96,62 @@ const StyledEntry = styled.li`
     .entry-meta {
       font-family: ${theme.fonts.mono};
       font-size: ${theme.fontSizes.xxs};
-      color: ${theme.colors.darkSlate};
+      color: ${theme.colors.textFaint};
       white-space: nowrap;
       flex-shrink: 0;
-      margin-top: 4px;
+      margin-top: 3px;
+      background: ${theme.colors.bgElevated};
+      padding: 2px 8px;
+      border-radius: 4px;
     }
 
     .entry-excerpt {
-      font-size: ${theme.fontSizes.md};
-      color: ${theme.colors.slate};
-      margin-top: 10px;
-      line-height: 1.5;
+      font-size: ${theme.fontSizes.sm};
+      color: ${theme.colors.textSecondary};
+      line-height: 1.6;
+      margin: 0 0 10px;
     }
 
     .entry-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
+      gap: 6px;
       padding: 0;
       list-style: none;
 
       li {
         font-family: ${theme.fonts.mono};
         font-size: ${theme.fontSizes.xxs};
-        color: ${theme.colors.green};
-        background-color: ${theme.colors.greenTint};
-        padding: 3px 8px;
-        border-radius: 3px;
+        color: ${theme.colors.accent};
+        background: ${theme.colors.accentGlow};
+        border: 1px solid rgba(127, 90, 240, 0.2);
+        padding: 2px 8px;
+        border-radius: 4px;
       }
     }
   `}
 `;
 
-const StyledSeeAllLink = styled.a`
+const SeeAllLink = styled.a`
   ${({ theme }) => css`
-    display: inline-block;
-    margin-top: 30px;
-    color: ${theme.colors.green};
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 28px;
+    color: ${theme.colors.accent};
     font-family: ${theme.fonts.mono};
     font-size: ${theme.fontSizes.sm};
     text-decoration: none;
     transition: ${theme.transition};
-    position: relative;
+    padding: 8px 0;
 
     &:after {
-      content: '';
-      display: block;
-      width: 0;
-      height: 1px;
-      position: relative;
-      bottom: 0.37em;
-      background-color: ${theme.colors.green};
-      opacity: 0.5;
-      transition: ${theme.transition};
+      display: none !important;
     }
 
-    &:hover:after,
-    &:focus-visible:after {
-      width: 100%;
+    &:hover {
+      gap: 10px;
+      color: ${theme.colors.accentLight};
     }
   `}
 `;
@@ -166,14 +169,16 @@ const Writing = (): React.ReactElement => {
       <motion.div
         initial={prefersReducedMotion ? 'visible' : 'hidden'}
         animate={isInView || prefersReducedMotion ? 'visible' : 'hidden'}
-        variants={fadeUpVariants}
+        variants={staggerContainerVariants}
       >
-        <h2 className="numbered-heading">Open Source Contributions</h2>
-        <StyledSubtitle>Merged PRs to production open source projects.</StyledSubtitle>
+        <motion.div variants={blurInVariants}>
+          <h2 className="numbered-heading">Open Source</h2>
+          <SubLabel>Merged PRs to production open source projects.</SubLabel>
+        </motion.div>
 
-        <StyledEntryList>
+        <EntryList variants={staggerContainerVariants}>
           {writingData.map(({ title, url, date, readTime, excerpt, tags }: WritingEntry) => (
-            <StyledEntry key={title}>
+            <EntryCard key={title} variants={cardVariants}>
               <div className="entry-inner">
                 <div className="entry-title-row">
                   <h3 className="entry-title">
@@ -194,13 +199,17 @@ const Writing = (): React.ReactElement => {
                   ))}
                 </ul>
               </div>
-            </StyledEntry>
+            </EntryCard>
           ))}
-        </StyledEntryList>
+        </EntryList>
 
-        <StyledSeeAllLink href="https://github.com/bugsNburgers" target="_blank" rel="noopener noreferrer">
-          View my GitHub profile →
-        </StyledSeeAllLink>
+        <SeeAllLink
+          href="https://github.com/bugsNburgers"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View GitHub profile →
+        </SeeAllLink>
       </motion.div>
     </StyledWritingSection>
   );

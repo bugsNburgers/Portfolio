@@ -34,17 +34,19 @@ const StyledGrid = styled.div`
 
 const StyledCard = styled.div`
   ${({ theme }) => css`
-    background-color: ${theme.colors.lightNavy};
+    background-color: ${theme.colors.bgSurface};
     border-radius: ${theme.sizes.borderRadius};
-    border-left: 3px solid ${theme.colors.green};
+    border: 1px solid ${theme.colors.border};
+    border-top: 2px solid ${theme.colors.accent};
     padding: 1.5rem;
     transition: ${theme.transition};
-    box-shadow: 0 10px 30px -15px ${theme.colors.navyShadow};
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
 
     &:hover,
     &:focus-within {
       transform: translateY(-5px);
-      box-shadow: 0 20px 30px -15px ${theme.colors.navyShadow};
+      border-top-color: ${theme.colors.secondary};
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
     }
 
     .category {
@@ -52,22 +54,23 @@ const StyledCard = styled.div`
       text-transform: uppercase;
       font-family: ${theme.fonts.mono};
       font-size: ${theme.fontSizes.xxs};
-      color: ${theme.colors.green};
+      color: ${theme.colors.accent};
       letter-spacing: 0.1em;
       margin-bottom: 10px;
     }
 
     h3 {
-      font-size: ${theme.fontSizes.xl};
-      color: ${theme.colors.lightestSlate};
+      font-size: ${theme.fontSizes.lg};
+      color: ${theme.colors.textPrimary};
       font-weight: 600;
       margin: 0 0 10px;
+      letter-spacing: -0.01em;
     }
 
     p {
-      font-size: ${theme.fontSizes.md};
-      color: ${theme.colors.slate};
-      line-height: 1.5;
+      font-size: ${theme.fontSizes.sm};
+      color: ${theme.colors.textSecondary};
+      line-height: 1.6;
       margin: 0;
     }
   `}
