@@ -4,20 +4,12 @@ import { theme } from './theme';
 const { colors, fonts, fontSizes, sizes, media, transition } = theme;
 
 const GlobalStyles = createGlobalStyle`
-  /* ----------------------------------------------------------------
-     Import Inter + JetBrains Mono from Google Fonts
-  ---------------------------------------------------------------- */
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-  /* ----------------------------------------------------------------
-     Base reset & box model
-  ---------------------------------------------------------------- */
   html {
     box-sizing: border-box;
     width: 100%;
     scroll-behavior: smooth;
     scrollbar-width: thin;
-    scrollbar-color: ${colors.bgElevated} ${colors.bgBase};
+    scrollbar-color: ${colors.lightestNavy} ${colors.navy};
   }
 
   *,
@@ -26,34 +18,28 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: inherit;
   }
 
-  /* ----------------------------------------------------------------
-     Scrollbar
-  ---------------------------------------------------------------- */
+  /* Scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 12px;
   }
   ::-webkit-scrollbar-track {
-    background: ${colors.bgBase};
+    background: ${colors.navy};
   }
   ::-webkit-scrollbar-thumb {
-    background: ${colors.bgElevated};
-    border-radius: 4px;
-    border: 2px solid ${colors.bgBase};
+    background-color: ${colors.lightestNavy};
+    border: 3px solid ${colors.navy};
+    border-radius: 10px;
   }
 
-  /* ----------------------------------------------------------------
-     Selection
-  ---------------------------------------------------------------- */
+  /* Selection */
   ::selection {
-    background-color: ${colors.accentGlowStrong};
-    color: ${colors.textPrimary};
+    background-color: ${colors.lightestNavy};
+    color: ${colors.lightestSlate};
   }
 
-  /* ----------------------------------------------------------------
-     Focus
-  ---------------------------------------------------------------- */
+  /* Focus */
   :focus {
-    outline: 2px solid ${colors.accent};
+    outline: 2px dashed ${colors.green};
     outline-offset: 3px;
   }
   :focus:not(:focus-visible) {
@@ -61,13 +47,11 @@ const GlobalStyles = createGlobalStyle`
     outline-offset: 0;
   }
   :focus-visible {
-    outline: 2px solid ${colors.accent};
+    outline: 2px dashed ${colors.green};
     outline-offset: 3px;
   }
 
-  /* ----------------------------------------------------------------
-     Body — gradient mesh background
-  ---------------------------------------------------------------- */
+  /* Body */
   body {
     margin: 0;
     width: 100%;
@@ -75,17 +59,11 @@ const GlobalStyles = createGlobalStyle`
     overflow-x: hidden;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    background-color: ${colors.bgBase};
-    color: ${colors.textSecondary};
+    background-color: ${colors.navy};
+    color: ${colors.slate};
     font-family: ${fonts.sans};
     font-size: ${fontSizes.xl};
-    line-height: 1.4;
-
-    /* Subtle gradient mesh — unique signature feel */
-    background-image:
-      radial-gradient(ellipse 80% 50% at 20% 20%, rgba(127, 90, 240, 0.06) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(245, 166, 35, 0.04) 0%, transparent 60%);
-    background-attachment: fixed;
+    line-height: 1.3;
 
     @media ${media.sm} {
       font-size: ${fontSizes.lg};
@@ -107,9 +85,6 @@ const GlobalStyles = createGlobalStyle`
     }
   }
 
-  /* ----------------------------------------------------------------
-     Layout shell
-  ---------------------------------------------------------------- */
   #__next {
     min-height: 100vh;
     display: grid;
@@ -151,111 +126,61 @@ const GlobalStyles = createGlobalStyle`
 
   section {
     margin: 0 auto;
-    padding: 80px 0;
+    padding: 100px 0;
     max-width: ${sizes.sectionMaxWidth};
 
     @media ${media.md} {
-      padding: 60px 0;
+      padding: 80px 0;
     }
     @media ${media.sm} {
-      padding: 40px 0;
+      padding: 60px 0;
     }
   }
 
-  /* ----------------------------------------------------------------
-     Typography
-  ---------------------------------------------------------------- */
   h1, h2, h3, h4, h5, h6 {
     margin: 0 0 10px 0;
     font-weight: 600;
-    color: ${colors.textPrimary};
-    line-height: 1.15;
-    letter-spacing: -0.02em;
+    color: ${colors.lightestSlate};
+    line-height: 1.1;
   }
 
   .big-heading {
     margin: 0;
     font-size: clamp(40px, 8vw, 80px);
-    letter-spacing: -0.04em;
   }
 
   .medium-heading {
     margin: 0;
-    font-size: clamp(36px, 7vw, 56px);
-    letter-spacing: -0.03em;
+    font-size: clamp(40px, 8vw, 60px);
   }
 
-  /* Section headings — gradient underline style (not Brittany's numbered prefix) */
-  .section-heading {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    position: relative;
-    margin: 0 0 48px;
-    width: 100%;
-    font-size: clamp(22px, 4vw, 28px);
-    font-weight: 700;
-    color: ${colors.textPrimary};
-    letter-spacing: -0.02em;
-
-    .heading-label {
-      font-family: ${fonts.mono};
-      font-size: ${fontSizes.xs};
-      font-weight: 400;
-      color: ${colors.accent};
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-right: 4px;
-    }
-
-    &:after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, ${colors.border}, transparent);
-      max-width: 300px;
-
-      @media ${media.md} {
-        max-width: 100%;
-      }
-    }
-  }
-
-  /* Legacy class — now renders same as section-heading */
+  /* Section heading — clean line after, no numbered prefix */
   .numbered-heading {
     display: flex;
     align-items: center;
-    gap: 16px;
     position: relative;
-    margin: 0 0 48px;
+    margin: 10px 0 40px;
     width: 100%;
-    font-size: clamp(22px, 4vw, 28px);
-    font-weight: 700;
-    color: ${colors.textPrimary};
-    letter-spacing: -0.02em;
-
-    &:before {
-      display: none; /* Remove Brittany's "01." prefix */
-    }
+    font-size: clamp(26px, 5vw, 32px);
+    white-space: nowrap;
+    color: ${colors.lightestSlate};
 
     &:after {
       content: '';
-      flex: 1;
+      display: block;
+      position: relative;
+      top: -5px;
+      width: 300px;
       height: 1px;
-      background: linear-gradient(90deg, ${colors.border}, transparent);
-      max-width: 300px;
-      margin-left: 0;
-      top: 0;
+      margin-left: 20px;
+      background-color: ${colors.lightestNavy};
 
       @media ${media.md} {
-        max-width: 100%;
+        width: 100%;
       }
     }
   }
 
-  /* ----------------------------------------------------------------
-     Images & SVG
-  ---------------------------------------------------------------- */
   img, svg {
     width: 100%;
     max-width: 100%;
@@ -270,9 +195,6 @@ const GlobalStyles = createGlobalStyle`
     }
   }
 
-  /* ----------------------------------------------------------------
-     Links
-  ---------------------------------------------------------------- */
   a {
     display: inline-block;
     text-decoration: none;
@@ -283,13 +205,14 @@ const GlobalStyles = createGlobalStyle`
 
     &:hover,
     &:focus {
-      color: ${colors.accent};
+      color: ${colors.green};
     }
 
     &.inline-link {
+      ${'' /* inlineLink mixin */}
       display: inline-block;
       position: relative;
-      color: ${colors.accent};
+      color: ${colors.green};
       transition: ${transition};
 
       &:after {
@@ -299,8 +222,8 @@ const GlobalStyles = createGlobalStyle`
         height: 1px;
         position: relative;
         bottom: 0.37em;
-        background: linear-gradient(90deg, ${colors.accent}, ${colors.secondary});
-        opacity: 0.6;
+        background-color: ${colors.green};
+        opacity: 0.5;
 
         @media (prefers-reduced-motion: no-preference) {
           transition: ${transition};
@@ -314,9 +237,6 @@ const GlobalStyles = createGlobalStyle`
     }
   }
 
-  /* ----------------------------------------------------------------
-     Buttons & forms
-  ---------------------------------------------------------------- */
   button {
     cursor: pointer;
     border: 0;
@@ -324,17 +244,21 @@ const GlobalStyles = createGlobalStyle`
   }
 
   input, textarea {
-    border-radius: ${sizes.borderRadiusSm};
+    border-radius: ${sizes.borderRadius};
     outline: 0;
-    background: ${colors.bgSurface};
-    border: 1px solid ${colors.border};
-    color: ${colors.textPrimary};
-    font-family: ${fonts.sans};
+
+    &:focus {
+      outline: 0;
+    }
+
+    &:focus,
+    &:active {
+      &::placeholder {
+        opacity: 0.5;
+      }
+    }
   }
 
-  /* ----------------------------------------------------------------
-     Paragraphs
-  ---------------------------------------------------------------- */
   p {
     margin: 0 0 15px 0;
 
@@ -346,7 +270,7 @@ const GlobalStyles = createGlobalStyle`
     & > a {
       display: inline-block;
       position: relative;
-      color: ${colors.accent};
+      color: ${colors.green};
       transition: ${transition};
 
       &:after {
@@ -356,8 +280,8 @@ const GlobalStyles = createGlobalStyle`
         height: 1px;
         position: relative;
         bottom: 0.37em;
-        background: linear-gradient(90deg, ${colors.accent}, ${colors.secondary});
-        opacity: 0.6;
+        background-color: ${colors.green};
+        opacity: 0.5;
 
         @media (prefers-reduced-motion: no-preference) {
           transition: ${transition};
@@ -371,65 +295,55 @@ const GlobalStyles = createGlobalStyle`
     }
 
     & > code {
-      background-color: ${colors.bgElevated};
-      color: ${colors.secondary};
+      background-color: ${colors.lightNavy};
+      color: ${colors.white};
       font-size: ${fontSizes.sm};
-      border-radius: ${sizes.borderRadiusSm};
-      padding: 0.2em 0.5em;
-      font-family: ${fonts.mono};
+      border-radius: ${sizes.borderRadius};
+      padding: 0.3em 0.5em;
     }
   }
 
-  /* ----------------------------------------------------------------
-     Misc
-  ---------------------------------------------------------------- */
   blockquote {
-    border-left: 2px solid ${colors.accent};
+    border-left: 2px solid ${colors.green};
     margin-left: 0;
     margin-right: 0;
     padding-left: 1.5rem;
 
     p {
       font-style: italic;
-      font-size: 22px;
-      color: ${colors.textSecondary};
+      font-size: 24px;
     }
   }
 
   hr {
-    background-color: ${colors.border};
+    background-color: ${colors.lightestNavy};
     height: 1px;
     border: 0;
-    margin: 1.5rem 0;
+    margin: 1rem;
   }
 
   code {
     font-family: ${fonts.mono};
-    font-size: ${fontSizes.sm};
+    font-size: ${fontSizes.md};
   }
 
-  /* ----------------------------------------------------------------
-     Utility classes
-  ---------------------------------------------------------------- */
   .overline {
-    color: ${colors.accent};
+    color: ${colors.green};
     font-family: ${fonts.mono};
     font-size: ${fontSizes.xs};
     font-weight: 400;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
   }
 
   .skip-to-content {
-    color: ${colors.accent};
-    background-color: ${colors.bgBase};
-    border: 1px solid ${colors.accent};
+    color: ${colors.green};
+    background-color: ${colors.navy};
+    border: 1px solid ${colors.green};
     border-radius: ${sizes.borderRadius};
+    padding: 1.25rem 1.75rem;
     font-size: ${fontSizes.xs};
     font-family: ${fonts.mono};
     line-height: 1;
     text-decoration: none;
-    padding: 1.25rem 1.75rem;
     transition: ${transition};
     position: absolute;
     top: auto;
@@ -441,8 +355,7 @@ const GlobalStyles = createGlobalStyle`
 
     &:hover,
     &:focus {
-      background-color: ${colors.accent};
-      color: ${colors.bgBase};
+      background-color: ${colors.greenTint};
       top: 0;
       left: 0;
       width: auto;

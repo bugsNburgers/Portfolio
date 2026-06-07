@@ -21,11 +21,10 @@ const StyledWritingSection = styled.section`
 
 const SubLabel = styled.p`
   ${({ theme }) => css`
-    color: ${theme.colors.textMuted};
+    color: ${theme.colors.lightSlate};
     font-family: ${theme.fonts.mono};
     font-size: ${theme.fontSizes.xs};
-    margin: -24px 0 32px;
-    letter-spacing: 0.02em;
+    margin: -24px 0 24px;
   `}
 `;
 

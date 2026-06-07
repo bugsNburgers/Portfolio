@@ -23,6 +23,7 @@ export interface NavLink {
 
 /** Hero section */
 export interface HeroData {
+  greeting: string;
   name: string;
   tagline: string;
   description: string;

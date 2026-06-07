@@ -9,181 +9,132 @@ import IconGitHub from '@/components/IconGitHub';
 import IconExternal from '@/components/IconExternal';
 import useInView from '@/hooks/useInView';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
-import { blurInVariants, staggerContainerVariants, cardVariants } from '@/styles/TransitionStyles';
-import type { FeaturedProject } from '@/types';
+import { blurInVariants, staggerContainerVariants } from '@/styles/TransitionStyles';
 
 // ------------------------------------------------------------------
-// Bento-grid styled components
+// Styled components — Brittany's alternating featured project layout
 // ------------------------------------------------------------------
 
 const StyledProjectsSection = styled.section`
   ${({ theme }) => css`
-    max-width: 1000px;
+    max-width: ${theme.sizes.sectionMaxWidth};
   `}
 `;
 
-const BentoGrid = styled(motion.div)`
+const StyledProject = styled.div`
   ${({ theme }) => css`
     display: grid;
+    grid-gap: 10px;
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: auto;
-    gap: 16px;
+    align-items: center;
+    margin-bottom: 80px;
 
     @media ${theme.media.md} {
-      grid-template-columns: 1fr;
+      margin-bottom: 60px;
     }
-  `}
-`;
 
-// Each project card spans differently for the bento effect
-const BentoCard = styled(motion.article)<{ $index: number }>`
-  ${({ theme, $index }) => css`
-    position: relative;
-    border-radius: ${theme.sizes.borderRadius};
-    overflow: hidden;
-    background: ${theme.colors.bgSurface};
-    border: 1px solid ${theme.colors.border};
-    transition: ${theme.transition};
-    display: flex;
-    flex-direction: column;
+    &:last-of-type {
+      margin-bottom: 0;
+    }
 
-    /* First card: wide */
-    ${$index === 0 && css`
-      grid-column: 1 / 8;
+    &:nth-of-type(odd) {
+      .project-content {
+        grid-column: 7 / -1;
+        text-align: right;
 
-      @media ${theme.media.md} {
-        grid-column: 1 / -1;
-      }
-    `}
-    /* Second card: narrow right */
-    ${$index === 1 && css`
-      grid-column: 8 / -1;
+        @media ${theme.media.md} {
+          grid-column: 1 / -1;
+          padding: 40px 40px 30px;
+          text-align: left;
+        }
 
-      @media ${theme.media.md} {
-        grid-column: 1 / -1;
-      }
-    `}
-    /* Third card: narrow left */
-    ${$index === 2 && css`
-      grid-column: 1 / 5;
-
-      @media ${theme.media.md} {
-        grid-column: 1 / -1;
-      }
-    `}
-    /* Fourth card: wide right */
-    ${$index === 3 && css`
-      grid-column: 5 / -1;
-
-      @media ${theme.media.md} {
-        grid-column: 1 / -1;
-      }
-    `}
-    /* Fallback for more cards */
-    ${$index >= 4 && css`
-      grid-column: span 6;
-
-      @media ${theme.media.md} {
-        grid-column: 1 / -1;
-      }
-    `}
-
-    &:hover {
-      border-color: ${theme.colors.accent};
-      transform: translateY(-4px);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px ${theme.colors.accentGlow};
-
-      .project-image img {
-        transform: scale(1.04);
+        @media ${theme.media.sm} {
+          padding: 25px 25px 20px;
+        }
       }
 
-      .card-glow {
-        opacity: 1;
+      .project-tech-list {
+        justify-content: flex-end;
+
+        @media ${theme.media.md} {
+          justify-content: flex-start;
+        }
+      }
+
+      .project-links {
+        justify-content: flex-end;
+
+        @media ${theme.media.md} {
+          justify-content: flex-start;
+        }
+      }
+
+      .project-image {
+        grid-column: 1 / 8;
+
+        @media ${theme.media.md} {
+          grid-column: 1 / -1;
+        }
       }
     }
 
-    /* Top gradient accent stripe */
-    &:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, ${theme.colors.accent}, ${theme.colors.secondary});
-      z-index: 2;
-    }
-  `}
-`;
+    &:nth-of-type(even) {
+      .project-content {
+        grid-column: 1 / 7;
+        text-align: left;
 
-// Glow overlay on hover
-const CardGlow = styled.div`
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at top left, rgba(127, 90, 240, 0.05), transparent 60%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-  z-index: 1;
-`;
+        @media ${theme.media.md} {
+          grid-column: 1 / -1;
+          padding: 40px 40px 30px;
+        }
 
-const ProjectImage = styled.div`
-  ${({ theme }) => css`
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 16 / 9;
-    flex-shrink: 0;
+        @media ${theme.media.sm} {
+          padding: 25px 25px 20px;
+        }
+      }
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
+      .project-image {
+        grid-column: 6 / -1;
+
+        @media ${theme.media.md} {
+          grid-column: 1 / -1;
+        }
+      }
     }
 
-    /* Subtle overlay */
-    &:after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, transparent 50%, ${theme.colors.bgSurface} 100%);
+    .project-content {
+      position: relative;
+      grid-row: 1 / -1;
+
+      @media ${theme.media.md} {
+        grid-row: auto;
+        background-color: ${theme.colors.lightNavy};
+        z-index: 5;
+        border-radius: ${theme.sizes.borderRadius};
+      }
     }
-  `}
-`;
 
-const ProjectContent = styled.div`
-  ${({ theme }) => css`
-    padding: 20px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    position: relative;
-    z-index: 1;
-
-    .project-category {
+    .project-overline {
+      margin: 10px 0;
+      color: ${theme.colors.green};
       font-family: ${theme.fonts.mono};
-      font-size: ${theme.fontSizes.xxs};
-      color: ${theme.colors.accent};
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      font-size: ${theme.fontSizes.xs};
+      font-weight: 400;
     }
 
     .project-title {
-      font-size: ${theme.fontSizes.xxl};
-      font-weight: 700;
-      color: ${theme.colors.textPrimary};
-      letter-spacing: -0.02em;
-      margin: 0;
-      line-height: 1.2;
+      color: ${theme.colors.lightestSlate};
+      font-size: clamp(24px, 5vw, 28px);
+      margin: 0 0 20px;
 
       a {
-        color: inherit;
+        color: ${theme.colors.lightestSlate};
         text-decoration: none;
         transition: ${theme.transition};
 
-        &:hover {
-          color: ${theme.colors.accent};
+        &:hover,
+        &:focus {
+          color: ${theme.colors.green};
         }
 
         &:after {
@@ -193,80 +144,161 @@ const ProjectContent = styled.div`
     }
 
     .project-description {
-      color: ${theme.colors.textSecondary};
-      font-size: ${theme.fontSizes.sm};
+      box-shadow: 0 10px 30px -15px ${theme.colors.navyShadow};
+      transition: ${theme.transition};
+      position: relative;
+      z-index: 2;
+      padding: 25px;
+      border-radius: ${theme.sizes.borderRadius};
+      background-color: ${theme.colors.lightNavy};
+      color: ${theme.colors.lightSlate};
+      font-size: ${theme.fontSizes.md};
       line-height: 1.6;
-      flex: 1;
+
+      &:hover,
+      &:focus-within {
+        box-shadow: 0 20px 30px -15px ${theme.colors.navyShadow};
+      }
 
       a {
-        color: ${theme.colors.accent};
+        display: inline-block;
+        position: relative;
+        color: ${theme.colors.green};
         text-decoration: none;
+        transition: ${theme.transition};
+
+        &:hover,
+        &:focus {
+          color: ${theme.colors.green};
+        }
+
+        &:after {
+          display: none;
+        }
       }
     }
-  `}
-`;
 
-const ProjectFooter = styled.div`
-  ${({ theme }) => css`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 20px 16px;
-    gap: 12px;
-    position: relative;
-    z-index: 1;
-  `}
-`;
+    .project-tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+      margin: 25px 0 10px;
+      padding: 0;
+      list-style: none;
+      gap: 20px;
 
-const TechStack = styled.div`
-  ${({ theme }) => css`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-
-    span {
-      font-family: ${theme.fonts.mono};
-      font-size: ${theme.fontSizes.xxs};
-      color: ${theme.colors.textMuted};
-      background: ${theme.colors.bgElevated};
-      border: 1px solid ${theme.colors.border};
-      border-radius: 4px;
-      padding: 2px 8px;
+      li {
+        font-family: ${theme.fonts.mono};
+        font-size: ${theme.fontSizes.xs};
+        color: ${theme.colors.lightSlate};
+        white-space: nowrap;
+      }
     }
-  `}
-`;
 
-const ProjectLinks = styled.div`
-  ${({ theme }) => css`
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    a {
+    .project-links {
       display: flex;
       align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      color: ${theme.colors.textMuted};
-      background: ${theme.colors.bgElevated};
-      border: 1px solid ${theme.colors.border};
+      position: relative;
+      margin-top: 10px;
+      margin-left: -10px;
+      color: ${theme.colors.lightestSlate};
+      gap: 5px;
+
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        color: ${theme.colors.lightSlate};
+        transition: ${theme.transition};
+
+        &:hover,
+        &:focus {
+          color: ${theme.colors.green};
+          transform: translateY(-3px);
+        }
+
+        &:after {
+          display: none !important;
+        }
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
+    .project-image {
+      grid-row: 1 / -1;
+      box-shadow: 0 10px 30px -15px ${theme.colors.navyShadow};
       transition: ${theme.transition};
+      position: relative;
+      z-index: 1;
 
-      &:hover {
-        color: ${theme.colors.accent};
-        border-color: ${theme.colors.accent};
-        transform: translateY(-2px);
+      @media ${theme.media.md} {
+        grid-row: auto;
+        height: 100%;
+        opacity: 0.25;
       }
 
-      &:after {
-        display: none !important;
+      &:hover,
+      &:focus-within {
+        box-shadow: 0 20px 30px -15px ${theme.colors.navyShadow};
       }
 
-      svg {
-        width: 15px;
-        height: 15px;
+      a {
+        width: 100%;
+        height: 100%;
+        background-color: ${theme.colors.green};
+        border-radius: ${theme.sizes.borderRadius};
+        vertical-align: middle;
+        text-decoration: none;
+        transition: ${theme.transition};
+
+        &:after {
+          display: none !important;
+        }
+      }
+
+      .img-wrapper {
+        position: relative;
+        border-radius: ${theme.sizes.borderRadius};
+        overflow: hidden;
+        width: 100%;
+
+        &:before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background-color: ${theme.colors.navy};
+          mix-blend-mode: screen;
+          z-index: 3;
+          border-radius: ${theme.sizes.borderRadius};
+          transition: ${theme.transition};
+        }
+
+        img {
+          filter: grayscale(100%) contrast(1) brightness(90%);
+          mix-blend-mode: multiply;
+          transition: ${theme.transition};
+        }
+
+        &:hover,
+        &:focus {
+          background: transparent;
+
+          &:before {
+            background: transparent;
+            mix-blend-mode: normal;
+          }
+
+          img {
+            filter: none;
+            mix-blend-mode: normal;
+          }
+        }
       }
     }
   `}
@@ -291,81 +323,86 @@ const Projects = (): React.ReactElement => {
         variants={staggerContainerVariants}
       >
         <motion.div variants={blurInVariants}>
-          <h2 className="numbered-heading">Featured Projects</h2>
+          <h2 className="numbered-heading">Some Things I&apos;ve Built</h2>
         </motion.div>
 
-        <BentoGrid
-          variants={staggerContainerVariants}
-        >
+        <div>
           {featuredProjects.map(
             ({ title, description, techStack, githubUrl, externalUrl, image, imageAlt }, i) => (
-              <BentoCard key={i} $index={i} variants={cardVariants}>
-                <CardGlow className="card-glow" />
-
-                {image && (
-                  <ProjectImage className="project-image">
-                    <Image
-                      src={image}
-                      alt={imageAlt}
-                      fill
-                      style={{ objectFit: 'cover' }}
+              <StyledProject key={i}>
+                <div className="project-content">
+                  <div>
+                    <p className="project-overline">Featured Project</p>
+                    <h3 className="project-title">
+                      {externalUrl ? (
+                        <a href={externalUrl} target="_blank" rel="noopener noreferrer">
+                          {title}
+                        </a>
+                      ) : (
+                        <a href={githubUrl} target="_blank" rel="noopener noreferrer">
+                          {title}
+                        </a>
+                      )}
+                    </h3>
+                    <div
+                      className="project-description"
+                      dangerouslySetInnerHTML={{ __html: description }}
                     />
-                  </ProjectImage>
-                )}
+                    <ul className="project-tech-list">
+                      {techStack.map((tech) => (
+                        <li key={tech}>{tech}</li>
+                      ))}
+                    </ul>
+                    <div className="project-links">
+                      {githubUrl && (
+                        <a
+                          href={githubUrl}
+                          aria-label="GitHub Link"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <IconGitHub />
+                        </a>
+                      )}
+                      {externalUrl && (
+                        <a
+                          href={externalUrl}
+                          aria-label="External Link"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <IconExternal />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
 
-                <ProjectContent>
-                  <span className="project-category">Featured Project</span>
-
-                  <h3 className="project-title">
-                    {externalUrl ? (
-                      <a href={externalUrl} target="_blank" rel="noopener noreferrer">
-                        {title}
-                      </a>
-                    ) : (
-                      title
-                    )}
-                  </h3>
-
-                  <div
-                    className="project-description"
-                    dangerouslySetInnerHTML={{ __html: description }}
-                  />
-                </ProjectContent>
-
-                <ProjectFooter>
-                  <TechStack>
-                    {techStack.map((tech) => (
-                      <span key={tech}>{tech}</span>
-                    ))}
-                  </TechStack>
-
-                  <ProjectLinks>
-                    {githubUrl && (
-                      <a
-                        href={githubUrl}
-                        aria-label="GitHub Link"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <IconGitHub />
-                      </a>
-                    )}
-                    {externalUrl && (
-                      <a
-                        href={externalUrl}
-                        aria-label="External Link"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <IconExternal />
-                      </a>
-                    )}
-                  </ProjectLinks>
-                </ProjectFooter>
-              </BentoCard>
+                <div className="project-image">
+                  <a
+                    href={externalUrl ?? githubUrl ?? '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    tabIndex={-1}
+                    aria-label={title}
+                  >
+                    <div className="img-wrapper">
+                      {image && (
+                        <Image
+                          src={image}
+                          alt={imageAlt}
+                          width={700}
+                          height={438}
+                          style={{ objectFit: 'cover' }}
+                        />
+                      )}
+                    </div>
+                  </a>
+                </div>
+              </StyledProject>
             ),
           )}
-        </BentoGrid>
+        </div>
       </motion.div>
     </StyledProjectsSection>
   );

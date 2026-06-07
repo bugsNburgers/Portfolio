@@ -2,179 +2,101 @@
 
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
-import { motion } from 'framer-motion';
-import { techRadarData, ringOrder, quadrants } from '@/data/techRadar';
-import type { TechRing, TechQuadrant } from '@/data/techRadar';
+import { motion, AnimatePresence } from 'framer-motion';
+import { techRadarData, categories } from '@/data/techRadar';
+import type { TechCategory } from '@/data/techRadar';
 import useInView from '@/hooks/useInView';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
 import { blurInVariants, staggerContainerVariants } from '@/styles/TransitionStyles';
 
 // ------------------------------------------------------------------
-// Styled components
+// Styled components — clean tech grid, no proficiency rings
 // ------------------------------------------------------------------
 
 const StyledSection = styled.section`
   ${({ theme }) => css`
-    max-width: 900px;
+    max-width: ${theme.sizes.sectionMaxWidth};
   `}
 `;
 
-// Quadrant filter pills
-const QuadrantFilter = styled.div`
+// Tab filter — styled like Brittany's experience tabs but horizontal
+const TabList = styled.div`
   ${({ theme }) => css`
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 32px;
+    gap: 0;
+    margin-bottom: 40px;
+    border-bottom: 1px solid ${theme.colors.lightestNavy};
   `}
 `;
 
-const FilterPill = styled.button<{ $active: boolean }>`
+const Tab = styled.button<{ $active: boolean }>`
   ${({ theme, $active }) => css`
-    padding: 6px 16px;
-    border-radius: 100px;
-    border: 1px solid ${$active ? theme.colors.accent : theme.colors.border};
-    background: ${$active ? theme.colors.accentGlow : 'transparent'};
-    color: ${$active ? theme.colors.accent : theme.colors.textMuted};
-    font-family: ${theme.fonts.mono};
-    font-size: ${theme.fontSizes.xxs};
-    cursor: pointer;
-    transition: ${theme.transition};
-    letter-spacing: 0.04em;
-
-    &:hover {
-      border-color: ${theme.colors.accent};
-      color: ${theme.colors.accent};
-    }
-  `}
-`;
-
-// Ring groupings
-const RingGroup = styled.div`
-  ${({ theme }) => css`
-    margin-bottom: 28px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  `}
-`;
-
-const RingLabel = styled.div<{ $ring: TechRing }>`
-  ${({ theme, $ring }) => css`
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
+    padding: 12px 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid ${$active ? theme.colors.green : 'transparent'};
+    color: ${$active ? theme.colors.green : theme.colors.slate};
+    font-family: ${theme.fonts.mono};
+    font-size: ${theme.fontSizes.xs};
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: ${theme.transition};
+    margin-bottom: -1px;
+    white-space: nowrap;
 
-    .ring-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      background: ${
-        $ring === 'Expert'
-          ? `linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.secondary})`
-          : $ring === 'Proficient'
-          ? theme.colors.accent
-          : theme.colors.border
-      };
-      box-shadow: ${
-        $ring === 'Expert' ? `0 0 8px ${theme.colors.accentGlow}` : 'none'
-      };
-    }
-
-    .ring-name {
-      font-family: ${theme.fonts.mono};
-      font-size: ${theme.fontSizes.xs};
-      color: ${
-        $ring === 'Expert'
-          ? theme.colors.accent
-          : $ring === 'Proficient'
-          ? theme.colors.textSecondary
-          : theme.colors.textFaint
-      };
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .ring-line {
-      flex: 1;
-      height: 1px;
-      background: ${theme.colors.border};
-      opacity: 0.5;
+    &:hover {
+      color: ${theme.colors.green};
+      background: ${theme.colors.greenTint};
     }
   `}
 `;
 
-const TechChips = styled.div`
+// Skills grid — clean chip display
+const SkillsGrid = styled(motion.div)`
   ${({ theme }) => css`
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    padding-left: 18px;
+    gap: 10px;
   `}
 `;
 
-const TechChip = styled.button<{ $ring: TechRing }>`
-  ${({ theme, $ring }) => css`
+const SkillChip = styled(motion.button)<{ $hovered: boolean }>`
+  ${({ theme, $hovered }) => css`
     position: relative;
-    padding: 6px 14px;
-    border-radius: 8px;
-    border: 1px solid ${
-      $ring === 'Expert'
-        ? `rgba(127, 90, 240, 0.4)`
-        : $ring === 'Proficient'
-        ? theme.colors.border
-        : `${theme.colors.border}80`
-    };
-    background: ${
-      $ring === 'Expert'
-        ? theme.colors.accentGlow
-        : $ring === 'Proficient'
-        ? theme.colors.bgSurface
-        : 'transparent'
-    };
-    color: ${
-      $ring === 'Expert'
-        ? theme.colors.accentLight
-        : $ring === 'Proficient'
-        ? theme.colors.textSecondary
-        : theme.colors.textFaint
-    };
+    padding: 8px 16px;
+    background: ${$hovered ? theme.colors.greenTint : theme.colors.lightNavy};
+    border: 1px solid ${$hovered ? theme.colors.green : theme.colors.lightestNavy};
+    border-radius: 3px;
+    color: ${$hovered ? theme.colors.green : theme.colors.lightSlate};
     font-family: ${theme.fonts.mono};
-    font-size: ${theme.fontSizes.xs};
-    font-weight: ${$ring === 'Expert' ? '500' : '400'};
-    cursor: pointer;
+    font-size: ${theme.fontSizes.sm};
+    cursor: default;
     transition: ${theme.transition};
     text-align: left;
-
-    &:hover {
-      border-color: ${theme.colors.accent};
-      color: ${theme.colors.accent};
-      background: ${theme.colors.accentGlow};
-      transform: translateY(-1px);
-    }
   `}
 `;
 
-// Tooltip
+// Tooltip below the chip grid
 const Tooltip = styled(motion.div)`
   ${({ theme }) => css`
-    position: fixed;
-    background: ${theme.colors.bgElevated};
-    border: 1px solid ${theme.colors.border};
-    border-radius: ${theme.sizes.borderRadiusSm};
-    padding: 8px 12px;
+    margin-top: 20px;
+    padding: 12px 16px;
+    background: ${theme.colors.lightNavy};
+    border-left: 2px solid ${theme.colors.green};
+    border-radius: ${theme.sizes.borderRadius};
     font-family: ${theme.fonts.mono};
-    font-size: ${theme.fontSizes.xxs};
-    color: ${theme.colors.textSecondary};
-    max-width: 200px;
-    pointer-events: none;
-    z-index: 1000;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-    line-height: 1.5;
+    font-size: ${theme.fontSizes.xs};
+    color: ${theme.colors.lightSlate};
+    min-height: 40px;
+    line-height: 1.6;
+
+    strong {
+      color: ${theme.colors.green};
+      margin-right: 8px;
+    }
   `}
 `;
 
@@ -185,27 +107,15 @@ const Tooltip = styled(motion.div)`
 const TechRadar = (): React.ReactElement => {
   const [ref, isInView] = useInView();
   const prefersReducedMotion = usePrefersReducedMotion();
-  const [activeQuadrant, setActiveQuadrant] = useState<TechQuadrant | 'All'>('All');
-  const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
+  const [activeCategory, setActiveCategory] = useState<TechCategory | 'All'>('All');
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
-  const filtered = techRadarData.filter(
-    (item) => activeQuadrant === 'All' || item.quadrant === activeQuadrant,
-  );
+  const filtered =
+    activeCategory === 'All'
+      ? techRadarData
+      : techRadarData.filter((item) => item.category === activeCategory);
 
-  const handleMouseEnter = (e: React.MouseEvent, description: string) => {
-    if (!description) return;
-    setTooltip({
-      text: description,
-      x: e.clientX + 12,
-      y: e.clientY - 8,
-    });
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (tooltip) {
-      setTooltip((prev) => prev && { ...prev, x: e.clientX + 12, y: e.clientY - 8 });
-    }
-  };
+  const hoveredData = techRadarData.find((item) => item.name === hoveredItem);
 
   return (
     <StyledSection id="skills" ref={ref as React.RefObject<HTMLElement>}>
@@ -215,73 +125,73 @@ const TechRadar = (): React.ReactElement => {
         variants={staggerContainerVariants}
       >
         <motion.div variants={blurInVariants}>
-          <h2 className="numbered-heading">Tech Radar</h2>
+          <h2 className="numbered-heading">Technologies</h2>
         </motion.div>
 
         <motion.div variants={blurInVariants}>
-          <QuadrantFilter>
-            <FilterPill
-              $active={activeQuadrant === 'All'}
-              onClick={() => setActiveQuadrant('All')}
+          <TabList role="tablist">
+            <Tab
+              role="tab"
+              $active={activeCategory === 'All'}
+              onClick={() => setActiveCategory('All')}
+              aria-selected={activeCategory === 'All'}
             >
               All
-            </FilterPill>
-            {quadrants.map((q) => (
-              <FilterPill
-                key={q}
-                $active={activeQuadrant === q}
-                onClick={() => setActiveQuadrant(q)}
+            </Tab>
+            {categories.map((cat) => (
+              <Tab
+                key={cat}
+                role="tab"
+                $active={activeCategory === cat}
+                onClick={() => setActiveCategory(cat)}
+                aria-selected={activeCategory === cat}
               >
-                {q}
-              </FilterPill>
+                {cat}
+              </Tab>
             ))}
-          </QuadrantFilter>
+          </TabList>
         </motion.div>
 
         <motion.div variants={blurInVariants}>
-          {ringOrder.map((ring) => {
-            const items = filtered.filter((item) => item.ring === ring);
-            if (items.length === 0) return null;
+          <AnimatePresence mode="wait">
+            <SkillsGrid
+              key={activeCategory}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              {filtered.map((item) => (
+                <SkillChip
+                  key={item.name}
+                  $hovered={hoveredItem === item.name}
+                  onMouseEnter={() => setHoveredItem(item.name)}
+                  onMouseLeave={() => setHoveredItem(null)}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                >
+                  {item.name}
+                </SkillChip>
+              ))}
+            </SkillsGrid>
+          </AnimatePresence>
 
-            return (
-              <RingGroup key={ring}>
-                <RingLabel $ring={ring}>
-                  <span className="ring-dot" />
-                  <span className="ring-name">{ring}</span>
-                  <span className="ring-line" />
-                </RingLabel>
-
-                <TechChips>
-                  {items.map((item) => (
-                    <TechChip
-                      key={item.name}
-                      $ring={ring}
-                      onMouseEnter={(e) => item.description && handleMouseEnter(e, item.description)}
-                      onMouseMove={handleMouseMove}
-                      onMouseLeave={() => setTooltip(null)}
-                      onClick={() => {}}
-                    >
-                      {item.name}
-                    </TechChip>
-                  ))}
-                </TechChips>
-              </RingGroup>
-            );
-          })}
+          <AnimatePresence>
+            {hoveredData?.description && (
+              <Tooltip
+                key={hoveredData.name}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                <strong>{hoveredData.name}:</strong>
+                {hoveredData.description}
+              </Tooltip>
+            )}
+          </AnimatePresence>
         </motion.div>
       </motion.div>
-
-      {/* Hover tooltip */}
-      {tooltip && (
-        <Tooltip
-          initial={{ opacity: 0, y: 4 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }}
-          style={{ left: tooltip.x, top: tooltip.y }}
-        >
-          {tooltip.text}
-        </Tooltip>
-      )}
     </StyledSection>
   );
 };

@@ -5,12 +5,12 @@ import About from '@/components/sections/About';
 import Experience from '@/components/sections/Experience';
 import Projects from '@/components/sections/Projects';
 import OtherProjects from '@/components/sections/OtherProjects';
+import TechRadar from '@/components/sections/TechRadar';
 import Now from '@/components/sections/Now';
 import Writing from '@/components/sections/Writing';
 import Contact from '@/components/sections/Contact';
 
 // Disable static generation — page uses client-side styled-components
-// that require ThemeProvider context which is set up at runtime
 export const dynamic = 'force-dynamic';
 
 export default function Home(): React.ReactElement {
@@ -21,6 +21,7 @@ export default function Home(): React.ReactElement {
       <Experience />
       <Projects />
       <OtherProjects />
+      <TechRadar />
       <Now />
       <Writing />
       <Contact />

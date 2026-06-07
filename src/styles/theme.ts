@@ -1,63 +1,58 @@
-// Design tokens for Suprateek Yawagal's portfolio
-// Custom palette: charcoal + electric violet + warm amber
+// Design tokens — Brittany Chiang's color palette (kept, adapted for Suprateek's portfolio)
+// Layout, sections, and interactions are original
 
 const colors = {
-  // Backgrounds
-  bgDeep: '#08080b',
-  bgBase: '#0c0c0f',
-  bgSurface: '#16161a',
-  bgElevated: '#1e1e24',
-  bgHover: '#252530',
+  darkNavy: '#020c1b',
+  navy: '#0a192f',
+  lightNavy: '#112240',
+  lightestNavy: '#233554',
+  navyShadow: 'rgba(2, 12, 27, 0.7)',
 
-  // Borders
-  border: '#2a2a35',
-  borderLight: '#3a3a48',
+  slate: '#8892b0',
+  lightSlate: '#a8b2d8',
+  lightestSlate: '#ccd6f6',
+  white: '#e6f1ff',
 
-  // Text
-  textPrimary: '#fffffe',
-  textSecondary: '#94a1b2',
-  textMuted: '#72768a',
-  textFaint: '#4a4d5e',
+  green: '#64ffda',
+  greenTint: 'rgba(100, 255, 218, 0.1)',
 
-  // Accent — Electric Violet
-  accent: '#7f5af0',
-  accentLight: '#9d7ef5',
-  accentGlow: 'rgba(127, 90, 240, 0.15)',
-  accentGlowStrong: 'rgba(127, 90, 240, 0.3)',
+  // Semantic aliases used by new components
+  bgDeep: '#020c1b',
+  bgBase: '#0a192f',
+  bgSurface: '#112240',
+  bgElevated: '#172a45',
+  bgHover: '#1d3557',
+  border: '#233554',
+  borderLight: '#2d4263',
 
-  // Secondary — Warm Amber
-  secondary: '#f5a623',
-  secondaryLight: '#f7b94a',
-  secondaryGlow: 'rgba(245, 166, 35, 0.12)',
+  textPrimary: '#ccd6f6',
+  textSecondary: '#8892b0',
+  textMuted: '#6b7690',
+  textFaint: '#4a5568',
 
-  // Utility
-  success: '#2cb67d',
-  error: '#e53170',
-  white: '#fffffe',
-  shadow: 'rgba(8, 8, 11, 0.8)',
-  shadowLight: 'rgba(8, 8, 11, 0.4)',
+  accent: '#64ffda',
+  accentLight: '#9dffea',
+  accentGlow: 'rgba(100, 255, 218, 0.1)',
+  accentGlowStrong: 'rgba(100, 255, 218, 0.2)',
 
-  // Legacy aliases (used sparingly in transitioned components)
-  green: '#7f5af0',
-  greenTint: 'rgba(127, 90, 240, 0.1)',
-  lightSlate: '#94a1b2',
-  lightestSlate: '#fffffe',
-  slate: '#94a1b2',
-  darkSlate: '#4a4d5e',
-  lightNavy: '#16161a',
-  lightestNavy: '#2a2a35',
-  navy: '#0c0c0f',
-  darkNavy: '#08080b',
-  navyShadow: 'rgba(8, 8, 11, 0.8)',
+  // Kept for secondary use cases — muted so it doesn't clash
+  secondary: '#64ffda',
+  secondaryLight: '#9dffea',
+  secondaryGlow: 'rgba(100, 255, 218, 0.08)',
+
+  success: '#64ffda',
+  error: '#ff6b6b',
+  shadow: 'rgba(2, 12, 27, 0.7)',
+  shadowLight: 'rgba(2, 12, 27, 0.4)',
 } as const;
 
 const fonts = {
-  sans: "'Inter', 'Outfit', -apple-system, system-ui, sans-serif",
-  mono: "'JetBrains Mono', 'Fira Code', 'Fira Mono', monospace",
+  sans: 'Calibre, Inter, "San Francisco", "SF Pro Text", -apple-system, system-ui, sans-serif',
+  mono: '"SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", monospace',
 } as const;
 
 const fontSizes = {
-  xxs: '11px',
+  xxs: '12px',
   xs: '13px',
   sm: '14px',
   md: '16px',
@@ -68,11 +63,11 @@ const fontSizes = {
 } as const;
 
 const sizes = {
-  borderRadius: '10px',
-  borderRadiusSm: '6px',
-  borderRadiusLg: '16px',
-  navHeight: '80px',
-  navScrollHeight: '60px',
+  borderRadius: '4px',
+  borderRadiusSm: '3px',
+  borderRadiusLg: '8px',
+  navHeight: '100px',
+  navScrollHeight: '70px',
   tabHeight: '42px',
   tabWidth: '120px',
   hamburgerWidth: '28px',
@@ -94,15 +89,14 @@ const media = {
   xl: `(max-width: ${breakpoints.xl})`,
 } as const;
 
-// New easing — snappier, spring-like feel
-const easing = 'cubic-bezier(0.16, 1, 0.3, 1)';
-const transition = `all 0.3s ${easing}`;
+const easing = 'cubic-bezier(0.645, 0.045, 0.355, 1)';
+const transition = `all 0.25s ${easing}`;
 
 const hamburgerAnimations = {
   hamBefore: 'top 0.1s ease-in 0.2s, opacity 0.1s ease-in',
   hamBeforeActive: 'top 0.1s ease-out, opacity 0.1s ease-out 0.12s',
-  hamAfter: 'bottom 0.1s ease-in 0.2s, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
-  hamAfterActive: 'bottom 0.1s ease-out, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1) 0.12s',
+  hamAfter: 'bottom 0.1s ease-in 0.2s, transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19)',
+  hamAfterActive: 'bottom 0.1s ease-out, transform 0.22s cubic-bezier(0.215, 0.61, 0.355, 1) 0.12s',
 } as const;
 
 export const theme = {

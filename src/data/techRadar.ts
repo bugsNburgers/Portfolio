@@ -1,43 +1,41 @@
-// Tech Radar data — skills categorized by proficiency ring
-// Rings: Expert → Proficient → Familiar
+// Tech Radar data — technologies I work with
+// Grouped by category, all skills shown are ones I actively use
 
-export type TechRing = 'Expert' | 'Proficient' | 'Familiar';
-export type TechQuadrant = 'Languages' | 'Frameworks' | 'Tools' | 'Platforms';
+export type TechCategory = 'Languages' | 'Frontend' | 'Backend' | 'Tools & Platforms';
 
 export interface TechItem {
   name: string;
-  ring: TechRing;
-  quadrant: TechQuadrant;
+  category: TechCategory;
   description?: string;
 }
 
 export const techRadarData: TechItem[] = [
   // Languages
-  { name: 'TypeScript', ring: 'Expert', quadrant: 'Languages', description: 'My primary language for all new projects' },
-  { name: 'Python', ring: 'Proficient', quadrant: 'Languages', description: 'Scripts, ML experiments, backend services' },
-  { name: 'JavaScript', ring: 'Expert', quadrant: 'Languages', description: 'ES2022+, async patterns, browser APIs' },
-  { name: 'C', ring: 'Familiar', quadrant: 'Languages', description: 'Embedded systems and OS coursework' },
-  { name: 'SQL', ring: 'Proficient', quadrant: 'Languages', description: 'PostgreSQL, complex queries, indexing' },
+  { name: 'TypeScript', category: 'Languages', description: 'Primary language for all new projects' },
+  { name: 'JavaScript', category: 'Languages', description: 'ES2022+, async patterns, browser APIs' },
+  { name: 'Python', category: 'Languages', description: 'Scripts, ML experiments, backend services' },
+  { name: 'SQL', category: 'Languages', description: 'PostgreSQL — complex queries, joins, indexing' },
+  { name: 'C', category: 'Languages', description: 'Embedded systems and OS coursework' },
 
-  // Frameworks
-  { name: 'React', ring: 'Expert', quadrant: 'Frameworks', description: 'Hooks, context, performance patterns' },
-  { name: 'Next.js', ring: 'Expert', quadrant: 'Frameworks', description: 'App router, RSC, SSR/SSG' },
-  { name: 'Node.js', ring: 'Proficient', quadrant: 'Frameworks', description: 'REST APIs, Express, async patterns' },
-  { name: 'Hono', ring: 'Proficient', quadrant: 'Frameworks', description: 'Edge-native API server' },
-  { name: 'Styled Components', ring: 'Expert', quadrant: 'Frameworks', description: 'CSS-in-JS, theming, design systems' },
+  // Frontend
+  { name: 'React', category: 'Frontend', description: 'Hooks, context, performance patterns' },
+  { name: 'Next.js', category: 'Frontend', description: 'App router, RSC, SSR/SSG/ISR' },
+  { name: 'Styled Components', category: 'Frontend', description: 'CSS-in-JS, theming, design systems' },
+  { name: 'Framer Motion', category: 'Frontend', description: 'Animations and layout transitions' },
+  { name: 'Tailwind CSS', category: 'Frontend', description: 'Utility-first rapid UI building' },
 
-  // Tools
-  { name: 'Git / GitHub', ring: 'Expert', quadrant: 'Tools', description: 'Branching, PRs, CI workflows' },
-  { name: 'Docker', ring: 'Proficient', quadrant: 'Tools', description: 'Containerization, compose setups' },
-  { name: 'Figma', ring: 'Familiar', quadrant: 'Tools', description: 'Wireframes, design handoff' },
-  { name: 'Postman', ring: 'Proficient', quadrant: 'Tools', description: 'API testing and documentation' },
+  // Backend
+  { name: 'Node.js', category: 'Backend', description: 'REST APIs, Express, async I/O' },
+  { name: 'Hono', category: 'Backend', description: 'Edge-native lightweight API framework' },
+  { name: 'PostgreSQL', category: 'Backend', description: 'Primary database for production projects' },
+  { name: 'Supabase', category: 'Backend', description: 'Postgres + auth + realtime subscriptions' },
 
-  // Platforms
-  { name: 'Vercel', ring: 'Expert', quadrant: 'Platforms', description: 'Primary deployment platform' },
-  { name: 'Supabase', ring: 'Proficient', quadrant: 'Platforms', description: 'Postgres, auth, realtime' },
-  { name: 'GitHub Actions', ring: 'Proficient', quadrant: 'Platforms', description: 'CI/CD, release automation' },
-  { name: 'Arduino / ESP32', ring: 'Familiar', quadrant: 'Platforms', description: 'IoT projects and sensors' },
+  // Tools & Platforms
+  { name: 'Git / GitHub', category: 'Tools & Platforms', description: 'Branching, PRs, CI workflows' },
+  { name: 'Docker', category: 'Tools & Platforms', description: 'Containerization, compose setups' },
+  { name: 'Vercel', category: 'Tools & Platforms', description: 'Primary deployment and preview platform' },
+  { name: 'GitHub Actions', category: 'Tools & Platforms', description: 'CI/CD, release automation' },
+  { name: 'Arduino / ESP32', category: 'Tools & Platforms', description: 'IoT sensor projects' },
 ];
 
-export const ringOrder: TechRing[] = ['Expert', 'Proficient', 'Familiar'];
-export const quadrants: TechQuadrant[] = ['Languages', 'Frameworks', 'Tools', 'Platforms'];
+export const categories: TechCategory[] = ['Languages', 'Frontend', 'Backend', 'Tools & Platforms'];
