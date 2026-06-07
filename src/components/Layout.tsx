@@ -5,8 +5,8 @@ import styled, { css } from 'styled-components';
 import Loader from '@/components/Loader';
 import Nav from '@/components/Nav';
 import SocialSidebar from '@/components/SocialSidebar';
-import EmailSidebar from '@/components/EmailSidebar';
 import Footer from '@/components/Footer';
+import SpotlightCursor from '@/components/SpotlightCursor';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
 
 // ------------------------------------------------------------------
@@ -18,6 +18,8 @@ const StyledContent = styled.div`
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    position: relative;
+    z-index: 2;
   `}
 `;
 
@@ -43,14 +45,18 @@ const Layout = ({ children }: LayoutProps): React.ReactElement => {
         <Loader finishLoading={handleLoaderFinish} />
       ) : null}
 
+      {/* Cursor spotlight — unique interactive effect */}
+      <SpotlightCursor />
+
       <StyledContent>
         <a className="skip-to-content" href="#content">
           Skip to Content
         </a>
 
         <Nav isHome={!isLoading || prefersReducedMotion} />
+
+        {/* Social FAB — bottom-right floating buttons (replaces sidebars) */}
         <SocialSidebar />
-        <EmailSidebar />
 
         <main id="content">{children}</main>
 

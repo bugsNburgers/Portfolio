@@ -4,7 +4,6 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import IconGitHub from '@/components/IconGitHub';
 import IconLinkedIn from '@/components/IconLinkedIn';
-import IconTwitter from '@/components/IconTwitter';
 import config from '@/data/config';
 
 // ------------------------------------------------------------------
@@ -14,141 +13,130 @@ import config from '@/data/config';
 const StyledFooter = styled.footer`
   ${({ theme }) => css`
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    height: auto;
-    min-height: 70px;
-    padding: 15px;
-    text-align: center;
-    background-color: transparent;
+    align-items: center;
+    gap: 20px;
+    padding: 32px 40px;
+    border-top: 1px solid ${theme.colors.border};
+    margin-top: 40px;
+
+    @media ${theme.media.md} {
+      padding: 24px 20px;
+    }
   `}
 `;
 
-const StyledDivider = styled.hr`
+const FooterTop = styled.div`
   ${({ theme }) => css`
-    width: calc(100% - 160px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
     max-width: 900px;
-    border: none;
-    border-top: 1px solid ${theme.colors.lightestNavy};
-    margin: 0 auto 30px;
-    opacity: 0.5;
+    gap: 24px;
 
-    @media ${theme.media.lg} {
-      width: calc(100% - 120px);
-    }
-
-    @media ${theme.media.md} {
-      width: calc(100% - 40px);
-      margin-bottom: 20px;
+    @media ${theme.media.sm} {
+      flex-direction: column;
+      text-align: center;
     }
   `}
 `;
 
-const StyledNotInReadme = styled.div`
+const FooterBrand = styled.a`
   ${({ theme }) => css`
-    margin-bottom: 20px;
+    font-family: ${theme.fonts.mono};
+    font-size: ${theme.fontSizes.sm};
+    font-weight: 600;
+    color: ${theme.colors.textPrimary};
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    transition: ${theme.transition};
 
-    a.not-in-readme-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: ${theme.colors.green};
-      background-color: transparent;
-      border: 1px solid ${theme.colors.green};
-      border-radius: ${theme.sizes.borderRadius};
-      font-family: ${theme.fonts.mono};
-      font-size: ${theme.fontSizes.sm};
-      line-height: 1;
-      padding: 1.25rem 1.75rem;
-      text-decoration: none;
-      transition: ${theme.transition};
-
-      &:hover,
-      &:focus-visible {
-        background-color: ${theme.colors.greenTint};
-        &:after {
-          content: ' →';
-        }
-      }
-
-      &:after {
-        display: inline !important;
-        content: '';
-      }
+    span {
+      background: linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.secondary});
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    p.subtitle {
-      margin-top: 10px;
-      font-family: ${theme.fonts.mono};
-      font-size: ${theme.fontSizes.xxs};
-      color: ${theme.colors.darkSlate};
-      letter-spacing: 0.05em;
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &:after {
+      display: none !important;
     }
   `}
 `;
 
-const StyledSocialLinks = styled.div`
+const FooterLinks = styled.div`
   ${({ theme }) => css`
-    display: none;
-    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  `}
+`;
 
-    @media ${theme.media.md} {
-      display: block;
+const SocialLink = styled.a`
+  ${({ theme }) => css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid ${theme.colors.border};
+    color: ${theme.colors.textMuted};
+    transition: ${theme.transition};
+
+    &:hover {
+      color: ${theme.colors.accent};
+      border-color: ${theme.colors.accent};
+      background: ${theme.colors.accentGlow};
+      transform: translateY(-2px);
     }
 
-    ul {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0;
-      margin: 0 0 10px;
-      list-style: none;
-      gap: 15px;
+    &:after {
+      display: none !important;
+    }
 
-      a {
-        padding: 10px;
-        color: ${theme.colors.lightSlate};
-        transition: ${theme.transition};
-
-        &:hover,
-        &:focus {
-          color: ${theme.colors.green};
-          transform: translateY(-3px);
-        }
-
-        svg {
-          width: 20px;
-          height: 20px;
-        }
-      }
+    svg {
+      width: 16px;
+      height: 16px;
     }
   `}
 `;
 
-const StyledCredit = styled.div`
+const VibesLink = styled.a`
   ${({ theme }) => css`
-    color: ${theme.colors.lightSlate};
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-family: ${theme.fonts.mono};
     font-size: ${theme.fontSizes.xxs};
-    line-height: 1;
+    color: ${theme.colors.textFaint};
+    text-decoration: none;
+    transition: ${theme.transition};
+    letter-spacing: 0.04em;
 
-    a {
-      padding: 10px;
-      color: ${theme.colors.lightSlate};
-      transition: ${theme.transition};
-
-      &:hover,
-      &:focus {
-        color: ${theme.colors.green};
-      }
+    &:hover {
+      color: ${theme.colors.textSecondary};
     }
 
-    p {
-      margin: 5px 0 0;
-      color: ${theme.colors.darkSlate};
-      font-size: ${theme.fontSizes.xxs};
+    &:after {
+      display: none !important;
     }
+  `}
+`;
+
+const FooterBottom = styled.div`
+  ${({ theme }) => css`
+    font-family: ${theme.fonts.mono};
+    font-size: ${theme.fontSizes.xxs};
+    color: ${theme.colors.textFaint};
+    text-align: center;
+    letter-spacing: 0.02em;
   `}
 `;
 
@@ -159,7 +147,6 @@ const StyledCredit = styled.div`
 const iconMap: Record<string, React.ReactElement> = {
   GitHub: <IconGitHub />,
   LinkedIn: <IconLinkedIn />,
-  Twitter: <IconTwitter />,
 };
 
 // ------------------------------------------------------------------
@@ -168,49 +155,43 @@ const iconMap: Record<string, React.ReactElement> = {
 
 const Footer = (): React.ReactElement => {
   const { socialLinks } = config;
+  const year = new Date().getFullYear();
 
   return (
     <StyledFooter>
-      <StyledDivider />
+      <FooterTop>
+        <FooterBrand href="https://suprateekyawagal.in">
+          suprateek<span>.</span>
+        </FooterBrand>
 
-      <StyledNotInReadme>
-        <a
-          className="not-in-readme-link"
-          href="https://vibes.suprateekyawagal.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Not in the README
-        </a>
-        <p className="subtitle">Music · Anime · Cats — the parts that don&apos;t make it to the CV</p>
-      </StyledNotInReadme>
-
-      <StyledSocialLinks>
-        <ul>
-          {socialLinks.map(({ name, url }) => (
-            <li key={name}>
-              <a
+        <FooterLinks>
+          {socialLinks
+            .filter(({ name }) => iconMap[name])
+            .map(({ name, url }) => (
+              <SocialLink
+                key={name}
                 href={url}
                 aria-label={name}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {iconMap[name] ?? null}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </StyledSocialLinks>
+                {iconMap[name]}
+              </SocialLink>
+            ))}
 
-      <StyledCredit>
-        <a
-          href="https://suprateekyawagal.in"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Designed &amp; Built by Suprateek Yawagal
-        </a>
-      </StyledCredit>
+          <VibesLink
+            href="https://vibes.suprateekyawagal.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            not in the readme ↗
+          </VibesLink>
+        </FooterLinks>
+      </FooterTop>
+
+      <FooterBottom>
+        © {year} Suprateek Yawagal · Designed &amp; built from scratch
+      </FooterBottom>
     </StyledFooter>
   );
 };
