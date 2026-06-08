@@ -25,13 +25,13 @@ const Timeline = styled.div`
     flex-direction: column;
     gap: 4px;
 
-    /* Vertical track */
+    /* Vertical track — starts and ends at dot centers */
     &:before {
       content: '';
       position: absolute;
-      left: 20px;
-      top: 28px;
-      bottom: 28px;
+      left: 26px; /* center of the 48px dot column: 48/2 - 1/2 */
+      top: 26px;  /* center of first dot: padding-top(20) + dot-radius(6) */
+      bottom: 26px;
       width: 1px;
       background: linear-gradient(to bottom, ${theme.colors.accent}, ${theme.colors.secondary}, ${theme.colors.border});
 
@@ -74,6 +74,9 @@ const TimelineDot = styled.div<{ $isActive: boolean }>`
       box-shadow: ${$isActive ? `0 0 12px ${theme.colors.accentGlowStrong}` : 'none'};
       transition: ${theme.transition};
       flex-shrink: 0;
+      /* Ensure line passes through exact centre — dot is 12px, so centre at +6px from top of dot */
+      position: relative;
+      z-index: 1;
     }
   `}
 `;
@@ -83,8 +86,10 @@ const JobCard = styled.button<{ $isActive: boolean }>`
     display: flex;
     flex-direction: column;
     text-align: left;
-    background: ${$isActive ? theme.colors.bgSurface : 'transparent'};
-    border: 1px solid ${$isActive ? theme.colors.border : 'transparent'};
+    /* No background frame — blend in like other elements */
+    background: transparent;
+    border: 1px solid transparent;
+    border-left: 2px solid ${$isActive ? theme.colors.accent : 'transparent'};
     border-radius: ${theme.sizes.borderRadius};
     padding: 16px 20px;
     cursor: pointer;
@@ -93,7 +98,7 @@ const JobCard = styled.button<{ $isActive: boolean }>`
 
     &:hover {
       background: ${theme.colors.bgSurface};
-      border-color: ${theme.colors.border};
+      border-left-color: ${theme.colors.border};
     }
 
     .job-header {

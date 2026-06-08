@@ -24,7 +24,8 @@ const SubLabel = styled.p`
     color: ${theme.colors.lightSlate};
     font-family: ${theme.fonts.mono};
     font-size: ${theme.fontSizes.xs};
-    margin: -24px 0 24px;
+    margin: -40px 0 64px;
+    line-height: 1.8;
   `}
 `;
 
@@ -144,13 +145,13 @@ const SeeAllLink = styled.a`
     text-decoration: none;
     transition: ${theme.transition};
     padding: 8px 0;
+    white-space: nowrap;
 
     &:after {
       display: none !important;
     }
 
     &:hover {
-      gap: 10px;
       color: ${theme.colors.accentLight};
     }
   `}
@@ -204,11 +205,11 @@ const Writing = (): React.ReactElement => {
         </EntryList>
 
         <SeeAllLink
-          href="https://github.com/bugsNburgers"
+          href="https://github.com/pulls?q=is%3Apr+is%3Amerged+-user%3AbugsNburgers+is%3Apublic+author%3AbugsNburgers"
           target="_blank"
           rel="noopener noreferrer"
         >
-          View GitHub profile →
+          View externally merged PRs →
         </SeeAllLink>
       </motion.div>
     </StyledWritingSection>

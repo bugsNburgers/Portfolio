@@ -110,10 +110,10 @@ const ResumeButton = styled.a`
     padding: 8px 16px;
     border-radius: 100px;
     background: linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.accentLight});
-    color: ${theme.colors.white};
+    color: ${theme.colors.navy};
     font-family: ${theme.fonts.mono};
     font-size: ${theme.fontSizes.xs};
-    font-weight: 500;
+    font-weight: 700;
     text-decoration: none;
     transition: ${theme.transition};
     cursor: pointer;
@@ -124,7 +124,7 @@ const ResumeButton = styled.a`
     &:focus-visible {
       transform: translateY(-1px);
       box-shadow: 0 6px 20px ${theme.colors.accentGlowStrong};
-      color: ${theme.colors.white};
+      color: ${theme.colors.navy};
       outline: none;
     }
 
@@ -311,7 +311,7 @@ const Nav = ({ isHome }: NavProps): React.ReactElement => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Resume ↗
+                  Resume
                 </ResumeButton>
               </motion.div>
             </motion.div>
@@ -358,7 +358,7 @@ const Nav = ({ isHome }: NavProps): React.ReactElement => {
               transition={{ delay: config.navLinks.length * 0.06 + 0.05 }}
             >
               <MobileResumeButton href="/resume.pdf" target="_blank" rel="noopener noreferrer">
-                Resume ↗
+                Resume
               </MobileResumeButton>
             </motion.div>
           </MobileMenu>
