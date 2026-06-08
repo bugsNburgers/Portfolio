@@ -63,39 +63,24 @@ const SkillsGrid = styled(motion.div)`
   `}
 `;
 
-const SkillChip = styled(motion.button)<{ $hovered: boolean }>`
-  ${({ theme, $hovered }) => css`
+const SkillChip = styled(motion.button)`
+  ${({ theme }) => css`
     position: relative;
     padding: 8px 16px;
-    background: ${$hovered ? theme.colors.greenTint : theme.colors.lightNavy};
-    border: 1px solid ${$hovered ? theme.colors.green : theme.colors.lightestNavy};
+    background: ${theme.colors.lightNavy};
+    border: 1px solid ${theme.colors.lightestNavy};
     border-radius: 3px;
-    color: ${$hovered ? theme.colors.green : theme.colors.lightSlate};
+    color: ${theme.colors.lightSlate};
     font-family: ${theme.fonts.mono};
     font-size: ${theme.fontSizes.sm};
     cursor: default;
     transition: ${theme.transition};
     text-align: left;
-  `}
-`;
 
-// Tooltip below the chip grid
-const Tooltip = styled(motion.div)`
-  ${({ theme }) => css`
-    margin-top: 20px;
-    padding: 12px 16px;
-    background: ${theme.colors.lightNavy};
-    border-left: 2px solid ${theme.colors.green};
-    border-radius: ${theme.sizes.borderRadius};
-    font-family: ${theme.fonts.mono};
-    font-size: ${theme.fontSizes.xs};
-    color: ${theme.colors.lightSlate};
-    min-height: 40px;
-    line-height: 1.6;
-
-    strong {
+    &:hover {
+      background: ${theme.colors.greenTint};
+      border-color: ${theme.colors.green};
       color: ${theme.colors.green};
-      margin-right: 8px;
     }
   `}
 `;
@@ -108,14 +93,11 @@ const TechRadar = (): React.ReactElement => {
   const [ref, isInView] = useInView();
   const prefersReducedMotion = usePrefersReducedMotion();
   const [activeCategory, setActiveCategory] = useState<TechCategory | 'All'>('All');
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   const filtered =
     activeCategory === 'All'
       ? techRadarData
       : techRadarData.filter((item) => item.category === activeCategory);
-
-  const hoveredData = techRadarData.find((item) => item.name === hoveredItem);
 
   return (
     <StyledSection id="skills" ref={ref as React.RefObject<HTMLElement>}>
@@ -164,9 +146,6 @@ const TechRadar = (): React.ReactElement => {
               {filtered.map((item) => (
                 <SkillChip
                   key={item.name}
-                  $hovered={hoveredItem === item.name}
-                  onMouseEnter={() => setHoveredItem(item.name)}
-                  onMouseLeave={() => setHoveredItem(null)}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                 >
@@ -174,21 +153,6 @@ const TechRadar = (): React.ReactElement => {
                 </SkillChip>
               ))}
             </SkillsGrid>
-          </AnimatePresence>
-
-          <AnimatePresence>
-            {hoveredData?.description && (
-              <Tooltip
-                key={hoveredData.name}
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.15 }}
-              >
-                <strong>{hoveredData.name}:</strong>
-                {hoveredData.description}
-              </Tooltip>
-            )}
           </AnimatePresence>
         </motion.div>
       </motion.div>

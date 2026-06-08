@@ -311,7 +311,10 @@ const Nav = ({ isHome }: NavProps): React.ReactElement => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Resume ↗
+                  Resume
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style={{flexShrink:0}}>
+                    <path d="M1 10L10 1M10 1H3M10 1V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </ResumeButton>
               </motion.div>
             </motion.div>
@@ -358,7 +361,10 @@ const Nav = ({ isHome }: NavProps): React.ReactElement => {
               transition={{ delay: config.navLinks.length * 0.06 + 0.05 }}
             >
               <MobileResumeButton href="/resume.pdf" target="_blank" rel="noopener noreferrer">
-                Resume ↗
+                Resume
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style={{flexShrink:0, marginLeft: '6px'}}>
+                  <path d="M1 10L10 1M10 1H3M10 1V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </MobileResumeButton>
             </motion.div>
           </MobileMenu>

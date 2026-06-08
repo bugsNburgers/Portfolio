@@ -24,7 +24,7 @@ const SubLabel = styled.p`
     color: ${theme.colors.lightSlate};
     font-family: ${theme.fonts.mono};
     font-size: ${theme.fontSizes.xs};
-    margin: -24px 0 24px;
+    margin: -24px 0 40px;
   `}
 `;
 
@@ -204,11 +204,14 @@ const Writing = (): React.ReactElement => {
         </EntryList>
 
         <SeeAllLink
-          href="https://github.com/bugsNburgers"
+          href="https://github.com/pulls?q=is%3Apr+author%3Abugsnturtles+is%3Amerged+-user%3AbugsNburgers+is%3Apublic"
           target="_blank"
           rel="noopener noreferrer"
         >
-          View GitHub profile →
+          View externally merged PRs
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M1 10L10 1M10 1H3M10 1V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </SeeAllLink>
       </motion.div>
     </StyledWritingSection>
