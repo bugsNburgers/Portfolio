@@ -94,11 +94,20 @@ const StyledDescription = styled.div`
 const StyledEmailLink = styled.a`
   ${({ theme }) => css`
     ${mixins.bigButton};
-    margin-top: 40px;
     display: inline-flex;
     align-items: center;
     gap: 8px;
   `}
+`;
+
+
+
+const ButtonRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 40px;
+  flex-wrap: wrap;
 `;
 
 // ------------------------------------------------------------------
@@ -107,7 +116,7 @@ const StyledEmailLink = styled.a`
 
 const Hero = (): React.ReactElement => {
   const prefersReducedMotion = usePrefersReducedMotion();
-  const { greeting, name, tagline, description, ctaPrimary } = heroData;
+  const { greeting, name, tagline, description, ctaPrimary, ctaSecondary } = heroData;
 
   return (
     <StyledHeroSection>
@@ -150,9 +159,16 @@ const Hero = (): React.ReactElement => {
           variants={blurInVariants}
           transition={{ delay: prefersReducedMotion ? 0 : 0.5 }}
         >
-          <StyledEmailLink href={ctaPrimary.url}>
-            {ctaPrimary.text}
-          </StyledEmailLink>
+          <ButtonRow>
+            <StyledEmailLink href={ctaPrimary.url}>
+              {ctaPrimary.text}
+            </StyledEmailLink>
+            {ctaSecondary && (
+              <StyledEmailLink href={ctaSecondary.url}>
+                {ctaSecondary.text}
+              </StyledEmailLink>
+            )}
+          </ButtonRow>
         </motion.div>
       </motion.div>
     </StyledHeroSection>
