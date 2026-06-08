@@ -24,7 +24,8 @@ const SubLabel = styled.p`
     color: ${theme.colors.lightSlate};
     font-family: ${theme.fonts.mono};
     font-size: ${theme.fontSizes.xs};
-    margin: -24px 0 40px;
+    margin: -40px 0 64px;
+    line-height: 1.8;
   `}
 `;
 

@@ -82,9 +82,8 @@ const Contact = (): React.ReactElement => {
         <StyledTitle>Get In Touch</StyledTitle>
 
         <StyledDescription>
-          I&apos;m currently open to new opportunities — whether it&apos;s freelance work,
-          a full-time role, or just a chat. My inbox is always open. I&apos;ll do my best
-          to get back to you!
+          I&apos;m currently open to new opportunities, whether it&apos;s freelance
+          work, a full-time role, or just a chat. My inbox is always open. I&apos;ll do my best to get back to you!
         </StyledDescription>
 
         <StyledCTA href={`mailto:${email}`}>

@@ -5,7 +5,7 @@ const heroData: HeroData = {
   name: 'Suprateek Yawagal.',
   tagline: 'I build things for the internet.',
   description:
-    "I'm a software engineering student at <a href='https://pes.edu' target='_blank' rel='noreferrer'>PES University</a> (4th year) who enjoys building useful tools — from developer analytics dashboards to AI-powered systems. I freelance, contribute to open source, and build things that actually ship.",
+    "I'm a software engineering student at <a href='https://pes.edu' target='_blank' rel='noreferrer'>PES University</a> (4th year) who enjoys building useful tools, from developer analytics dashboards to AI-powered systems. I freelance, contribute to open source, and build things that actually ship.",
   ctaPrimary: {
     text: 'Check out my work!',
     url: '/#projects',
