@@ -12,41 +12,50 @@ import mixins from '@/styles/mixins';
 // Styled components — Brittany-style left-aligned single column
 // ------------------------------------------------------------------
 
+// Nav height is 100px (theme.sizes.navHeight). We use it to push content below
+// the fixed nav so "Hi, my name is" is never hidden behind the bar.
+const NAV_HEIGHT = '100px';
+
 const StyledHeroSection = styled.section`
   ${({ theme }) => css`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    min-height: 100vh;
+    /* Full viewport minus nav so content is truly centred in the visible area */
+    min-height: calc(100vh - ${NAV_HEIGHT});
     max-width: 1000px;
-    padding: 0 !important;
+    /* Override global section padding — use nav height as top offset */
+    padding-top: ${NAV_HEIGHT} !important;
+    padding-bottom: 0 !important;
 
     @media ${theme.media.sm} {
       min-height: auto;
-      padding-top: 80px !important;
+      padding-top: calc(${NAV_HEIGHT} + 20px) !important;
     }
   `}
 `;
 
 const StyledOverline = styled.h1`
   ${({ theme }) => css`
-    margin: 0 0 20px 4px;
-    color: ${theme.colors.green};
+    margin: 0 0 16px 4px;
+    color: ${theme.colors.lightestSlate};
     font-family: ${theme.fonts.mono};
     font-size: clamp(${theme.fontSizes.sm}, 5vw, ${theme.fontSizes.md});
     font-weight: 400;
+    letter-spacing: 0.05em;
 
     @media ${theme.media.sm} {
-      margin: 0 0 20px 2px;
+      margin: 0 0 12px 2px;
     }
   `}
 `;
 
+/* Scale title down so the whole hero fits in one screen */
 const StyledTitle = styled.h2`
   ${({ theme }) => css`
     margin: 0;
-    font-size: clamp(40px, 8vw, 80px);
+    font-size: clamp(36px, 7vw, 70px);
     color: ${theme.colors.lightestSlate};
     line-height: 1.1;
   `}
@@ -54,16 +63,16 @@ const StyledTitle = styled.h2`
 
 const StyledSubtitle = styled.h3`
   ${({ theme }) => css`
-    margin-top: 5px;
+    margin-top: 4px;
     color: ${theme.colors.slate};
-    line-height: 0.9;
-    font-size: clamp(40px, 8vw, 80px);
+    line-height: 0.95;
+    font-size: clamp(36px, 7vw, 70px);
   `}
 `;
 
 const StyledDescription = styled.div`
   ${({ theme }) => css`
-    margin-top: 20px;
+    margin-top: 18px;
     max-width: 540px;
     color: ${theme.colors.slate};
     font-size: ${theme.fontSizes.lg};
@@ -76,20 +85,7 @@ const StyledDescription = styled.div`
       transition: ${theme.transition};
 
       &:after {
-        content: '';
-        display: block;
-        width: 0;
-        height: 1px;
-        position: relative;
-        bottom: 0.37em;
-        background-color: ${theme.colors.green};
-        opacity: 0.5;
-        transition: ${theme.transition};
-      }
-
-      &:hover:after,
-      &:focus-visible:after {
-        width: 100%;
+        display: none !important;
       }
     }
   `}
@@ -98,7 +94,10 @@ const StyledDescription = styled.div`
 const StyledEmailLink = styled.a`
   ${({ theme }) => css`
     ${mixins.bigButton};
-    margin-top: 50px;
+    margin-top: 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   `}
 `;
 
