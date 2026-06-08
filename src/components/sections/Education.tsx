@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
 import useInView from '@/hooks/useInView';
@@ -55,14 +56,6 @@ const SchoolIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="22" height="22" aria-hidden="true">
     <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
     <path d="M6 12v5c3 3 9 3 12 0v-5" />
-  </svg>
-);
-
-const UniversityIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="22" height="22" aria-hidden="true">
-    <rect x="2" y="7" width="20" height="14" rx="2" />
-    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-    <path d="M12 3v4" />
   </svg>
 );
 
@@ -202,6 +195,7 @@ const NodeCircle = styled.div<{ $active?: boolean }>`
     color: ${theme.colors.accent};
     box-shadow: 0 0 16px ${theme.colors.accentGlowStrong};
     flex-shrink: 0;
+    overflow: hidden;
 
     @media ${theme.media.md} {
       width: 36px;
@@ -304,7 +298,7 @@ const Education = (): React.ReactElement => {
           <TimelineWrapper>
             {educationData.map((entry, i) => {
               const isLeft = entry.side === 'left';
-              const IconComponent = entry.icon === 'university' ? UniversityIcon : SchoolIcon;
+              const isUniversity = entry.icon === 'university';
 
               return (
                 <TimelineRow
@@ -331,7 +325,21 @@ const Education = (): React.ReactElement => {
                   {/* CENTER — icon node */}
                   <div className="edu-center">
                     <NodeCircle>
-                      <IconComponent />
+                      {isUniversity ? (
+                        <Image
+                          src="/images/pes-logo.png"
+                          alt="PES University logo"
+                          width={28}
+                          height={28}
+                          style={{
+                            objectFit: 'contain',
+                            filter: 'invert(1) sepia(1) saturate(3) hue-rotate(115deg) brightness(1.1)',
+                            mixBlendMode: 'screen',
+                          }}
+                        />
+                      ) : (
+                        <SchoolIcon />
+                      )}
                     </NodeCircle>
                   </div>
 
