@@ -144,13 +144,13 @@ const SeeAllLink = styled.a`
     text-decoration: none;
     transition: ${theme.transition};
     padding: 8px 0;
+    white-space: nowrap;
 
     &:after {
       display: none !important;
     }
 
     &:hover {
-      gap: 10px;
       color: ${theme.colors.accentLight};
     }
   `}
@@ -204,14 +204,11 @@ const Writing = (): React.ReactElement => {
         </EntryList>
 
         <SeeAllLink
-          href="https://github.com/pulls?q=is%3Apr+author%3Abugsnturtles+is%3Amerged+-user%3AbugsNburgers+is%3Apublic"
+          href="https://github.com/pulls?q=is%3Apr+is%3Amerged+-user%3AbugsNburgers+is%3Apublic+author%3AbugsNburgers"
           target="_blank"
           rel="noopener noreferrer"
         >
-          View externally merged PRs
-          <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M1 10L10 1M10 1H3M10 1V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+          View externally merged PRs →
         </SeeAllLink>
       </motion.div>
     </StyledWritingSection>

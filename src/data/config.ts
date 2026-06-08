@@ -14,6 +14,7 @@ const config: SiteConfig = {
   navLinks: [
     { name: 'About', url: '/#about' },
     { name: 'Experience', url: '/#experience' },
+    { name: 'Education', url: '/#education' },
     { name: 'Projects', url: '/#projects' },
     { name: 'Skills', url: '/#skills' },
     { name: 'Contact', url: '/#contact' },

@@ -81,6 +81,8 @@ const TimelineWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0;
+  /* Extra space below the last entry so the line + arrow have room */
+  padding-bottom: 80px;
 
   /* Vertical center line */
   &:before {
@@ -89,7 +91,7 @@ const TimelineWrapper = styled.div`
     left: 50%;
     transform: translateX(-50%);
     top: 0;
-    bottom: 0;
+    bottom: 16px;
     width: 2px;
     background: linear-gradient(
       to bottom,
@@ -97,6 +99,24 @@ const TimelineWrapper = styled.div`
       ${({ theme }) => theme.colors.secondary},
       ${({ theme }) => theme.colors.border}
     );
+
+    @media ${({ theme }) => theme.media.md} {
+      left: 20px;
+    }
+  }
+
+  /* Downward arrowhead at bottom of the line */
+  &:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 11px solid ${({ theme }) => theme.colors.accent};
 
     @media ${({ theme }) => theme.media.md} {
       left: 20px;
@@ -120,23 +140,25 @@ const TimelineRow = styled(motion.div)<{ $side: 'left' | 'right' }>`
       grid-template-columns: 44px 1fr;
       gap: 0 16px;
       margin-bottom: 36px;
+      align-items: start;
+    }
+
+    /* Desktop side columns */
+    .edu-left,
+    .edu-right {
+      @media ${theme.media.md} {
+        display: none;
+      }
     }
 
     .edu-left {
       padding-right: 32px;
       text-align: right;
-      /* On mobile, hide the left column */
-      @media ${theme.media.md} {
-        display: none;
-      }
     }
 
     .edu-right {
       padding-left: 32px;
       text-align: left;
-      @media ${theme.media.md} {
-        display: none;
-      }
     }
 
     .edu-center {
@@ -147,27 +169,21 @@ const TimelineRow = styled(motion.div)<{ $side: 'left' | 'right' }>`
       z-index: 2;
 
       @media ${theme.media.md} {
+        grid-column: 1;
+        grid-row: 1;
+        padding-top: 6px;
         justify-content: flex-start;
       }
     }
 
-    /* On mobile — always show card on the right */
+    /* Mobile card — hidden on desktop, shown on mobile */
     .edu-card-mobile {
       display: none;
+
       @media ${theme.media.md} {
         display: block;
-      }
-    }
-
-    /* Desktop — show card on correct side, hide on wrong side */
-    .edu-card-desktop-left {
-      @media ${theme.media.md} {
-        display: none;
-      }
-    }
-    .edu-card-desktop-right {
-      @media ${theme.media.md} {
-        display: none;
+        grid-column: 2;
+        grid-row: 1;
       }
     }
   `}
@@ -334,7 +350,7 @@ const Education = (): React.ReactElement => {
                   </div>
 
                   {/* MOBILE — always show card here */}
-                  <div className="edu-card-mobile" style={{ gridColumn: '2', display: 'none' }}>
+                  <div className="edu-card-mobile">
                     <EduCard>
                       <span className="edu-period">{entry.period}</span>
                       <h3 className="edu-institution">{entry.institution}</h3>

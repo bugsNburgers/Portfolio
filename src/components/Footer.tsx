@@ -75,6 +75,7 @@ const VibesLink = styled.a`
     transition: ${theme.transition};
     letter-spacing: 0.04em;
     margin: 8px 0;
+    white-space: nowrap;
 
     &:hover,
     &:focus {

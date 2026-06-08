@@ -110,10 +110,10 @@ const ResumeButton = styled.a`
     padding: 8px 16px;
     border-radius: 100px;
     background: linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.accentLight});
-    color: ${theme.colors.white};
+    color: ${theme.colors.navy};
     font-family: ${theme.fonts.mono};
     font-size: ${theme.fontSizes.xs};
-    font-weight: 500;
+    font-weight: 700;
     text-decoration: none;
     transition: ${theme.transition};
     cursor: pointer;
@@ -124,7 +124,7 @@ const ResumeButton = styled.a`
     &:focus-visible {
       transform: translateY(-1px);
       box-shadow: 0 6px 20px ${theme.colors.accentGlowStrong};
-      color: ${theme.colors.white};
+      color: ${theme.colors.navy};
       outline: none;
     }
 
@@ -312,9 +312,6 @@ const Nav = ({ isHome }: NavProps): React.ReactElement => {
                   rel="noopener noreferrer"
                 >
                   Resume
-                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style={{flexShrink:0}}>
-                    <path d="M1 10L10 1M10 1H3M10 1V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
                 </ResumeButton>
               </motion.div>
             </motion.div>
@@ -362,9 +359,6 @@ const Nav = ({ isHome }: NavProps): React.ReactElement => {
             >
               <MobileResumeButton href="/resume.pdf" target="_blank" rel="noopener noreferrer">
                 Resume
-                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style={{flexShrink:0, marginLeft: '6px'}}>
-                  <path d="M1 10L10 1M10 1H3M10 1V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
               </MobileResumeButton>
             </motion.div>
           </MobileMenu>
