@@ -160,7 +160,7 @@ const Footer = (): React.ReactElement => {
       </SocialLinks>
 
       <VibesLink
-        href="https://vibes.suprateekyawagal.com"
+        href="https://vibes.suprateekyawagal.in"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Not in the README"
