@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     creator: '[REPLACE: @suprateek]',
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: '/favicon.jpg?v=1',
   },
 };
 

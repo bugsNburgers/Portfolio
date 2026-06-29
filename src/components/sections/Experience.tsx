@@ -151,6 +151,14 @@ const CompanyLink = styled.a`
   `}
 `;
 
+const CompanySpan = styled.span`
+  ${({ theme }) => css`
+    color: ${theme.colors.accent};
+    font-size: ${theme.fontSizes.md};
+    font-weight: 500;
+  `}
+`;
+
 const DateLabel = styled.span`
   ${({ theme }) => css`
     font-family: ${theme.fonts.mono};
@@ -238,7 +246,19 @@ const bulletVariants = {
 const Experience = (): React.ReactElement => {
   const [ref, isInView] = useInView();
   const prefersReducedMotion = usePrefersReducedMotion();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [openIndices, setOpenIndices] = useState<Set<number>>(new Set([0]));
+
+  const toggleIndex = (index: number) => {
+    setOpenIndices((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) {
+        next.delete(index);
+      } else {
+        next.add(index);
+      }
+      return next;
+    });
+  };
 
   return (
     <StyledExperienceSection
@@ -257,7 +277,7 @@ const Experience = (): React.ReactElement => {
         <motion.div variants={blurInVariants}>
           <Timeline>
             {experienceData.map(({ company, companyUrl, title, dateRange, bullets }, i) => {
-              const isActive = activeIndex === i;
+              const isActive = openIndices.has(i);
 
               return (
                 <TimelineEntry key={company}>
@@ -265,21 +285,25 @@ const Experience = (): React.ReactElement => {
 
                   <EntryHeader
                     $active={isActive}
-                    onClick={() => setActiveIndex(isActive ? -1 : i)}
+                    onClick={() => toggleIndex(i)}
                     aria-expanded={isActive}
                   >
                     <TitleBlock>
                       <EntryTitle className="entry-title">{title}</EntryTitle>
                       <CompanyLine>
                         <span className="at">@</span>
-                        <CompanyLink
-                          href={companyUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          {company}
-                        </CompanyLink>
+                        {companyUrl ? (
+                          <CompanyLink
+                            href={companyUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {company}
+                          </CompanyLink>
+                        ) : (
+                          <CompanySpan>{company}</CompanySpan>
+                        )}
                       </CompanyLine>
                     </TitleBlock>
 

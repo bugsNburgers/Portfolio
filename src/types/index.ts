@@ -47,7 +47,7 @@ export interface AboutData {
 /** Experience section */
 export interface Job {
   company: string;
-  companyUrl: string;
+  companyUrl?: string;
   title: string;
   dateRange: string;
   bullets: string[];
