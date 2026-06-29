@@ -23,26 +23,26 @@ interface EducationEntry {
 
 const educationData: EducationEntry[] = [
   {
-    period: '2017 – 2020',
-    institution: 'Delhi Public School, Bangalore South',
+    period: '2018 – 2021',
+    institution: 'Sri Sathya Sai High School, Alike',
     degree: 'Grade 8 – 10',
-    detail: 'CBSE · 10th Grade: 94.6%',
+    detail: '10th Grade: 99.4%',
     icon: 'school',
     side: 'left',
   },
   {
-    period: '2020 – 2022',
-    institution: 'PES PU College',
+    period: '2021 – 2023',
+    institution: "Alva's PU College, Moodabidre",
     degree: 'Grade 11 – 12 (Science)',
-    detail: '2nd PUC (12th): 92% · PCM + CS',
+    detail: '2nd PUC (12th): 97% · PCM + CS',
     icon: 'college',
     side: 'right',
   },
   {
-    period: '2022 – Present',
+    period: '2023 – Present',
     institution: 'PES University, Bengaluru',
-    degree: 'B.Tech – Computer Science & Engineering',
-    detail: 'CGPA: 7.8 · 4th Year · Expected 2026',
+    degree: 'B.Tech - Computer Science & Engineering',
+    detail: 'CGPA: 7.99 · 4th Year · Expected 2027',
     icon: 'university',
     side: 'left',
   },
@@ -312,7 +312,6 @@ const Education = (): React.ReactElement => {
                   <div className="edu-left">
                     {isLeft ? (
                       <EduCard $align="right">
-                        <span className="edu-period">{entry.period}</span>
                         <h3 className="edu-institution">{entry.institution}</h3>
                         <p className="edu-degree">{entry.degree}</p>
                         <p className="edu-detail">{entry.detail}</p>
@@ -347,7 +346,6 @@ const Education = (): React.ReactElement => {
                   <div className="edu-right">
                     {!isLeft ? (
                       <EduCard $align="left">
-                        <span className="edu-period">{entry.period}</span>
                         <h3 className="edu-institution">{entry.institution}</h3>
                         <p className="edu-degree">{entry.degree}</p>
                         <p className="edu-detail">{entry.detail}</p>
@@ -359,8 +357,10 @@ const Education = (): React.ReactElement => {
 
                   {/* MOBILE — always show card here */}
                   <div className="edu-card-mobile">
+                    <PeriodLabel style={{ marginBottom: '8px', display: 'block' }}>
+                      {entry.period}
+                    </PeriodLabel>
                     <EduCard>
-                      <span className="edu-period">{entry.period}</span>
                       <h3 className="edu-institution">{entry.institution}</h3>
                       <p className="edu-degree">{entry.degree}</p>
                       <p className="edu-detail">{entry.detail}</p>
