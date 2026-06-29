@@ -3,10 +3,13 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import heroData from '@/data/hero';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
 import { blurInVariants, staggerContainerVariants } from '@/styles/TransitionStyles';
 import mixins from '@/styles/mixins';
+
+const PixelBlast = dynamic(() => import('@/components/PixelBlast'), { ssr: false });
 
 // ------------------------------------------------------------------
 // Styled components — Brittany-style left-aligned single column
@@ -28,6 +31,8 @@ const StyledHeroSection = styled.section`
     /* Override global section padding — use nav height as top offset */
     padding-top: ${NAV_HEIGHT} !important;
     padding-bottom: 0 !important;
+    
+    position: relative;
 
     @media ${theme.media.sm} {
       min-height: auto;
@@ -120,10 +125,40 @@ const Hero = (): React.ReactElement => {
 
   return (
     <StyledHeroSection>
+      <PixelBlast
+        variant="circle"
+        pixelSize={4}
+        color="#186f5e"
+        patternScale={2}
+        patternDensity={1.2}
+        pixelSizeJitter={0.5}
+        enableRipples={true}
+        rippleSpeed={0.3}
+        rippleThickness={0.12}
+        rippleIntensityScale={0.8}
+        liquid={false}
+        liquidStrength={0.04}
+        liquidRadius={1.0}
+        liquidWobbleSpeed={3.0}
+        speed={0.4}
+        edgeFade={0.0}
+        transparent={true}
+        style={{
+          position: 'absolute',
+          top: `-${NAV_HEIGHT}`,
+          bottom: -55,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '100vw',
+          height: 'auto',
+          zIndex: 1,
+        }}
+      />
       <motion.div
         initial={prefersReducedMotion ? 'visible' : 'hidden'}
         animate="visible"
         variants={staggerContainerVariants}
+        style={{ position: 'relative', zIndex: 2, width: '100%' }}
       >
         <motion.div
           variants={blurInVariants}
