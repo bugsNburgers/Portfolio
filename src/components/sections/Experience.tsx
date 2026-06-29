@@ -6,10 +6,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import experienceData from '@/data/experience';
 import useInView from '@/hooks/useInView';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
-import { blurInVariants, staggerContainerVariants, cardVariants } from '@/styles/TransitionStyles';
+import { blurInVariants, staggerContainerVariants } from '@/styles/TransitionStyles';
 
 // ------------------------------------------------------------------
-// Styled components — Vertical timeline / accordion
+// Styled components — clean left-aligned timeline
 // ------------------------------------------------------------------
 
 const StyledExperienceSection = styled.section`
@@ -23,188 +23,213 @@ const Timeline = styled.div`
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0;
+  `}
+`;
 
-    /* Vertical track — starts and ends at dot centers */
+const TimelineEntry = styled.div`
+  ${({ theme }) => css`
+    position: relative;
+    padding-left: 36px;
+
+    /* Vertical line */
     &:before {
       content: '';
       position: absolute;
-      left: 26px; /* center of the 48px dot column: 48/2 - 1/2 */
-      top: 26px;  /* center of first dot: padding-top(20) + dot-radius(6) */
-      bottom: 26px;
+      left: 5px;
+      top: 0;
+      bottom: 0;
       width: 1px;
-      background: linear-gradient(to bottom, ${theme.colors.accent}, ${theme.colors.secondary}, ${theme.colors.border});
+      background: ${theme.colors.border};
+    }
 
-      @media ${theme.media.md} {
-        display: none;
+    /* Hide line above first dot */
+    &:first-child:before {
+      top: 12px;
+    }
+
+    /* Hide line below last entry */
+    &:last-child:before {
+      bottom: calc(100% - 12px);
+    }
+
+    @media ${theme.media.sm} {
+      padding-left: 28px;
+    }
+  `}
+`;
+
+const Dot = styled.div<{ $active: boolean }>`
+  ${({ theme, $active }) => css`
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    border: 2px solid ${$active ? theme.colors.accent : theme.colors.border};
+    background: ${$active ? theme.colors.accent : theme.colors.bgBase};
+    transition: all 0.3s ease;
+    z-index: 1;
+
+    ${$active && css`
+      box-shadow: 0 0 0 4px ${theme.colors.accentGlow};
+    `}
+  `}
+`;
+
+const EntryHeader = styled.button<{ $active: boolean }>`
+  ${({ theme, $active }) => css`
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0 0 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: opacity 0.25s ease;
+
+    &:hover {
+      .entry-title {
+        color: ${theme.colors.accent};
       }
     }
   `}
 `;
 
-const TimelineItem = styled.div<{ $isActive: boolean }>`
-  ${({ theme, $isActive }) => css`
-    display: grid;
-    grid-template-columns: 48px 1fr;
-    gap: 0;
+const TitleBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
 
-    @media ${theme.media.md} {
-      grid-template-columns: 1fr;
-    }
+const EntryTitle = styled.h3`
+  ${({ theme }) => css`
+    font-size: clamp(18px, 2.5vw, 22px);
+    font-weight: 600;
+    color: ${theme.colors.textPrimary};
+    margin: 0;
+    line-height: 1.3;
+    transition: color 0.25s ease;
   `}
 `;
 
-const TimelineDot = styled.div<{ $isActive: boolean }>`
-  ${({ theme, $isActive }) => css`
+const CompanyLine = styled.div`
+  ${({ theme }) => css`
     display: flex;
-    flex-direction: column;
     align-items: center;
-    padding-top: 20px;
-
-    @media ${theme.media.md} {
-      display: none;
-    }
-
-    .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: ${$isActive ? theme.colors.accent : theme.colors.border};
-      border: 2px solid ${$isActive ? theme.colors.accent : theme.colors.bgBase};
-      box-shadow: ${$isActive ? `0 0 12px ${theme.colors.accentGlowStrong}` : 'none'};
-      transition: ${theme.transition};
-      flex-shrink: 0;
-      /* Ensure line passes through exact centre — dot is 12px, so centre at +6px from top of dot */
-      position: relative;
-      z-index: 1;
-    }
-  `}
-`;
-
-const JobCard = styled.button<{ $isActive: boolean }>`
-  ${({ theme, $isActive }) => css`
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    /* No background frame — blend in like other elements */
-    background: transparent;
-    border: 1px solid transparent;
-    border-left: 2px solid ${$isActive ? theme.colors.accent : 'transparent'};
-    border-radius: ${theme.sizes.borderRadius};
-    padding: 16px 20px;
-    cursor: pointer;
-    transition: ${theme.transition};
-    width: 100%;
-
-    &:hover {
-      background: ${theme.colors.bgSurface};
-      border-left-color: ${theme.colors.border};
-    }
-
-    .job-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: ${$isActive ? '4px' : '0'};
-    }
-
-    .job-title-company {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .job-title {
-      font-size: ${theme.fontSizes.lg};
-      font-weight: 600;
-      color: ${theme.colors.textPrimary};
-      letter-spacing: -0.01em;
-    }
+    gap: 6px;
+    margin-top: 2px;
 
     .at {
       color: ${theme.colors.textFaint};
       font-size: ${theme.fontSizes.sm};
     }
+  `}
+`;
 
-    .company {
+const CompanyLink = styled.a`
+  ${({ theme }) => css`
+    color: ${theme.colors.accent};
+    font-size: ${theme.fontSizes.md};
+    font-weight: 500;
+    text-decoration: none;
+    transition: ${theme.transition};
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    /* Override global link :after underline */
+    &:after {
+      display: none !important;
+    }
+  `}
+`;
+
+const DateLabel = styled.span`
+  ${({ theme }) => css`
+    font-family: ${theme.fonts.mono};
+    font-size: ${theme.fontSizes.xxs};
+    color: ${theme.colors.textFaint};
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  `}
+`;
+
+const BulletsList = styled(motion.div)`
+  ${({ theme }) => css`
+    overflow: hidden;
+  `}
+`;
+
+const BulletsInner = styled.ul`
+  ${({ theme }) => css`
+    padding: 0 0 24px;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  `}
+`;
+
+const Bullet = styled(motion.li)`
+  ${({ theme }) => css`
+    position: relative;
+    padding-left: 20px;
+    color: ${theme.colors.textSecondary};
+    font-size: ${theme.fontSizes.md};
+    line-height: 1.7;
+
+    &:before {
+      content: '▹';
+      position: absolute;
+      left: 0;
       color: ${theme.colors.accent};
-      font-size: ${theme.fontSizes.md};
-      font-weight: 500;
+      font-size: ${theme.fontSizes.sm};
+      line-height: 1.7;
+    }
+
+    strong {
+      color: ${theme.colors.textPrimary};
+      font-weight: 600;
+    }
+
+    a {
+      color: ${theme.colors.accent};
       text-decoration: none;
-      transition: ${theme.transition};
 
       &:hover {
         text-decoration: underline;
       }
-
-      &:after {
-        display: none !important;
-      }
-    }
-
-    .date-range {
-      font-family: ${theme.fonts.mono};
-      font-size: ${theme.fontSizes.xxs};
-      color: ${theme.colors.textFaint};
-      white-space: nowrap;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .expand-icon {
-      font-size: ${theme.fontSizes.xs};
-      color: ${theme.colors.accent};
-      transition: transform 0.3s ease;
-      transform: ${$isActive ? 'rotate(180deg)' : 'rotate(0deg)'};
-      flex-shrink: 0;
     }
   `}
 `;
 
-const JobDetails = styled(motion.div)`
-  ${({ theme }) => css`
-    overflow: hidden;
-    padding: 0 20px;
+// ------------------------------------------------------------------
+// Animation variants
+// ------------------------------------------------------------------
 
-    ul {
-      padding: 0;
-      margin: 8px 0 16px;
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    li {
-      position: relative;
-      padding-left: 20px;
-      color: ${theme.colors.textSecondary};
-      font-size: ${theme.fontSizes.md};
-      line-height: 1.65;
-
-      &:before {
-        content: '—';
-        position: absolute;
-        left: 0;
-        color: ${theme.colors.accent};
-        font-size: ${theme.fontSizes.xs};
-        top: 3px;
-      }
-
-      a {
-        color: ${theme.colors.accent};
-        text-decoration: none;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
-  `}
-`;
+const bulletVariants = {
+  hidden: { opacity: 0, y: 8, filter: 'blur(4px)' },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: {
+      duration: 0.35,
+      delay: i * 0.06,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  }),
+};
 
 // ------------------------------------------------------------------
 // Component
@@ -231,60 +256,63 @@ const Experience = (): React.ReactElement => {
 
         <motion.div variants={blurInVariants}>
           <Timeline>
-            {experienceData.map(({ company, companyUrl, title, dateRange, bullets }, i) => (
-              <TimelineItem key={company} $isActive={activeIndex === i}>
-                <TimelineDot $isActive={activeIndex === i}>
-                  <span className="dot" />
-                </TimelineDot>
+            {experienceData.map(({ company, companyUrl, title, dateRange, bullets }, i) => {
+              const isActive = activeIndex === i;
 
-                <div>
-                  <JobCard
-                    $isActive={activeIndex === i}
-                    onClick={() => setActiveIndex(activeIndex === i ? -1 : i)}
-                    aria-expanded={activeIndex === i}
+              return (
+                <TimelineEntry key={company}>
+                  <Dot $active={isActive} />
+
+                  <EntryHeader
+                    $active={isActive}
+                    onClick={() => setActiveIndex(isActive ? -1 : i)}
+                    aria-expanded={isActive}
                   >
-                    <div className="job-header">
-                      <div className="job-title-company">
-                        <span className="job-title">{title}</span>
+                    <TitleBlock>
+                      <EntryTitle className="entry-title">{title}</EntryTitle>
+                      <CompanyLine>
                         <span className="at">@</span>
-                        <a
+                        <CompanyLink
                           href={companyUrl}
-                          className="company"
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
                         >
                           {company}
-                        </a>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <span className="date-range">{dateRange}</span>
-                        <span className="expand-icon">▾</span>
-                      </div>
-                    </div>
-                  </JobCard>
+                        </CompanyLink>
+                      </CompanyLine>
+                    </TitleBlock>
+
+                    <DateLabel>{dateRange}</DateLabel>
+                  </EntryHeader>
 
                   <AnimatePresence initial={false}>
-                    {activeIndex === i && (
-                      <JobDetails
+                    {isActive && (
+                      <BulletsList
                         key="content"
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                       >
-                        <ul>
+                        <BulletsInner>
                           {bullets.map((bullet, j) => (
-                            // eslint-disable-next-line react/no-danger
-                            <li key={j} dangerouslySetInnerHTML={{ __html: bullet }} />
+                            <Bullet
+                              key={j}
+                              custom={j}
+                              variants={bulletVariants}
+                              initial="hidden"
+                              animate="visible"
+                              dangerouslySetInnerHTML={{ __html: bullet }}
+                            />
                           ))}
-                        </ul>
-                      </JobDetails>
+                        </BulletsInner>
+                      </BulletsList>
                     )}
                   </AnimatePresence>
-                </div>
-              </TimelineItem>
-            ))}
+                </TimelineEntry>
+              );
+            })}
           </Timeline>
         </motion.div>
       </motion.div>
