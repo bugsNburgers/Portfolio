@@ -246,7 +246,9 @@ const bulletVariants = {
 const Experience = (): React.ReactElement => {
   const [ref, isInView] = useInView();
   const prefersReducedMotion = usePrefersReducedMotion();
-  const [openIndices, setOpenIndices] = useState<Set<number>>(new Set([0]));
+  const [openIndices, setOpenIndices] = useState<Set<number>>(
+    () => new Set(experienceData.map((_, i) => i))
+  );
 
   const toggleIndex = (index: number) => {
     setOpenIndices((prev) => {
