@@ -246,6 +246,11 @@ const StyledProject = styled.div`
       &:hover,
       &:focus-within {
         box-shadow: 0 20px 30px -15px ${theme.colors.navyShadow};
+        z-index: 10;
+        
+        @media ${theme.media.md} {
+          opacity: 1;
+        }
       }
 
       a {
