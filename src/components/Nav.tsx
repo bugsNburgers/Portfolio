@@ -17,6 +17,7 @@ import { fadeDownVariants, navStaggerVariants } from '@/styles/TransitionStyles'
 const StyledHeader = styled.header<{
   $scrolled: boolean;
   $scrollDirection: 'up' | 'down' | null;
+  $menuOpen: boolean;
 }>`
   display: flex;
   justify-content: space-between;
@@ -25,7 +26,7 @@ const StyledHeader = styled.header<{
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: ${({ $menuOpen }) => ($menuOpen ? 200 : 100)};
   padding: 0 40px;
   width: 100%;
   pointer-events: auto !important;
@@ -224,7 +225,7 @@ const MobileResumeButton = styled.a`
     padding: 12px 32px;
     border-radius: 100px;
     background: linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.accentLight});
-    color: ${theme.colors.white};
+    color: ${theme.colors.navy};
     font-family: ${theme.fonts.mono};
     font-size: ${theme.fontSizes.md};
     font-weight: 500;
@@ -278,6 +279,7 @@ const Nav = ({ isHome }: NavProps): React.ReactElement => {
       <StyledHeader
         $scrolled={scrolled}
         $scrollDirection={menuOpen ? null : scrollDirection}
+        $menuOpen={menuOpen}
       >
         {isMounted && (
           <motion.div
@@ -335,6 +337,11 @@ const Nav = ({ isHome }: NavProps): React.ReactElement => {
       <AnimatePresence>
         {menuOpen && (
           <MobileMenu
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setMenuOpen(false);
+              }
+            }}
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -357,7 +364,12 @@ const Nav = ({ isHome }: NavProps): React.ReactElement => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: config.navLinks.length * 0.06 + 0.05 }}
             >
-              <MobileResumeButton href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+              <MobileResumeButton
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMenuOpen(false)}
+              >
                 Resume
               </MobileResumeButton>
             </motion.div>

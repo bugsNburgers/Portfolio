@@ -130,7 +130,8 @@ const Hero = (): React.ReactElement => {
         pixelSize={4}
         color="#186f5e"
         patternScale={2}
-        patternDensity={1.2}
+        patternDensity={0.7}
+        opacityScale={0.5}
         pixelSizeJitter={0.5}
         enableRipples={true}
         rippleSpeed={0.3}
@@ -152,6 +153,7 @@ const Hero = (): React.ReactElement => {
           width: '100vw',
           height: 'auto',
           zIndex: 1,
+          opacity: 1.0,
         }}
       />
       <motion.div

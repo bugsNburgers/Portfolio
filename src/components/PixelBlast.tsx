@@ -174,6 +174,7 @@ uniform float uRippleSpeed;
 uniform float uRippleThickness;
 uniform float uRippleIntensity;
 uniform float uEdgeFade;
+uniform float uOpacity;
 
 uniform int   uShapeType;
 const int SHAPE_SQUARE   = 0;
@@ -322,7 +323,7 @@ void main(){
     step(0.0031308, color)
   );
 
-  fragColor = vec4(srgbColor, M);
+  fragColor = vec4(srgbColor, M * uOpacity);
 }
 `;
 
@@ -351,6 +352,7 @@ interface PixelBlastProps {
   transparent?: boolean;
   edgeFade?: number;
   noiseAmount?: number;
+  opacityScale?: number;
 }
 
 interface ThreeState {
@@ -376,6 +378,7 @@ interface ThreeState {
     uRippleThickness: THREE.IUniform<number>;
     uRippleIntensity: THREE.IUniform<number>;
     uEdgeFade: THREE.IUniform<number>;
+    uOpacity: THREE.IUniform<number>;
   };
   resizeObserver: ResizeObserver;
   raf: number;
@@ -408,7 +411,8 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
   speed = 0.5,
   transparent = true,
   edgeFade = 0.5,
-  noiseAmount = 0
+  noiseAmount = 0,
+  opacityScale = 1.0
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const visibilityRef = useRef({ visible: true });
@@ -524,7 +528,8 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
         uRippleSpeed: { value: rippleSpeed },
         uRippleThickness: { value: rippleThickness },
         uRippleIntensity: { value: rippleIntensityScale },
-        uEdgeFade: { value: edgeFade }
+        uEdgeFade: { value: edgeFade },
+        uOpacity: { value: opacityScale }
       };
 
       const scene = new THREE.Scene();
@@ -621,33 +626,6 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
         passive: true
       });
 
-      let raf = 0;
-      const animate = () => {
-        if (autoPauseOffscreen && !visibilityRef.current.visible) {
-          raf = requestAnimationFrame(animate);
-          return;
-        }
-        uniforms.uTime.value = timeOffset + clock.getElapsedTime() * speedRef.current;
-        if (liquidEffect) {
-          const uTime = liquidEffect.uniforms.get('uTime');
-          if (uTime) uTime.value = uniforms.uTime.value;
-        }
-        if (touch) touch.update();
-        
-        composer.passes.forEach((p: any) => {
-          const effs = p.effects;
-          if (effs) {
-            effs.forEach((eff: any) => {
-              const u = eff.uniforms?.get('uTime');
-              if (u) u.value = uniforms.uTime.value;
-            });
-          }
-        });
-        composer.render();
-        raf = requestAnimationFrame(animate);
-      };
-      raf = requestAnimationFrame(animate);
-
       threeRef.current = {
         renderer,
         scene,
@@ -657,7 +635,7 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
         clickIx: 0,
         uniforms,
         resizeObserver: ro,
-        raf,
+        raf: 0,
         quad,
         timeOffset,
         composer,
@@ -678,6 +656,7 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
         t.uniforms.uRippleThickness.value = rippleThickness;
         t.uniforms.uRippleSpeed.value = rippleSpeed;
         t.uniforms.uEdgeFade.value = edgeFade;
+        t.uniforms.uOpacity.value = opacityScale;
         if (transparent) t.renderer.setClearAlpha(0);
         else t.renderer.setClearColor(0x000000, 1);
 
@@ -692,12 +671,84 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
     }
     prevConfigRef.current = cfg;
 
+    let raf = 0;
+    let isAnimating = false;
+
+    const startAnimation = () => {
+      if (isAnimating) return;
+      isAnimating = true;
+      const t = threeRef.current;
+      if (t && !t.clock.running) {
+        t.clock.start();
+      }
+      animate();
+    };
+
+    const stopAnimation = () => {
+      if (!isAnimating) return;
+      isAnimating = false;
+      cancelAnimationFrame(raf);
+    };
+
+    const animate = () => {
+      const t = threeRef.current;
+      if (!t || !isAnimating) return;
+
+      t.uniforms.uTime.value = t.timeOffset + t.clock.getElapsedTime() * speedRef.current;
+      if (t.liquidEffect) {
+        const uTime = t.liquidEffect.uniforms.get('uTime');
+        if (uTime) uTime.value = t.uniforms.uTime.value;
+      }
+      if (t.touch) t.touch.update();
+      
+      if (t.composer) {
+        t.composer.passes.forEach((p: any) => {
+          const effs = p.effects;
+          if (effs) {
+            effs.forEach((eff: any) => {
+              const u = eff.uniforms?.get('uTime');
+              if (u) u.value = t.uniforms.uTime.value;
+            });
+          }
+        });
+        t.composer.render();
+      } else {
+        t.renderer.render(t.scene, t.camera);
+      }
+      raf = requestAnimationFrame(animate);
+    };
+
+    let observer: IntersectionObserver | null = null;
+    if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          const visible = entry.isIntersecting;
+          visibilityRef.current.visible = visible;
+          if (autoPauseOffscreen) {
+            if (visible) {
+              startAnimation();
+            } else {
+              stopAnimation();
+            }
+          }
+        },
+        { threshold: 0.0 }
+      );
+      observer.observe(container);
+    } else {
+      startAnimation();
+    }
+
     return () => {
+      if (observer) {
+        observer.disconnect();
+      }
+      stopAnimation();
+
       if (threeRef.current && mustReinit) return;
       if (!threeRef.current) return;
       const t = threeRef.current;
       t.resizeObserver?.disconnect();
-      cancelAnimationFrame(t.raf);
       t.quad?.geometry.dispose();
       t.material.dispose();
       t.composer?.dispose();
@@ -734,7 +785,8 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
     autoPauseOffscreen,
     variant,
     color,
-    speed
+    speed,
+    opacityScale
   ]);
 
   return (
