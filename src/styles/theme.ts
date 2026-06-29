@@ -47,19 +47,28 @@ const colors = {
 } as const;
 
 const fonts = {
-  sans: 'Calibre, Inter, "San Francisco", "SF Pro Text", -apple-system, system-ui, sans-serif',
-  mono: '"SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", monospace',
+  sans: 'var(--md-ref-typeface-plain)',
+  brand: 'var(--md-ref-typeface-brand)',
+  mono: 'var(--md-ref-typeface-mono)',
 } as const;
 
 const fontSizes = {
-  xxs: '12px',
-  xs: '13px',
-  sm: '14px',
-  md: '16px',
-  lg: '18px',
-  xl: '20px',
-  xxl: '22px',
-  heading: '32px',
+  xxs: 'var(--md-sys-typescale-label-small-size)',
+  xs: 'var(--md-sys-typescale-body-small-size)',
+  sm: 'var(--md-sys-typescale-body-medium-size)',
+  md: 'var(--md-sys-typescale-body-large-size)',
+  lg: 'var(--md-sys-typescale-title-large-size)',
+  xl: 'var(--md-sys-typescale-headline-small-size)',
+  xxl: 'var(--md-sys-typescale-headline-medium-size)',
+  heading: 'var(--md-sys-typescale-headline-large-size)',
+} as const;
+
+const spacing = {
+  xs: 'var(--md-sys-spacing-xs)',
+  s: 'var(--md-sys-spacing-s)',
+  m: 'var(--md-sys-spacing-m)',
+  l: 'var(--md-sys-spacing-l)',
+  xl: 'var(--md-sys-spacing-xl)',
 } as const;
 
 const sizes = {
@@ -103,6 +112,7 @@ export const theme = {
   colors,
   fonts,
   fontSizes,
+  spacing,
   sizes,
   breakpoints,
   media,
