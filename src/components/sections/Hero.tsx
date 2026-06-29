@@ -43,15 +43,15 @@ const StyledHeroSection = styled.section`
 
 const StyledOverline = styled.h1`
   ${({ theme }) => css`
-    margin: 0 0 16px 4px;
+    margin: 0 0 ${theme.spacing.l} ${theme.spacing.xs};
     color: ${theme.colors.lightestSlate};
     font-family: ${theme.fonts.mono};
     font-size: clamp(${theme.fontSizes.sm}, 5vw, ${theme.fontSizes.md});
-    font-weight: 400;
+    font-weight: var(--md-ref-typeface-weight-regular);
     letter-spacing: 0.05em;
 
     @media ${theme.media.sm} {
-      margin: 0 0 12px 2px;
+      margin: 0 0 ${theme.spacing.m} ${theme.spacing.xs};
     }
   `}
 `;
@@ -60,28 +60,34 @@ const StyledOverline = styled.h1`
 const StyledTitle = styled.h2`
   ${({ theme }) => css`
     margin: 0;
+    font-family: ${theme.fonts.brand};
     font-size: clamp(36px, 7vw, 70px);
     color: ${theme.colors.lightestSlate};
     line-height: 1.1;
+    font-weight: var(--md-ref-typeface-weight-bold);
   `}
 `;
 
 const StyledSubtitle = styled.h3`
   ${({ theme }) => css`
-    margin-top: 4px;
+    margin-top: ${theme.spacing.xs};
+    font-family: ${theme.fonts.brand};
     color: ${theme.colors.slate};
     line-height: 0.95;
-    font-size: clamp(36px, 7vw, 70px);
+    font-size: clamp(28px, 5.2vw, 70px);
+    font-weight: var(--md-ref-typeface-weight-bold);
   `}
 `;
 
 const StyledDescription = styled.div`
   ${({ theme }) => css`
-    margin-top: 18px;
+    margin-top: ${theme.spacing.xl};
     max-width: 540px;
     color: ${theme.colors.slate};
-    font-size: ${theme.fontSizes.lg};
-    line-height: 1.6;
+    font-family: ${theme.fonts.sans};
+    font-size: var(--md-sys-typescale-body-large-size);
+    line-height: var(--md-sys-typescale-body-large-line-height);
+    letter-spacing: var(--md-sys-typescale-body-large-tracking);
 
     a {
       display: inline-block;
@@ -101,18 +107,20 @@ const StyledEmailLink = styled.a`
     ${mixins.bigButton};
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: ${theme.spacing.s};
   `}
 `;
 
 
 
 const ButtonRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-top: 40px;
-  flex-wrap: wrap;
+  ${({ theme }) => css`
+    display: flex;
+    align-items: center;
+    gap: ${theme.spacing.l};
+    margin-top: calc(${theme.spacing.xl} * 1.5);
+    flex-wrap: wrap;
+  `}
 `;
 
 // ------------------------------------------------------------------

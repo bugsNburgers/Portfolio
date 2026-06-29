@@ -60,7 +60,7 @@ const mixins = {
     border: 1px solid ${({ theme }) => theme.colors.green};
     border-radius: ${({ theme }) => theme.sizes.borderRadius};
     font-size: ${({ theme }) => theme.fontSizes.xs};
-    font-family: ${({ theme }) => theme.fonts.mono};
+    font-family: ${({ theme }) => theme.fonts.brand};
     line-height: 1;
     text-decoration: none;
     padding: 0.75rem 1rem;
@@ -85,7 +85,7 @@ const mixins = {
     border-radius: ${({ theme }) => theme.sizes.borderRadius};
     padding: 1.25rem 1.75rem;
     font-size: ${({ theme }) => theme.fontSizes.sm};
-    font-family: ${({ theme }) => theme.fonts.mono};
+    font-family: ${({ theme }) => theme.fonts.brand};
     line-height: 1;
     text-decoration: none;
     transition: ${({ theme }) => theme.transition};
