@@ -30,7 +30,7 @@ const StyledHeroSection = styled.section`
     max-width: 1000px;
     /* Override global section padding — use nav height as top offset */
     padding-top: ${NAV_HEIGHT} !important;
-    padding-bottom: 0 !important;
+    padding-bottom: 80px !important;
     
     position: relative;
 
@@ -146,7 +146,7 @@ const Hero = (): React.ReactElement => {
         style={{
           position: 'absolute',
           top: `-${NAV_HEIGHT}`,
-          bottom: -55,
+          bottom: 0,
           left: '50%',
           transform: 'translateX(-50%)',
           width: '100vw',

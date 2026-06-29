@@ -51,13 +51,15 @@ const StyledDescription = styled.p`
     color: ${theme.colors.slate};
     font-size: ${theme.fontSizes.lg};
     line-height: 1.6;
-    margin: 0 0 40px;
+    margin: 0 auto 60px;
   `}
 `;
 
 const StyledCTA = styled.a`
   ${({ theme }) => css`
     ${mixins.bigButton};
+    display: inline-block;
+    margin-top: 30px;
   `}
 `;
 
@@ -77,7 +79,7 @@ const Contact = (): React.ReactElement => {
         animate={isInView || prefersReducedMotion ? 'visible' : 'hidden'}
         variants={blurInVariants}
       >
-        <StyledOverline>What&apos;s Next?</StyledOverline>
+        <StyledOverline>Reach out to me!</StyledOverline>
 
         <StyledTitle>Get In Touch</StyledTitle>
 
