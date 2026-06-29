@@ -17,7 +17,7 @@ export const featuredProjects: FeaturedProject[] = [
       'An AI-powered personal stylist that extracts garment-level representations from real images using DeepFashion2 annotations and CLIP embeddings, forming the foundation for outfit compatibility and trend-aware fashion recommendation.',
     techStack: ['Python', 'CLIP', 'DeepFashion2', 'PyTorch', 'Computer Vision'],
     githubUrl: 'https://github.com/bugsNburgers/AI-based-personal-stylist',
-    image: '/images/projects/ai-stylist.png',
+    image: '/images/projects/AIPPS.png',
     imageAlt: 'AI Personal Stylist garment detection interface',
   },
   {

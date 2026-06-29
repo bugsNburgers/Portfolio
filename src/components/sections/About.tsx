@@ -69,6 +69,10 @@ const StyledText = styled.div`
         color: ${theme.colors.textPrimary};
         font-weight: 600;
       }
+
+      .accent {
+        color: ${theme.colors.accent};
+      }
     }
   `}
 `;
@@ -146,38 +150,7 @@ const StyledPhotoWrapper = styled.div`
       }
     }
 
-    /* Subtle floating label */
-    .status-badge {
-      position: absolute;
-      bottom: -12px;
-      right: -12px;
-      background: ${theme.colors.bgSurface};
-      border: 1px solid ${theme.colors.border};
-      border-radius: ${theme.sizes.borderRadius};
-      padding: 6px 12px;
-      font-family: ${theme.fonts.mono};
-      font-size: ${theme.fontSizes.xxs};
-      color: ${theme.colors.success};
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-      z-index: 1;
 
-      &:before {
-        content: '';
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: ${theme.colors.success};
-        animation: pulse 2s ease-in-out infinite;
-      }
-
-      @keyframes pulse {
-        0%, 100% { opacity: 1; transform: scale(1); }
-        50% { opacity: 0.6; transform: scale(0.85); }
-      }
-    }
   `}
 `;
 
@@ -211,11 +184,13 @@ const About = (): React.ReactElement => {
                 <p key={i} dangerouslySetInnerHTML={{ __html: para }} />
               ))}
 
-              <StyledSkillsGrid>
-                {skills.map((skill) => (
-                  <SkillPill key={skill}>{skill}</SkillPill>
-                ))}
-              </StyledSkillsGrid>
+              {skills && skills.length > 0 && (
+                <StyledSkillsGrid>
+                  {skills.map((skill) => (
+                    <SkillPill key={skill}>{skill}</SkillPill>
+                  ))}
+                </StyledSkillsGrid>
+              )}
             </StyledText>
           </motion.div>
 
@@ -223,14 +198,13 @@ const About = (): React.ReactElement => {
             <StyledPhotoWrapper>
               <div className="img-frame">
                 <Image
-                  src="/images/headshot.jpg"
+                  src="/images/Headshot.png?v=1"
                   alt={imageAlt}
                   width={500}
                   height={500}
                   priority={false}
                 />
               </div>
-              <div className="status-badge">Open to opportunities</div>
             </StyledPhotoWrapper>
           </motion.div>
         </StyledInner>

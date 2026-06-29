@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
 import { featuredProjects } from '@/data/projects';
 import IconGitHub from '@/components/IconGitHub';
@@ -70,7 +70,7 @@ const StyledProject = styled.div`
       }
 
       .project-image {
-        grid-column: 1 / 8;
+        grid-column: 1 / 9;
 
         @media ${theme.media.md} {
           grid-column: 1 / -1;
@@ -94,7 +94,7 @@ const StyledProject = styled.div`
       }
 
       .project-image {
-        grid-column: 6 / -1;
+        grid-column: 5 / -1;
 
         @media ${theme.media.md} {
           grid-column: 1 / -1;
@@ -260,6 +260,26 @@ const StyledProject = styled.div`
         &:after {
           display: none !important;
         }
+
+        &:hover,
+        &:focus {
+          background: transparent;
+          outline: 0;
+
+          .img-wrapper {
+            background: transparent;
+
+            &:before {
+              background: transparent;
+              mix-blend-mode: normal;
+            }
+
+            img {
+              filter: none;
+              mix-blend-mode: normal;
+            }
+          }
+        }
       }
 
       .img-wrapper {
@@ -267,6 +287,7 @@ const StyledProject = styled.div`
         border-radius: ${theme.sizes.borderRadius};
         overflow: hidden;
         width: 100%;
+        height: 100%;
 
         &:before {
           content: '';
@@ -280,29 +301,94 @@ const StyledProject = styled.div`
         }
 
         img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
           filter: grayscale(100%) contrast(1) brightness(90%);
           mix-blend-mode: multiply;
           transition: ${theme.transition};
-        }
-
-        &:hover,
-        &:focus {
-          background: transparent;
-
-          &:before {
-            background: transparent;
-            mix-blend-mode: normal;
-          }
-
-          img {
-            filter: none;
-            mix-blend-mode: normal;
-          }
         }
       }
     }
   `}
 `;
+
+const shimmer = keyframes`
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+`;
+
+const ImagePlaceholder = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    ${({ theme }) => theme.colors.lightNavy} 25%,
+    ${({ theme }) => theme.colors.lightestNavy} 37%,
+    ${({ theme }) => theme.colors.lightNavy} 63%
+  );
+  background-size: 200% 100%;
+  animation: ${shimmer} 1.5s infinite linear;
+  border-radius: ${({ theme }) => theme.sizes.borderRadius};
+`;
+
+// Helper component to isolate loading state for each project image
+interface ProjectImageProps {
+  image: string;
+  imageAlt: string;
+  externalUrl?: string;
+  githubUrl?: string;
+  title: string;
+  shouldLoad: boolean;
+}
+
+const ProjectImage = ({
+  image,
+  imageAlt,
+  externalUrl,
+  githubUrl,
+  title,
+  shouldLoad,
+}: ProjectImageProps): React.ReactElement => {
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+  return (
+    <div className="project-image">
+      <a
+        href={externalUrl ?? githubUrl ?? '#'}
+        target="_blank"
+        rel="noopener noreferrer"
+        tabIndex={-1}
+        aria-label={title}
+      >
+        <div className="img-wrapper">
+          {shouldLoad && image && (
+            <Image
+              src={image}
+              alt={imageAlt}
+              width={700}
+              height={438}
+              style={{
+                objectFit: 'cover',
+                opacity: isLoaded ? 1 : 0,
+                transition: 'opacity 0.6s ease-in-out',
+                position: 'relative',
+                zIndex: 2,
+              }}
+              onLoad={() => setIsLoaded(true)}
+            />
+          )}
+          {!isLoaded && <ImagePlaceholder />}
+        </div>
+      </a>
+    </div>
+  );
+};
 
 // ------------------------------------------------------------------
 // Component
@@ -311,6 +397,15 @@ const StyledProject = styled.div`
 const Projects = (): React.ReactElement => {
   const [ref, isInView] = useInView();
   const prefersReducedMotion = usePrefersReducedMotion();
+  const [shouldLoad, setShouldLoad] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Defer loading images until loader finishes (2.2s) and page animations complete
+    const timer = setTimeout(() => {
+      setShouldLoad(true);
+    }, 2800);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <StyledProjectsSection
@@ -378,27 +473,14 @@ const Projects = (): React.ReactElement => {
                   </div>
                 </div>
 
-                <div className="project-image">
-                  <a
-                    href={externalUrl ?? githubUrl ?? '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    tabIndex={-1}
-                    aria-label={title}
-                  >
-                    <div className="img-wrapper">
-                      {image && (
-                        <Image
-                          src={image}
-                          alt={imageAlt}
-                          width={700}
-                          height={438}
-                          style={{ objectFit: 'cover' }}
-                        />
-                      )}
-                    </div>
-                  </a>
-                </div>
+                <ProjectImage
+                  image={image}
+                  imageAlt={imageAlt}
+                  externalUrl={externalUrl}
+                  githubUrl={githubUrl}
+                  title={title}
+                  shouldLoad={shouldLoad}
+                />
               </StyledProject>
             ),
           )}
