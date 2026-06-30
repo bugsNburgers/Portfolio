@@ -149,7 +149,7 @@ const Hero = (): React.ReactElement => {
         liquidStrength={0.04}
         liquidRadius={1.0}
         liquidWobbleSpeed={3.0}
-        speed={0.4}
+        speed={1.2}
         edgeFade={0.0}
         transparent={true}
         style={{
