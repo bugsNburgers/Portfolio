@@ -270,8 +270,8 @@ void main(){
   vec2 cellCoord = cellId * cellPixelSize;
   vec2 uv = cellCoord / uResolution * vec2(aspectRatio, 1.0);
 
-  float base = fbm2(uv, uTime * 0.05);
-  base = base * 0.5 - 0.65;
+  float base = fbm2(uv, uTime * 0.15);
+  base = base * 0.5 - 0.50;
 
   float feed = base + (uDensity - 0.5) * 0.3;
 

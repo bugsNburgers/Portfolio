@@ -11,10 +11,6 @@ import useInView from '@/hooks/useInView';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
 import { blurInVariants, staggerContainerVariants } from '@/styles/TransitionStyles';
 
-// ------------------------------------------------------------------
-// Styled components — Brittany's alternating featured project layout
-// ------------------------------------------------------------------
-
 const StyledProjectsSection = styled.section`
   ${({ theme }) => css`
     max-width: ${theme.sizes.sectionMaxWidth};
