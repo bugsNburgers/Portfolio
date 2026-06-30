@@ -138,7 +138,7 @@ const Hero = (): React.ReactElement => {
         pixelSize={4}
         color="#186f5e"
         patternScale={2}
-        patternDensity={0.7}
+        patternDensity={0.95}
         opacityScale={0.5}
         pixelSizeJitter={0.5}
         enableRipples={true}
