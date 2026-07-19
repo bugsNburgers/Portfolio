@@ -22,18 +22,13 @@ const StyledHeroSection = styled.section`
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    min-height: calc(100vh - ${NAV_HEIGHT});
-    padding-top: ${NAV_HEIGHT};
-    padding-left: ${theme.spacing.xxl};
-    padding-right: ${theme.spacing.xxl};
+    min-height: 100vh;
+    padding: 0;
+    padding-top: 60px; /* Pushes content down slightly on PC to account for navbar */
 
-    @media ${theme.media.md} {
-      padding-left: ${theme.spacing.xl};
-      padding-right: ${theme.spacing.xl};
-    }
     @media ${theme.media.sm} {
-      padding-left: ${theme.spacing.l};
-      padding-right: ${theme.spacing.l};
+      min-height: 85vh; /* Pulls the About section up */
+      padding-bottom: 0; /* Automatically centers within the new height */
     }
   `}
 `;
@@ -43,8 +38,8 @@ const StyledOverline = styled.p`
     font-family: ${theme.fonts.mono};
     color: ${theme.colors.green};
     font-size: var(--md-sys-typescale-label-large-size);
-    margin-bottom: ${theme.spacing.m};
-    margin-top: 0;
+    margin: 0;
+    padding-bottom: 30px; /* Using padding ensures it cannot collapse with the motion.div wrapper */
   `}
 `;
 
@@ -69,6 +64,10 @@ const StyledDescription = styled.div`
     line-height: var(--md-sys-typescale-body-large-line-height);
     letter-spacing: var(--md-sys-typescale-body-large-tracking);
 
+    @media ${theme.media.sm} {
+      margin-top: 30px; /* Standard spacing */
+    }
+
     a {
       display: inline-block;
       position: relative;
@@ -89,10 +88,6 @@ const StyledEmailLink = styled.a`
     align-items: center;
     justify-content: center;
     gap: ${theme.spacing.s};
-
-    @media ${theme.media.sm} {
-      width: 100%;
-    }
   `}
 `;
 
@@ -105,10 +100,8 @@ const ButtonRow = styled.div`
     flex-wrap: wrap;
 
     @media ${theme.media.sm} {
-      flex-direction: column;
-      align-items: stretch;
+      margin-top: 40px; /* Standard spacing */
       gap: ${theme.spacing.m};
-      width: 100%;
     }
   `}
 `;
@@ -118,7 +111,28 @@ const SubtitleRow = styled.div`
   ${({ theme }) => css`
     margin-top: ${theme.spacing.xs};
     width: 100%;
+
+    @media ${theme.media.sm} {
+      margin-top: 15px; /* Standard spacing */
+    }
   `}
+`;
+
+const DesktopTagline = styled.div`
+  display: block;
+  @media ${({ theme }) => theme.media.sm} {
+    display: none;
+  }
+`;
+
+const MobileTagline = styled.div`
+  display: none;
+  @media ${({ theme }) => theme.media.sm} {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px; /* Neat spacing for the two lines */
+  }
 `;
 
 // ------------------------------------------------------------------
@@ -129,8 +143,21 @@ const Hero = (): React.ReactElement => {
   const prefersReducedMotion = usePrefersReducedMotion();
   const { greeting, name, tagline: _tagline, description, ctaPrimary, ctaSecondary } = heroData;
 
-  // Strip HTML tags for canvas text (VideoText renders on canvas, can't parse HTML)
-  const taglinePlain = 'I build things for the internet'; // Removed dot from here
+  const desktopVideoStyle = {
+    fontFamily: 'var(--md-ref-typeface-brand)',
+    fontSize: 'clamp(28px, 5.2vw, 70px)',
+    fontWeight: 900,
+    lineHeight: 1.15,
+    color: '#8892b0',
+  };
+
+  const mobileVideoStyle = {
+    fontFamily: 'var(--md-ref-typeface-brand)',
+    fontSize: 'clamp(32px, 9vw, 45px)', /* Large enough to fill screen, small enough not to wrap */
+    fontWeight: 900,
+    lineHeight: 1.15,
+    color: '#8892b0',
+  };
 
   return (
     <StyledHeroSection>
@@ -150,26 +177,32 @@ const Hero = (): React.ReactElement => {
 
         <motion.div variants={blurInVariants} transition={{ delay: prefersReducedMotion ? 0 : 0.3 }}>
           <SubtitleRow>
-            {/*
-              VideoText renders the tagline text on a canvas.
-              Video frames are painted ONLY inside the letter shapes via source-in compositing.
-              Canvas background is fully transparent — no box, no rectangle, just letters.
-              Drop your video at /public/video.mp4 and it will play inside the text.
-            */}
-            <VideoText
-              src="/video.mp4"
-              suffix="."
-              suffixColor="#64ffda"
-              style={{
-                fontFamily: 'var(--md-ref-typeface-brand)',
-                fontSize: 'clamp(28px, 5.2vw, 70px)',
-                fontWeight: 900,
-                lineHeight: 1.15,
-                color: '#8892b0', /* slate — shown as fallback before video loads */
-              }}
-            >
-              {taglinePlain}
-            </VideoText>
+            {/* Desktop 1-line layout */}
+            <DesktopTagline>
+              <VideoText
+                src="/video.mp4"
+                suffix="."
+                suffixColor="#64ffda"
+                style={desktopVideoStyle}
+              >
+                I build things for the internet
+              </VideoText>
+            </DesktopTagline>
+
+            {/* Mobile 2-line layout */}
+            <MobileTagline>
+              <VideoText src="/video.mp4" style={mobileVideoStyle}>
+                I build things
+              </VideoText>
+              <VideoText
+                src="/video.mp4"
+                suffix="."
+                suffixColor="#64ffda"
+                style={mobileVideoStyle}
+              >
+                for the internet
+              </VideoText>
+            </MobileTagline>
           </SubtitleRow>
         </motion.div>
 

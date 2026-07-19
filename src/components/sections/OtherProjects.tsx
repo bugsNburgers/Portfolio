@@ -29,7 +29,7 @@ const StyledHeading = styled.h2`
 
 const ProjectsGrid = styled(motion.ul)`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 16px;
   padding: 0;
   margin: 0;

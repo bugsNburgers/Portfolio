@@ -27,6 +27,9 @@ const StyledProject = styled.div`
 
     @media ${theme.media.md} {
       margin-bottom: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
 
     &:last-of-type {
@@ -40,12 +43,8 @@ const StyledProject = styled.div`
 
         @media ${theme.media.md} {
           grid-column: 1 / -1;
-          padding: 40px 40px 30px;
+          padding: 0;
           text-align: left;
-        }
-
-        @media ${theme.media.sm} {
-          padding: 25px 25px 20px;
         }
       }
 
@@ -67,10 +66,6 @@ const StyledProject = styled.div`
 
       .project-image {
         grid-column: 1 / 9;
-
-        @media ${theme.media.md} {
-          grid-column: 1 / -1;
-        }
       }
     }
 
@@ -81,20 +76,12 @@ const StyledProject = styled.div`
 
         @media ${theme.media.md} {
           grid-column: 1 / -1;
-          padding: 40px 40px 30px;
-        }
-
-        @media ${theme.media.sm} {
-          padding: 25px 25px 20px;
+          padding: 0;
         }
       }
 
       .project-image {
         grid-column: 5 / -1;
-
-        @media ${theme.media.md} {
-          grid-column: 1 / -1;
-        }
       }
     }
 
@@ -104,7 +91,7 @@ const StyledProject = styled.div`
 
       @media ${theme.media.md} {
         grid-row: auto;
-        background-color: ${theme.colors.lightNavy};
+        background-color: transparent; /* No background color on mobile so image is visible */
         z-index: 5;
         border-radius: ${theme.sizes.borderRadius};
       }
@@ -234,9 +221,8 @@ const StyledProject = styled.div`
       z-index: 1;
 
       @media ${theme.media.md} {
-        grid-row: auto;
         height: 100%;
-        opacity: 0.25;
+        opacity: 1; /* Fully visible on mobile */
       }
 
       &:hover,
@@ -299,6 +285,11 @@ const StyledProject = styled.div`
           z-index: 3;
           border-radius: ${theme.sizes.borderRadius};
           transition: ${theme.transition};
+
+          @media ${theme.media.md} {
+            background: transparent;
+            mix-blend-mode: normal;
+          }
         }
 
         img {
@@ -308,6 +299,11 @@ const StyledProject = styled.div`
           filter: grayscale(100%) contrast(1) brightness(90%);
           mix-blend-mode: multiply;
           transition: ${theme.transition};
+
+          @media ${theme.media.md} {
+            filter: none;
+            mix-blend-mode: normal;
+          }
         }
       }
     }

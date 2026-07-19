@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { gsap } from 'gsap';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
 
 // ------------------------------------------------------------------
@@ -12,6 +11,26 @@ import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
 const fadeOut = keyframes`
   from { opacity: 1; }
   to   { opacity: 0; }
+`;
+
+const blurReveal = keyframes`
+  0% {
+    opacity: 0;
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+`;
+
+const rotateIn = keyframes`
+  0% {
+    transform: rotate(5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 `;
 
 const StyledLoader = styled.div<{ $isMounting: boolean }>`
@@ -33,15 +52,18 @@ const LoaderText = styled.div`
   color: ${({ theme }) => theme.colors.textPrimary};
   letter-spacing: -0.02em;
   text-align: center;
-  /* Prevents rotation from expanding the container bounds awkwardly */
   will-change: transform;
+  transform-origin: 50% 50%;
+  animation: ${rotateIn} 1.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 `;
 
-const CharSpan = styled.span`
+const CharSpan = styled.span<{ $delay: number }>`
   display: inline-block;
   opacity: 0;
   filter: blur(10px);
   will-change: opacity, filter;
+  animation: ${blurReveal} 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+  animation-delay: ${({ $delay }) => $delay}s;
 `;
 
 interface LoaderProps {
@@ -52,7 +74,6 @@ const Loader = ({ finishLoading }: LoaderProps): React.ReactElement | null => {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [isMounting, setIsMounting] = useState(true);
   const [isHidden, setIsHidden] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const text = "suprateek.";
 
@@ -63,6 +84,7 @@ const Loader = ({ finishLoading }: LoaderProps): React.ReactElement | null => {
         <CharSpan 
           className="char" 
           key={index}
+          $delay={index * 0.05} // 50ms stagger per letter
           style={char === '.' ? { color: '#64ffda' } : {}}
         >
           {char}
@@ -78,49 +100,24 @@ const Loader = ({ finishLoading }: LoaderProps): React.ReactElement | null => {
     }
 
     document.body.classList.add('hidden');
-    const el = containerRef.current;
     
-    if (el) {
-      const chars = el.querySelectorAll('.char');
-
-      // 1. Base rotation for the container
-      gsap.fromTo(
-        el,
-        { transformOrigin: '50% 50%', rotate: 5 },
-        { ease: 'power3.out', rotate: 0, duration: 1.5 }
-      );
-
-      // 2. Opacity and Blur stagger for each letter
-      gsap.fromTo(
-        chars,
-        { opacity: 0, filter: 'blur(10px)' },
-        {
-          ease: 'power2.out',
-          opacity: 1,
-          filter: 'blur(0px)',
-          stagger: 0.08,
-          duration: 0.8,
-          onComplete: () => {
-            // Once the reveal finishes, wait 300ms, then trigger the fade out
-            setTimeout(() => {
-              setIsMounting(false);
-              
-              // Unmount entirely after CSS fadeOut completes (500ms)
-              setTimeout(() => {
-                setIsHidden(true);
-                document.body.classList.remove('hidden');
-                finishLoading();
-              }, 500);
-            }, 300);
-          }
-        }
-      );
-    }
+    // Total animation time: 10 chars * 50ms = 500ms + 600ms duration = 1100ms
+    // We wait 1200ms before fading out for a snappy experience
+    const fadeOutTimer = setTimeout(() => {
+      setIsMounting(false);
+      
+      const unmountTimer = setTimeout(() => {
+        setIsHidden(true);
+        document.body.classList.remove('hidden');
+        finishLoading();
+      }, 500); // Wait for fadeOut animation to finish
+      
+      return () => clearTimeout(unmountTimer);
+    }, 1200);
 
     return () => {
       document.body.classList.remove('hidden');
-      gsap.killTweensOf(el);
-      gsap.killTweensOf('.char');
+      clearTimeout(fadeOutTimer);
     };
   }, [prefersReducedMotion, finishLoading]);
 
@@ -128,7 +125,7 @@ const Loader = ({ finishLoading }: LoaderProps): React.ReactElement | null => {
 
   return (
     <StyledLoader $isMounting={isMounting} aria-hidden="true" aria-label="Loading">
-      <LoaderText ref={containerRef}>
+      <LoaderText>
         {splitText}
       </LoaderText>
     </StyledLoader>

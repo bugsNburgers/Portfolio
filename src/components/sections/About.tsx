@@ -117,7 +117,7 @@ const StyledPhotoWrapper = styled.div`
 
     @media ${theme.media.md} {
       max-width: 240px;
-      margin: 0;
+      margin: 0 auto;
     }
 
     /* Gradient border */

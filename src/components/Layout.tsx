@@ -73,10 +73,7 @@ const Layout = ({ children }: LayoutProps): React.ReactElement => {
         transparent={true}
         style={{
           position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100dvh',
+          inset: 0,
           zIndex: 1,
           pointerEvents: 'none',
         }}
