@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
 import IconGitHub from '@/components/IconGitHub';
 import IconLinkedIn from '@/components/IconLinkedIn';
+import IconCrux from '@/components/IconCrux';
 import config from '@/data/config';
 import { slideUpVariants } from '@/styles/TransitionStyles';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
@@ -58,7 +59,7 @@ const SocialLink = styled.a`
       display: none !important;
     }
 
-    svg {
+    svg, .feather {
       width: 18px;
       height: 18px;
     }
@@ -79,6 +80,7 @@ const LineDivider = styled.div`
 // ------------------------------------------------------------------
 
 const iconMap: Record<string, React.ReactElement> = {
+  Crux: <IconCrux />,
   GitHub: <IconGitHub />,
   LinkedIn: <IconLinkedIn />,
 };

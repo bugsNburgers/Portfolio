@@ -3,78 +3,58 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
 import heroData from '@/data/hero';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
 import { blurInVariants, staggerContainerVariants } from '@/styles/TransitionStyles';
 import mixins from '@/styles/mixins';
+import VideoText from '@/components/VideoText';
 
-const PixelBlast = dynamic(() => import('@/components/PixelBlast'), { ssr: false });
-
-// ------------------------------------------------------------------
-// Styled components — Brittany-style left-aligned single column
-// ------------------------------------------------------------------
-
-// Nav height is 100px (theme.sizes.navHeight). We use it to push content below
-// the fixed nav so "Hi, my name is" is never hidden behind the bar.
 const NAV_HEIGHT = '100px';
+
+// ------------------------------------------------------------------
+// Styled components
+// ------------------------------------------------------------------
 
 const StyledHeroSection = styled.section`
   ${({ theme }) => css`
+    background: transparent;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    /* Full viewport minus nav so content is truly centred in the visible area */
     min-height: calc(100vh - ${NAV_HEIGHT});
-    max-width: 1000px;
-    /* Override global section padding — use nav height as top offset */
-    padding-top: ${NAV_HEIGHT} !important;
-    padding-bottom: 80px !important;
-    
-    position: relative;
+    padding-top: ${NAV_HEIGHT};
+    padding-left: ${theme.spacing.xxl};
+    padding-right: ${theme.spacing.xxl};
 
+    @media ${theme.media.md} {
+      padding-left: ${theme.spacing.xl};
+      padding-right: ${theme.spacing.xl};
+    }
     @media ${theme.media.sm} {
-      min-height: auto;
-      padding-top: calc(${NAV_HEIGHT} + 20px) !important;
+      padding-left: ${theme.spacing.l};
+      padding-right: ${theme.spacing.l};
     }
   `}
 `;
 
-const StyledOverline = styled.h1`
+const StyledOverline = styled.p`
   ${({ theme }) => css`
-    margin: 0 0 ${theme.spacing.l} ${theme.spacing.xs};
-    color: ${theme.colors.lightestSlate};
     font-family: ${theme.fonts.mono};
-    font-size: clamp(${theme.fontSizes.sm}, 5vw, ${theme.fontSizes.md});
-    font-weight: var(--md-ref-typeface-weight-regular);
-    letter-spacing: 0.05em;
-
-    @media ${theme.media.sm} {
-      margin: 0 0 ${theme.spacing.m} ${theme.spacing.xs};
-    }
+    color: ${theme.colors.green};
+    font-size: var(--md-sys-typescale-label-large-size);
+    margin-bottom: ${theme.spacing.m};
+    margin-top: 0;
   `}
 `;
 
-/* Scale title down so the whole hero fits in one screen */
-const StyledTitle = styled.h2`
+const StyledTitle = styled.h1`
   ${({ theme }) => css`
     margin: 0;
     font-family: ${theme.fonts.brand};
     font-size: clamp(36px, 7vw, 70px);
     color: ${theme.colors.lightestSlate};
     line-height: 1.1;
-    font-weight: var(--md-ref-typeface-weight-bold);
-  `}
-`;
-
-const StyledSubtitle = styled.h3`
-  ${({ theme }) => css`
-    margin-top: ${theme.spacing.xs};
-    font-family: ${theme.fonts.brand};
-    color: ${theme.colors.slate};
-    line-height: 0.95;
-    font-size: clamp(28px, 5.2vw, 70px);
     font-weight: var(--md-ref-typeface-weight-bold);
   `}
 `;
@@ -107,11 +87,14 @@ const StyledEmailLink = styled.a`
     ${mixins.bigButton};
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: ${theme.spacing.s};
+
+    @media ${theme.media.sm} {
+      width: 100%;
+    }
   `}
 `;
-
-
 
 const ButtonRow = styled.div`
   ${({ theme }) => css`
@@ -120,6 +103,21 @@ const ButtonRow = styled.div`
     gap: ${theme.spacing.l};
     margin-top: calc(${theme.spacing.xl} * 1.5);
     flex-wrap: wrap;
+
+    @media ${theme.media.sm} {
+      flex-direction: column;
+      align-items: stretch;
+      gap: ${theme.spacing.m};
+      width: 100%;
+    }
+  `}
+`;
+
+// Thin wrapper so VideoText sits in the right position in flow
+const SubtitleRow = styled.div`
+  ${({ theme }) => css`
+    margin-top: ${theme.spacing.xs};
+    width: 100%;
   `}
 `;
 
@@ -129,89 +127,60 @@ const ButtonRow = styled.div`
 
 const Hero = (): React.ReactElement => {
   const prefersReducedMotion = usePrefersReducedMotion();
-  const { greeting, name, tagline, description, ctaPrimary, ctaSecondary } = heroData;
+  const { greeting, name, tagline: _tagline, description, ctaPrimary, ctaSecondary } = heroData;
+
+  // Strip HTML tags for canvas text (VideoText renders on canvas, can't parse HTML)
+  const taglinePlain = 'I build things for the internet'; // Removed dot from here
 
   return (
     <StyledHeroSection>
-      <PixelBlast
-        variant="circle"
-        pixelSize={4}
-        color="#186f5e"
-        patternScale={2}
-        patternDensity={0.95}
-        opacityScale={0.5}
-        pixelSizeJitter={0.5}
-        enableRipples={true}
-        rippleSpeed={0.3}
-        rippleThickness={0.12}
-        rippleIntensityScale={0.8}
-        liquid={false}
-        liquidStrength={0.04}
-        liquidRadius={1.0}
-        liquidWobbleSpeed={3.0}
-        speed={1.2}
-        edgeFade={0.0}
-        transparent={true}
-        style={{
-          position: 'absolute',
-          top: `-${NAV_HEIGHT}`,
-          bottom: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '100vw',
-          height: 'auto',
-          zIndex: 1,
-          opacity: 1.0,
-        }}
-      />
       <motion.div
         initial={prefersReducedMotion ? 'visible' : 'hidden'}
         animate="visible"
         variants={staggerContainerVariants}
         style={{ position: 'relative', zIndex: 2, width: '100%' }}
       >
-        <motion.div
-          variants={blurInVariants}
-          transition={{ delay: prefersReducedMotion ? 0 : 0.1 }}
-        >
+        <motion.div variants={blurInVariants} transition={{ delay: prefersReducedMotion ? 0 : 0.1 }}>
           <StyledOverline>{greeting}</StyledOverline>
         </motion.div>
 
-        <motion.div
-          variants={blurInVariants}
-          transition={{ delay: prefersReducedMotion ? 0 : 0.2 }}
-        >
+        <motion.div variants={blurInVariants} transition={{ delay: prefersReducedMotion ? 0 : 0.2 }}>
           <StyledTitle>{name}</StyledTitle>
         </motion.div>
 
-        <motion.div
-          variants={blurInVariants}
-          transition={{ delay: prefersReducedMotion ? 0 : 0.3 }}
-        >
-          <StyledSubtitle>{tagline}</StyledSubtitle>
+        <motion.div variants={blurInVariants} transition={{ delay: prefersReducedMotion ? 0 : 0.3 }}>
+          <SubtitleRow>
+            {/*
+              VideoText renders the tagline text on a canvas.
+              Video frames are painted ONLY inside the letter shapes via source-in compositing.
+              Canvas background is fully transparent — no box, no rectangle, just letters.
+              Drop your video at /public/video.mp4 and it will play inside the text.
+            */}
+            <VideoText
+              src="/video.mp4"
+              suffix="."
+              suffixColor="#64ffda"
+              style={{
+                fontFamily: 'var(--md-ref-typeface-brand)',
+                fontSize: 'clamp(28px, 5.2vw, 70px)',
+                fontWeight: 900,
+                lineHeight: 1.15,
+                color: '#8892b0', /* slate — shown as fallback before video loads */
+              }}
+            >
+              {taglinePlain}
+            </VideoText>
+          </SubtitleRow>
         </motion.div>
 
-        <motion.div
-          variants={blurInVariants}
-          transition={{ delay: prefersReducedMotion ? 0 : 0.4 }}
-        >
-          <StyledDescription
-            dangerouslySetInnerHTML={{ __html: description }}
-          />
+        <motion.div variants={blurInVariants} transition={{ delay: prefersReducedMotion ? 0 : 0.4 }}>
+          <StyledDescription dangerouslySetInnerHTML={{ __html: description }} />
         </motion.div>
 
-        <motion.div
-          variants={blurInVariants}
-          transition={{ delay: prefersReducedMotion ? 0 : 0.5 }}
-        >
+        <motion.div variants={blurInVariants} transition={{ delay: prefersReducedMotion ? 0 : 0.5 }}>
           <ButtonRow>
-            <StyledEmailLink href={ctaPrimary.url}>
-              {ctaPrimary.text}
-            </StyledEmailLink>
             {ctaSecondary && (
-              <StyledEmailLink href={ctaSecondary.url}>
-                {ctaSecondary.text}
-              </StyledEmailLink>
+              <StyledEmailLink href={ctaSecondary.url}>{ctaSecondary.text}</StyledEmailLink>
             )}
           </ButtonRow>
         </motion.div>

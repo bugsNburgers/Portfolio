@@ -3,7 +3,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
-import writingData from '@/data/writing';
+import writingData from '@/data/OSS';
 import useInView from '@/hooks/useInView';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
 import { blurInVariants, staggerContainerVariants, cardVariants } from '@/styles/TransitionStyles';

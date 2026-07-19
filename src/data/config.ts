@@ -8,6 +8,7 @@ const config: SiteConfig = {
   siteUrl: 'https://suprateekyawagal.in',
   email: 'hello@suprateekyawagal.in',
   socialLinks: [
+    { name: 'Crux', url: 'https://cruxstudios.dev' },
     { name: 'GitHub', url: 'https://github.com/bugsNburgers' },
     { name: 'LinkedIn', url: 'https://linkedin.com/in/suprateek-yawagal' },
   ],

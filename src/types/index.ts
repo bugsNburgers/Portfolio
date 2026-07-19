@@ -12,7 +12,7 @@ export interface SiteConfig {
 }
 
 export interface SocialLink {
-  name: 'GitHub' | 'LinkedIn' | 'Twitter' | 'Instagram' | 'CodePen';
+  name: 'GitHub' | 'LinkedIn' | 'Twitter' | 'Instagram' | 'CodePen' | 'Crux';
   url: string;
 }
 

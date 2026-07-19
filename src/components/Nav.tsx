@@ -112,9 +112,9 @@ const ResumeButton = styled.a`
     border-radius: 100px;
     background: linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.accentLight});
     color: ${theme.colors.navy};
-    font-family: ${theme.fonts.mono};
-    font-size: ${theme.fontSizes.xs};
-    font-weight: 700;
+    font-family: ${theme.fonts.sans};
+    font-size: ${theme.fontSizes.sm};
+    font-weight: 500;
     text-decoration: none;
     transition: ${theme.transition};
     cursor: pointer;
@@ -226,7 +226,7 @@ const MobileResumeButton = styled.a`
     border-radius: 100px;
     background: linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.accentLight});
     color: ${theme.colors.navy};
-    font-family: ${theme.fonts.mono};
+    font-family: ${theme.fonts.sans};
     font-size: ${theme.fontSizes.md};
     font-weight: 500;
     text-decoration: none;

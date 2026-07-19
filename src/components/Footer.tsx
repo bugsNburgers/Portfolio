@@ -4,6 +4,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import IconGitHub from '@/components/IconGitHub';
 import IconLinkedIn from '@/components/IconLinkedIn';
+import IconCrux from '@/components/IconCrux';
 import config from '@/data/config';
 
 // ------------------------------------------------------------------
@@ -50,7 +51,7 @@ const SocialLinks = styled.div`
         display: none !important;
       }
 
-      svg {
+      svg, .feather {
         width: 20px;
         height: 20px;
       }
@@ -129,6 +130,7 @@ const Credit = styled.div`
 // ------------------------------------------------------------------
 
 const iconMap: Record<string, React.ReactElement> = {
+  Crux: <IconCrux />,
   GitHub: <IconGitHub />,
   LinkedIn: <IconLinkedIn />,
 };

@@ -1,22 +1,13 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { gsap } from 'gsap';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
 
 // ------------------------------------------------------------------
-// Text-morph loading animation — replaces Brittany's hexagon draw-on
+// Letter-by-letter reveal animation
 // ------------------------------------------------------------------
-
-const progressSlide = keyframes`
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-`;
-
-const fadeInUp = keyframes`
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-`;
 
 const fadeOut = keyframes`
   from { opacity: 1; }
@@ -31,46 +22,27 @@ const StyledLoader = styled.div<{ $isMounting: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 32px;
   background-color: ${({ theme }) => theme.colors.bgDeep};
-  animation: ${({ $isMounting }) => ($isMounting ? 'none' : fadeOut)} 0.4s ease forwards;
+  animation: ${({ $isMounting }) => ($isMounting ? 'none' : fadeOut)} 0.5s ease forwards;
 `;
 
-const LogoText = styled.div`
+const LoaderText = styled.div`
   font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: clamp(20px, 4vw, 28px);
+  font-size: clamp(24px, 5vw, 40px);
   font-weight: 600;
   color: ${({ theme }) => theme.colors.textPrimary};
-  letter-spacing: -0.03em;
-  animation: ${fadeInUp} 0.5s ease forwards;
-
-  span {
-    background: linear-gradient(135deg, ${({ theme }) => theme.colors.accent}, ${({ theme }) => theme.colors.secondary});
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+  letter-spacing: -0.02em;
+  text-align: center;
+  /* Prevents rotation from expanding the container bounds awkwardly */
+  will-change: transform;
 `;
 
-const ProgressBar = styled.div`
-  width: 160px;
-  height: 2px;
-  background: ${({ theme }) => theme.colors.bgElevated};
-  border-radius: 2px;
-  overflow: hidden;
+const CharSpan = styled.span`
+  display: inline-block;
+  opacity: 0;
+  filter: blur(10px);
+  will-change: opacity, filter;
 `;
-
-const ProgressFill = styled.div`
-  height: 100%;
-  background: linear-gradient(90deg, ${({ theme }) => theme.colors.accent}, ${({ theme }) => theme.colors.secondary});
-  border-radius: 2px;
-  transform-origin: left;
-  animation: ${progressSlide} 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-`;
-
-// ------------------------------------------------------------------
-// Component
-// ------------------------------------------------------------------
 
 interface LoaderProps {
   finishLoading: () => void;
@@ -80,6 +52,24 @@ const Loader = ({ finishLoading }: LoaderProps): React.ReactElement | null => {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [isMounting, setIsMounting] = useState(true);
   const [isHidden, setIsHidden] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const text = "suprateek.";
+
+  const splitText = useMemo(() => {
+    return text.split('').map((char, index) => {
+      if (char === ' ') return <span key={index}>&nbsp;</span>;
+      return (
+        <CharSpan 
+          className="char" 
+          key={index}
+          style={char === '.' ? { color: '#64ffda' } : {}}
+        >
+          {char}
+        </CharSpan>
+      );
+    });
+  }, []);
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -88,23 +78,49 @@ const Loader = ({ finishLoading }: LoaderProps): React.ReactElement | null => {
     }
 
     document.body.classList.add('hidden');
+    const el = containerRef.current;
+    
+    if (el) {
+      const chars = el.querySelectorAll('.char');
 
-    // After 1.8s: start fading out
-    const overlayTimer = setTimeout(() => {
-      setIsMounting(false);
-    }, 1800);
+      // 1. Base rotation for the container
+      gsap.fromTo(
+        el,
+        { transformOrigin: '50% 50%', rotate: 5 },
+        { ease: 'power3.out', rotate: 0, duration: 1.5 }
+      );
 
-    // After 2.2s: fully done
-    const doneTimer = setTimeout(() => {
-      setIsHidden(true);
-      document.body.classList.remove('hidden');
-      finishLoading();
-    }, 2200);
+      // 2. Opacity and Blur stagger for each letter
+      gsap.fromTo(
+        chars,
+        { opacity: 0, filter: 'blur(10px)' },
+        {
+          ease: 'power2.out',
+          opacity: 1,
+          filter: 'blur(0px)',
+          stagger: 0.08,
+          duration: 0.8,
+          onComplete: () => {
+            // Once the reveal finishes, wait 300ms, then trigger the fade out
+            setTimeout(() => {
+              setIsMounting(false);
+              
+              // Unmount entirely after CSS fadeOut completes (500ms)
+              setTimeout(() => {
+                setIsHidden(true);
+                document.body.classList.remove('hidden');
+                finishLoading();
+              }, 500);
+            }, 300);
+          }
+        }
+      );
+    }
 
     return () => {
-      clearTimeout(overlayTimer);
-      clearTimeout(doneTimer);
       document.body.classList.remove('hidden');
+      gsap.killTweensOf(el);
+      gsap.killTweensOf('.char');
     };
   }, [prefersReducedMotion, finishLoading]);
 
@@ -112,12 +128,9 @@ const Loader = ({ finishLoading }: LoaderProps): React.ReactElement | null => {
 
   return (
     <StyledLoader $isMounting={isMounting} aria-hidden="true" aria-label="Loading">
-      <LogoText>
-        suprateek<span>.</span>
-      </LogoText>
-      <ProgressBar>
-        <ProgressFill />
-      </ProgressBar>
+      <LoaderText ref={containerRef}>
+        {splitText}
+      </LoaderText>
     </StyledLoader>
   );
 };

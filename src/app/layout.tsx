@@ -51,14 +51,36 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps): React.ReactElement {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Suprateek Yawagal | Portfolio',
+    alternateName: ['Suprateek Yawagal Portfolio'],
+    url: 'https://suprateekyawagal.in',
+  };
+
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.cdnfonts.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap"
+          rel="stylesheet"
+        />
+        <link href="https://fonts.cdnfonts.com/css/google-sans" rel="stylesheet" />
+      </head>
       <body>
         <StyledComponentsRegistry>
           <Providers>
             {children}
           </Providers>
         </StyledComponentsRegistry>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </body>
     </html>
   );

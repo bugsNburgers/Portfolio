@@ -426,6 +426,8 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
     if (!container) return;
     speedRef.current = speed;
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
     const needsReinitKeys = ['antialias', 'liquid', 'noiseAmount'] as const;
     const cfg = { antialias, liquid, noiseAmount };
     let mustReinit = false;
@@ -505,7 +507,9 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
       });
       renderer.domElement.style.width = '100%';
       renderer.domElement.style.height = '100%';
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      
+      const pixelRatio = isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.5);
+      renderer.setPixelRatio(pixelRatio);
       container.appendChild(renderer.domElement);
 
       if (transparent) renderer.setClearAlpha(0);
@@ -575,46 +579,49 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
       };
       const timeOffset = randomFloat() * 1000;
 
-      const composer = new EffectComposer(renderer);
-      const renderPass = new RenderPass(scene, camera);
-      composer.addPass(renderPass);
-
+      let composer: EffectComposer | undefined;
       let touch: TouchTexture | undefined;
       let liquidEffect: Effect | undefined;
 
-      if (liquid) {
-        touch = createTouchTexture();
-        touch.radiusScale = liquidRadius;
-        liquidEffect = createLiquidEffect(touch.texture, {
-          strength: liquidStrength,
-          freq: liquidWobbleSpeed
-        });
-        const effectPass = new EffectPass(camera, liquidEffect);
-        effectPass.renderToScreen = true;
-        renderPass.renderToScreen = false;
-        composer.addPass(effectPass);
-      } else {
-        renderPass.renderToScreen = true;
-      }
+      if (liquid || noiseAmount > 0) {
+        composer = new EffectComposer(renderer);
+        const renderPass = new RenderPass(scene, camera);
+        composer.addPass(renderPass);
 
-      if (noiseAmount > 0) {
-        const noiseEffect = new Effect(
-          'NoiseEffect',
-          `uniform float uTime; uniform float uAmount; float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7))) * 43758.5453);} void mainUv(inout vec2 uv){} void mainImage(const in vec4 inputColor,const in vec2 uv,out vec4 outputColor){ float n=hash(floor(uv*vec2(1920.0,1080.0))+floor(uTime*60.0)); float g=(n-0.5)*uAmount; outputColor=inputColor+vec4(vec3(g),0.0);} `,
-          {
-            uniforms: new Map<string, THREE.Uniform>([
-              ['uTime', new THREE.Uniform(0)],
-              ['uAmount', new THREE.Uniform(noiseAmount)]
-            ])
-          }
-        );
-        const noisePass = new EffectPass(camera, noiseEffect);
-        noisePass.renderToScreen = true;
-        composer.passes.forEach((p: any) => (p.renderToScreen = false));
-        composer.addPass(noisePass);
-      }
+        if (liquid) {
+          touch = createTouchTexture();
+          touch.radiusScale = liquidRadius;
+          liquidEffect = createLiquidEffect(touch.texture, {
+            strength: liquidStrength,
+            freq: liquidWobbleSpeed
+          });
+          const effectPass = new EffectPass(camera, liquidEffect);
+          effectPass.renderToScreen = true;
+          renderPass.renderToScreen = false;
+          composer.addPass(effectPass);
+        } else {
+          renderPass.renderToScreen = true;
+        }
 
-      composer.setSize(renderer.domElement.width, renderer.domElement.height);
+        if (noiseAmount > 0) {
+          const noiseEffect = new Effect(
+            'NoiseEffect',
+            `uniform float uTime; uniform float uAmount; float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7))) * 43758.5453);} void mainUv(inout vec2 uv){} void mainImage(const in vec4 inputColor,const in vec2 uv,out vec4 outputColor){ float n=hash(floor(uv*vec2(1920.0,1080.0))+floor(uTime*60.0)); float g=(n-0.5)*uAmount; outputColor=inputColor+vec4(vec3(g),0.0);} `,
+            {
+              uniforms: new Map<string, THREE.Uniform>([
+                ['uTime', new THREE.Uniform(0)],
+                ['uAmount', new THREE.Uniform(noiseAmount)]
+              ])
+            }
+          );
+          const noisePass = new EffectPass(camera, noiseEffect);
+          noisePass.renderToScreen = true;
+          composer.passes.forEach((p: any) => (p.renderToScreen = false));
+          composer.addPass(noisePass);
+        }
+
+        composer.setSize(renderer.domElement.width, renderer.domElement.height);
+      }
 
       // Listen to events on the parent element so moving the cursor or clicking
       // anywhere in the Hero section triggers ripples/liquids even over text content
@@ -690,9 +697,20 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
       cancelAnimationFrame(raf);
     };
 
-    const animate = () => {
+    const fps = isMobile ? 30 : 60;
+    const fpsInterval = 1000 / fps;
+    let lastFrameTime = performance.now();
+
+    const animate = (time?: number) => {
       const t = threeRef.current;
       if (!t || !isAnimating) return;
+
+      raf = requestAnimationFrame(animate);
+
+      const currentTime = time ?? performance.now();
+      const delta = currentTime - lastFrameTime;
+      if (delta < fpsInterval) return;
+      lastFrameTime = currentTime - (delta % fpsInterval);
 
       t.uniforms.uTime.value = t.timeOffset + t.clock.getElapsedTime() * speedRef.current;
       if (t.liquidEffect) {
@@ -715,7 +733,6 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
       } else {
         t.renderer.render(t.scene, t.camera);
       }
-      raf = requestAnimationFrame(animate);
     };
 
     let observer: IntersectionObserver | null = null;

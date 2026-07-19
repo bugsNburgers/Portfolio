@@ -2,12 +2,15 @@
 
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
+import dynamic from 'next/dynamic';
 import Loader from '@/components/Loader';
 import Nav from '@/components/Nav';
 import SocialSidebar from '@/components/SocialSidebar';
 import Footer from '@/components/Footer';
 import SpotlightCursor from '@/components/SpotlightCursor';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
+
+const PixelBlast = dynamic(() => import('@/components/PixelBlast'), { ssr: false });
 
 // ------------------------------------------------------------------
 // Styled components
@@ -47,6 +50,37 @@ const Layout = ({ children }: LayoutProps): React.ReactElement => {
 
       {/* Cursor spotlight — unique interactive effect */}
       <SpotlightCursor />
+
+      {/* Full-screen interactive pixel burst background */}
+      <PixelBlast
+        variant="circle"
+        pixelSize={4}
+        color="#186f5e"
+        patternScale={2}
+        patternDensity={0.95}
+        opacityScale={0.5}
+        pixelSizeJitter={0.5}
+        enableRipples={true}
+        rippleSpeed={0.3}
+        rippleThickness={0.12}
+        rippleIntensityScale={0.8}
+        liquid={false}
+        liquidStrength={0.04}
+        liquidRadius={1.0}
+        liquidWobbleSpeed={3.0}
+        speed={1.2}
+        edgeFade={0.0}
+        transparent={true}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100dvh',
+          zIndex: 1,
+          pointerEvents: 'none',
+        }}
+      />
 
       <StyledContent>
         <a className="skip-to-content" href="#content">

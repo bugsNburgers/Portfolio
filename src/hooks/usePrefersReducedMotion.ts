@@ -5,8 +5,8 @@ import { useState, useEffect } from 'react';
 const QUERY = '(prefers-reduced-motion: reduce)';
 
 const usePrefersReducedMotion = (): boolean => {
-  // Default to true on server (SSR safe — no animations server-side)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(true);
+  // Default to false on server so initial="hidden" is rendered, preventing hydration flashes
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
     const mediaQueryList = window.matchMedia(QUERY);

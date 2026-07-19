@@ -6,6 +6,7 @@ const nextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
   },
+  transpilePackages: ['three', 'postprocessing'],
 };
 
 module.exports = nextConfig;

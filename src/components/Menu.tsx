@@ -192,7 +192,8 @@ const StyledNav = styled.nav`
     border-radius: ${({ theme }) => theme.sizes.borderRadius};
     padding: 1.25rem 1.75rem;
     font-size: ${({ theme }) => theme.fontSizes.sm};
-    font-family: ${({ theme }) => theme.fonts.mono};
+    font-family: ${({ theme }) => theme.fonts.sans};
+    font-weight: 500;
     line-height: 1;
     text-decoration: none;
     transition: ${({ theme }) => theme.transition};
