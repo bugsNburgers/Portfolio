@@ -149,7 +149,7 @@ const VideoText: React.FC<VideoTextProps> = ({ src, children, style, className, 
       resizeObserver.disconnect();
       video.removeEventListener('playing', handleVideoReady);
     };
-  }, [children, src]);
+  }, [children, src, suffix, suffixColor]);
 
   const isFullyReady = isVideoReady && isFontReady;
 

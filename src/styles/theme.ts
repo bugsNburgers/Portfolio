@@ -69,6 +69,7 @@ const spacing = {
   m: 'var(--md-sys-spacing-m)',
   l: 'var(--md-sys-spacing-l)',
   xl: 'var(--md-sys-spacing-xl)',
+  xxl: 'var(--md-sys-spacing-xxl)',
 } as const;
 
 const sizes = {
