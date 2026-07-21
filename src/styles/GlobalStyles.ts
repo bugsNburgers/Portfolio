@@ -103,11 +103,14 @@ const GlobalStyles = createGlobalStyle`
     min-height: 100vh;
     padding: 0 150px;
 
-    @media ${media.lg} {
+    @media ${media.xl} {
       padding: 0 100px;
     }
+    @media ${media.lg} {
+      padding: 0 70px;
+    }
     @media ${media.md} {
-      padding: 0 50px;
+      padding: 0 40px;
     }
     @media ${media.sm} {
       padding: 0 25px;
@@ -116,11 +119,14 @@ const GlobalStyles = createGlobalStyle`
     &.fillHeight {
       padding: 0 150px;
 
-      @media ${media.lg} {
+      @media ${media.xl} {
         padding: 0 100px;
       }
+      @media ${media.lg} {
+        padding: 0 70px;
+      }
       @media ${media.md} {
-        padding: 0 50px;
+        padding: 0 40px;
       }
       @media ${media.sm} {
         padding: 0 25px;
@@ -174,15 +180,12 @@ const GlobalStyles = createGlobalStyle`
       content: '';
       display: block;
       position: relative;
-      top: -5px;
+      top: -1px;
       width: 300px;
+      max-width: 100%;
       height: 1px;
       margin-left: 20px;
       background-color: ${colors.lightestNavy};
-
-      @media ${media.md} {
-        width: 100%;
-      }
     }
   }
 

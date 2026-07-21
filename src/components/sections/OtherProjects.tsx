@@ -15,7 +15,9 @@ import { blurInVariants, staggerContainerVariants, cardVariants } from '@/styles
 // ------------------------------------------------------------------
 
 const StyledSection = styled.section`
-  max-width: 1000px;
+  ${({ theme }) => `
+    max-width: ${theme.sizes.sectionMaxWidth};
+  `}
 `;
 
 const StyledHeading = styled.h2`

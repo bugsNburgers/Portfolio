@@ -15,7 +15,7 @@ import { blurInVariants, staggerContainerVariants } from '@/styles/TransitionSty
 
 const StyledAboutSection = styled.section`
   ${({ theme }) => css`
-    max-width: 900px;
+    max-width: ${theme.sizes.sectionMaxWidth};
   `}
 `;
 
@@ -23,9 +23,12 @@ const StyledInner = styled.div`
   ${({ theme }) => css`
     display: grid;
     grid-template-columns: 3fr 2fr;
-    gap: 60px;
+    gap: 80px;
     align-items: start;
 
+    @media ${theme.media.lg} {
+      gap: 50px;
+    }
     @media ${theme.media.md} {
       grid-template-columns: 1fr;
       gap: 40px;
@@ -113,8 +116,11 @@ const SkillPill = styled.span`
 const StyledPhotoWrapper = styled.div`
   ${({ theme }) => css`
     position: relative;
-    max-width: 280px;
+    max-width: 320px;
 
+    @media ${theme.media.lg} {
+      max-width: 280px;
+    }
     @media ${theme.media.md} {
       max-width: 240px;
       margin: 0 auto;

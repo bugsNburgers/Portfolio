@@ -59,37 +59,7 @@ const SocialLinks = styled.div`
   `}
 `;
 
-// "not in the readme" — pill button matching the Resume button style
-const VibesLink = styled.a`
-  ${({ theme }) => css`
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 20px;
-    border-radius: 100px;
-    background: linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.accentLight});
-    color: ${theme.colors.navy};
-    font-family: ${theme.fonts.mono};
-    font-size: ${theme.fontSizes.xs};
-    font-weight: 600;
-    text-decoration: none;
-    transition: ${theme.transition};
-    letter-spacing: 0.04em;
-    margin: 8px 0;
-    white-space: nowrap;
 
-    &:hover,
-    &:focus {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px ${theme.colors.accentGlowStrong};
-      color: ${theme.colors.navy};
-    }
-
-    &:after {
-      display: none !important;
-    }
-  `}
-`;
 
 const Credit = styled.div`
   ${({ theme }) => css`
@@ -160,18 +130,6 @@ const Footer = (): React.ReactElement => {
             </a>
           ))}
       </SocialLinks>
-
-      <VibesLink
-        href="https://vibes.suprateekyawagal.in"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Not in the README"
-      >
-        not in the readme
-        <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M1 10L10 1M10 1H3M10 1V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </VibesLink>
 
       <Credit>
         <a

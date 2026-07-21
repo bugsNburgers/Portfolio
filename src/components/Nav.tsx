@@ -111,10 +111,10 @@ const ResumeButton = styled.a`
     padding: 8px 16px;
     border-radius: 100px;
     background: linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.accentLight});
-    color: ${theme.colors.navy};
+    color: ${theme.colors.darkNavy} !important;
     font-family: ${theme.fonts.sans};
     font-size: ${theme.fontSizes.sm};
-    font-weight: 500;
+    font-weight: 600;
     text-decoration: none;
     transition: ${theme.transition};
     cursor: pointer;
@@ -122,10 +122,13 @@ const ResumeButton = styled.a`
     white-space: nowrap;
 
     &:hover,
-    &:focus-visible {
+    &:focus,
+    &:focus-visible,
+    &:active,
+    &:visited {
+      color: ${theme.colors.darkNavy} !important;
       transform: translateY(-1px);
       box-shadow: 0 6px 20px ${theme.colors.accentGlowStrong};
-      color: ${theme.colors.navy};
       outline: none;
     }
 
@@ -225,12 +228,20 @@ const MobileResumeButton = styled.a`
     padding: 12px 32px;
     border-radius: 100px;
     background: linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.accentLight});
-    color: ${theme.colors.navy};
+    color: ${theme.colors.darkNavy} !important;
     font-family: ${theme.fonts.sans};
     font-size: ${theme.fontSizes.md};
-    font-weight: 500;
+    font-weight: 600;
     text-decoration: none;
     transition: ${theme.transition};
+
+    &:hover,
+    &:focus,
+    &:focus-visible,
+    &:active,
+    &:visited {
+      color: ${theme.colors.darkNavy} !important;
+    }
 
     &:after {
       display: none !important;
@@ -309,7 +320,7 @@ const Nav = ({ isHome }: NavProps): React.ReactElement => {
 
               <motion.div variants={fadeDownVariants}>
                 <ResumeButton
-                  href="/resume.pdf"
+                  href="/resume"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -365,7 +376,7 @@ const Nav = ({ isHome }: NavProps): React.ReactElement => {
               transition={{ delay: config.navLinks.length * 0.06 + 0.05 }}
             >
               <MobileResumeButton
-                href="/resume.pdf"
+                href="/resume"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMenuOpen(false)}

@@ -15,7 +15,7 @@ import type { WritingEntry } from '@/types';
 
 const StyledWritingSection = styled.section`
   ${({ theme }) => css`
-    max-width: 750px;
+    max-width: ${theme.sizes.sectionMaxWidth};
   `}
 `;
 

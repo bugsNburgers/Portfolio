@@ -3,6 +3,15 @@ import { WritingEntry } from '@/types';
 // Repurposed as OSS Contributions section
 const writingData: WritingEntry[] = [
   {
+    title: 'style(dashboard): update GPA and Credit Totals card designs',
+    url: 'https://github.com/Longhorn-Developers/Degree-Audit-Plus/pull/194',
+    date: 'July 21, 2026',
+    readTime: 'Merged',
+    excerpt:
+      'Fixed UI styling for the GPA and Credit Hour cards on the Degree-Audit-Plus dashboard to accurately reflect the Figma designs. Adjusted border radiuses and layout spacing to ensure visual consistency.',
+    tags: ['React', 'CSS', 'UI/UX', 'Frontend'],
+  },
+  {
     title: 'feat(media): support numeric sizes shorthand',
     url: 'https://github.com/once-ui-system/core/pull/72',
     date: 'April 23, 2026',

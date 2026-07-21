@@ -15,7 +15,7 @@ import type { NowCard } from '@/types';
 
 const StyledNowSection = styled.section`
   ${({ theme }) => css`
-    max-width: 900px;
+    max-width: ${theme.sizes.sectionMaxWidth};
   `}
 `;
 

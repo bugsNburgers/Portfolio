@@ -14,7 +14,7 @@ import { blurInVariants, staggerContainerVariants } from '@/styles/TransitionSty
 
 const StyledExperienceSection = styled.section`
   ${({ theme }) => css`
-    max-width: 800px;
+    max-width: ${theme.sizes.sectionMaxWidth};
   `}
 `;
 

@@ -186,7 +186,7 @@ const StyledNav = styled.nav`
   }
 
   .resume-button {
-    color: ${({ theme }) => theme.colors.green};
+    color: ${({ theme }) => theme.colors.green} !important;
     background-color: transparent;
     border: 1px solid ${({ theme }) => theme.colors.green};
     border-radius: ${({ theme }) => theme.sizes.borderRadius};
@@ -200,8 +200,11 @@ const StyledNav = styled.nav`
     margin-top: 10px;
 
     &:hover,
-    &:focus-visible {
+    &:focus,
+    &:focus-visible,
+    &:active {
       background-color: ${({ theme }) => theme.colors.greenTint};
+      color: ${({ theme }) => theme.colors.green} !important;
       outline: none;
     }
   }
@@ -254,7 +257,7 @@ const Menu = ({ menuOpen, toggleMenu }: MenuProps): React.ReactElement => {
 
             <a
               className="resume-button"
-              href="/resume.pdf"
+              href="/resume"
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleLinkClick}

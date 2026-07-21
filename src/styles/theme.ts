@@ -82,7 +82,7 @@ const sizes = {
   tabWidth: '120px',
   hamburgerWidth: '28px',
   maxWidth: '1600px',
-  sectionMaxWidth: '1000px',
+  sectionMaxWidth: '1100px',
 } as const;
 
 const breakpoints = {
@@ -97,6 +97,7 @@ const media = {
   md: `(max-width: ${breakpoints.md})`,
   lg: `(max-width: ${breakpoints.lg})`,
   xl: `(max-width: ${breakpoints.xl})`,
+  xlUp: `(min-width: ${breakpoints.xl})`,
 } as const;
 
 const easing = 'cubic-bezier(0.645, 0.045, 0.355, 1)';
