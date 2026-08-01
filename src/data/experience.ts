@@ -23,7 +23,7 @@ const experienceData: Job[] = [
       'Co-developed <strong>HonorLog</strong>, a public student-achievement directory featuring <strong>fuzzy search (Fuse.js)</strong>, tournament and medal history, role-based administration, audit logging, and JSON/XLSX bulk import.',
       'Led an <strong>8-member tournament operations team</strong> across two CISCE karate championships, coordinating live tournament scheduling, category assignments, score updates, and prize administration for <strong>400+ participants</strong> at each event.',
     ],
-  }
+  },
 ];
 
 export default experienceData;
