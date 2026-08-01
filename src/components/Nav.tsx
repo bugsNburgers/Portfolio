@@ -320,7 +320,7 @@ const Nav = ({ isHome }: NavProps): React.ReactElement => {
 
               <motion.div variants={fadeDownVariants}>
                 <ResumeButton
-                  href="/resume"
+                  href="/Resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -376,7 +376,7 @@ const Nav = ({ isHome }: NavProps): React.ReactElement => {
               transition={{ delay: config.navLinks.length * 0.06 + 0.05 }}
             >
               <MobileResumeButton
-                href="/resume"
+                href="/Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMenuOpen(false)}

@@ -257,7 +257,7 @@ const Menu = ({ menuOpen, toggleMenu }: MenuProps): React.ReactElement => {
 
             <a
               className="resume-button"
-              href="/resume"
+              href="/Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleLinkClick}
