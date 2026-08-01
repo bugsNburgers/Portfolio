@@ -10,11 +10,11 @@ const otherProjects: OtherProject[] = [
     externalUrl: 'https://honorlog.shorinkai.in',
   },
   {
-    title: 'Category Manager',
+    title: 'RingFlow',
     description:
-      'A bracket seeding and category management tool built for Shorinkai India sports events. Handles hierarchical content organization, group allocation, and bias-free draw systems for multi-discipline competitions.',
-    techStack: ['TypeScript', 'React', 'Node.js'],
-    githubUrl: 'https://github.com/ull0sm/symmetrical-spoon',
+      'A live tournament management system built for Shorinkai India. Balances ring workloads, tracks match progress, and delivers real-time updates to athletes, coaches, and spectators.',
+    techStack: ['Next.js', 'TypeScript', 'Supabase', 'Supabase Realtime'],
+    githubUrl: 'https://github.com/ull0sm/RingFlow',
   },
   {
     title: 'FTP Application with GUI',
