@@ -4,8 +4,8 @@ export const featuredProjects: FeaturedProject[] = [
   {
     title: 'GitVital',
     description:
-      'Is your repo healthy? GitVital transforms raw GitHub data into a living dashboard with risk flags and gamified dev badges. Features include health scoring, bus factor analysis, AI-powered recommendations, and global developer leaderboards.',
-    techStack: ['Next.js', 'TypeScript', 'GitHub API', 'AI/ML', 'PostgreSQL'],
+      'A composite repo-health scoring engine ingesting GitHub REST/GraphQL data, weighting commit velocity, issue resolution time, and contributor churn into a single score. Features a bus-factor risk model analyzing commit-distribution concentration and Redis caching with Next.js App Router.',
+    techStack: ['Next.js', 'TypeScript', 'GitHub API', 'Redis'],
     githubUrl: 'https://github.com/bugsNburgers/GitVital',
     externalUrl: 'https://gitvital.com',
     image: '/images/projects/gitvital.png',

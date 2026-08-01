@@ -3,27 +3,27 @@ import { Job } from '@/types';
 const experienceData: Job[] = [
   {
     company: 'Karnataka State Lawn Tennis Association',
-    title: 'Freelance Software Developer', // Feel free to adjust the title if needed
+    title: 'Freelance Software Developer',
     dateRange: 'June 2026 – Present',
     bullets: [
-      "Developed and delivered the <strong>Minimum Viable Product (MVP)</strong>, successfully securing project approval and selection directly from the club's <strong>Vice President</strong>.",
-      "Collaborated with an external startup on the <strong>UI/UX design</strong> while taking full ownership of the <strong>end-to-end software development</strong>.",
-      "Engineered a streamlined, jargon-free platform focused on <strong>ultimate simplicity</strong>, scaling to support an anticipated <strong>2,000+ users</strong>.",
-      "Currently managing the ongoing development lifecycle and analyzing current progress to define <strong>future technical requirements</strong>."
+      "Developed and delivered the <strong>MVP</strong>, securing project approval and selection directly from the club's <strong>Vice President</strong>.",
+      "Collaborated with an external UI/UX team while owning <strong>end-to-end development</strong> of a jargon-free platform architected to scale to <strong>2,000+ active users</strong>.",
+      "Own the ongoing development lifecycle, defining future technical requirements based on progress analysis and user feedback.",
     ],
   },
   {
     company: 'Shorinkai India',
     companyUrl: 'https://entrydesk.shorinkai.in',
     title: 'Software Developer Intern',
-    dateRange: 'Dec 2025 to May 2026',
+    dateRange: 'Dec 2025 – May 2026',
     bullets: [
-      'Built and deployed <strong>EntryDesk</strong>, a full-stack TypeScript event management dashboard with separate organizer and coach portals for karate competition entries. It is actively used at live tournaments.',
-      'Built <strong>HonorLog</strong>, a public real-time student achievement leaderboard for the dojo, tracking ranks, belts, and milestone achievements with live updates.',
-      'Built a <strong>Category Management</strong> tool to handle hierarchical bracket seeding and group allocation for multi-discipline sports events, replacing a manual spreadsheet workflow.',
-      'Led a team of 7 to successfully deploy the software ecosystem live at a major event at <strong>Christ ICSE Bangalore (Kengeri)</strong>, seamlessly managing <strong>400+ participants</strong> while ensuring <strong>100% system uptime</strong>.',
+      'Co-developed <strong>EntryDesk</strong>, a full-stack TypeScript event management platform with organizer and coach portals, contributing to its design, development, deployment, and maintenance for live karate tournaments.',
+      'Analyzed, debugged, and resolved live production issues during tournament operations, maintaining <strong>100% system uptime</strong> across deployments.',
+      'Co-developed <strong>RingFlow</strong> (Next.js, TypeScript, Supabase), a live tournament management system that balanced ring workloads, tracked match progress, and delivered real-time updates to athletes, coaches, and spectators via <strong>Supabase Realtime</strong>.',
+      'Co-developed <strong>HonorLog</strong>, a public student-achievement directory featuring <strong>fuzzy search (Fuse.js)</strong>, tournament and medal history, role-based administration, audit logging, and JSON/XLSX bulk import.',
+      'Led an <strong>8-member tournament operations team</strong> across two CISCE karate championships, coordinating live tournament scheduling, category assignments, score updates, and prize administration for <strong>400+ participants</strong> at each event.',
     ],
-  },
+  }
 ];
 
 export default experienceData;
