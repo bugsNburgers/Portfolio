@@ -11,40 +11,25 @@ const StyledMainContainer = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   min-height: 100vh;
-  padding: 100px 40px;
+  padding: 80px 24px 40px;
   background-color: ${colors.navy};
   text-align: center;
 
   @media ${media.md} {
-    padding: 80px 20px;
+    padding: 60px 16px 30px;
   }
 `;
 
-const StyledBadge = styled.span`
-  color: ${colors.green};
-  font-family: ${fonts.mono};
-  font-size: ${fontSizes.md};
+const HeaderBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 960px;
   margin-bottom: 20px;
-  letter-spacing: 0.05em;
-`;
-
-const StyledSubtitle = styled.h1`
-  font-size: clamp(32px, 5vw, 54px);
-  font-weight: 700;
-  color: ${colors.lightestSlate};
-  margin: 0 0 20px;
-  line-height: 1.2;
-`;
-
-const StyledParagraph = styled.p`
-  color: ${colors.slate};
-  font-family: ${fonts.sans};
-  font-size: ${fontSizes.lg};
-  max-width: 500px;
-  line-height: 1.6;
-  margin-bottom: 40px;
+  gap: 16px;
+  flex-wrap: wrap;
 `;
 
 const StyledHomeButton = styled(Link)`
@@ -52,19 +37,14 @@ const StyledHomeButton = styled(Link)`
   background-color: transparent;
   border: 1px solid ${colors.green};
   border-radius: ${sizes.borderRadius};
-  padding: 1.25rem 1.75rem;
+  padding: 0.65rem 1.25rem;
   font-size: ${fontSizes.sm};
   font-family: ${fonts.mono};
-  line-height: 1;
   text-decoration: none;
-  margin-top: 48px;
-  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.25s ease;
 
-  &:hover,
-  &:focus-visible {
+  &:hover {
     background-color: ${colors.greenTint};
-    outline: none;
-    color: ${colors.green};
   }
 
   &:after {
@@ -72,15 +52,67 @@ const StyledHomeButton = styled(Link)`
   }
 `;
 
+const DownloadButton = styled.a`
+  color: ${colors.darkNavy} !important;
+  background: linear-gradient(135deg, ${colors.green}, #64ffda);
+  border-radius: ${sizes.borderRadius};
+  padding: 0.65rem 1.25rem;
+  font-size: ${fontSizes.sm};
+  font-family: ${fonts.sans};
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
+  }
+
+  &:after {
+    display: none !important;
+  }
+`;
+
+const PDFViewerContainer = styled.div`
+  width: 100%;
+  max-width: 960px;
+  height: 82vh;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid ${colors.lightNavy};
+  background: #1e1e24;
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+`;
+
 export default function ResumePage(): React.ReactElement {
   return (
     <StyledMainContainer>
-      <StyledBadge>📄 Resume Status</StyledBadge>
-      <StyledSubtitle>Resume Coming Soon</StyledSubtitle>
-      <StyledParagraph>
-        The updated resume will be uploaded shortly. Please check back soon!
-      </StyledParagraph>
-      <StyledHomeButton href="/">← Back to Portfolio</StyledHomeButton>
+      <HeaderBar>
+        <StyledHomeButton href="/">← Back to Portfolio</StyledHomeButton>
+        <DownloadButton href="/Resume.pdf" download="Suprateek_Yawagal_Resume.pdf">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Download PDF
+        </DownloadButton>
+      </HeaderBar>
+
+      <PDFViewerContainer>
+        <iframe
+          src="/Resume.pdf"
+          title="Suprateek Yawagal Resume"
+        />
+      </PDFViewerContainer>
     </StyledMainContainer>
   );
 }
