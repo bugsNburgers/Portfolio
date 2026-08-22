@@ -4,8 +4,8 @@ const otherProjects: OtherProject[] = [
   {
     title: 'HonorLog',
     description:
-      'A real-time public student achievement display system built for Shorinkai India. Live leaderboard tracking martial arts ranks, belts, and milestone achievements for dojo students.',
-    techStack: ['TypeScript', 'React', 'Supabase'],
+      'A public student-achievement directory built for Shorinkai India featuring fuzzy search (Fuse.js), tournament and medal history, role-based administration, audit logging, and JSON/XLSX bulk import.',
+    techStack: ['TypeScript', 'React', 'Supabase', 'Fuse.js'],
     githubUrl: 'https://github.com/ull0sm/HonorLog',
     externalUrl: 'https://honorlog.shorinkai.in',
   },

@@ -4,8 +4,8 @@ export const featuredProjects: FeaturedProject[] = [
   {
     title: 'GitVital',
     description:
-      'A composite repo-health scoring engine ingesting GitHub REST/GraphQL data, weighting commit velocity, issue resolution time, and contributor churn into a single score. Features a bus-factor risk model analyzing commit-distribution concentration and Redis caching with Next.js App Router.',
-    techStack: ['Next.js', 'TypeScript', 'GitHub API', 'Redis'],
+      'A composite repo-health scoring engine powered by an asynchronous BullMQ/Redis worker pipeline for multi-thousand-commit ingestion and a self-throttling GitHub GraphQL client (5,000-pt/hr quota). Features dynamic weight-redistributing health scoring, bus-factor risk analysis, and Gemini API integration for AI repo insights.',
+    techStack: ['Next.js', 'TypeScript', 'Node.js', 'Redis', 'BullMQ', 'GitHub GraphQL API', 'Gemini API'],
     githubUrl: 'https://github.com/bugsNburgers/GitVital',
     externalUrl: 'https://gitvital.com',
     image: '/images/projects/gitvital.png',

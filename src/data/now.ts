@@ -6,7 +6,7 @@ const nowData: NowData = {
       category: 'building',
       title: 'GitVital: GitHub Health Dashboard',
       description:
-        'Iterating on GitVital: adding AI-powered repo recommendations, improving the bus factor algorithm, and building out the global developer leaderboard. Live at gitvital.com.',
+        'Iterating on GitVital: scaling the BullMQ/Redis worker pipeline, fine-tuning Gemini API repo insights, and building out the global developer leaderboard. Live at gitvital.com.',
     },
     {
       category: 'learning',

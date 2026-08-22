@@ -45,12 +45,19 @@ export interface AboutData {
 }
 
 /** Experience section */
-export interface Job {
-  company: string;
-  companyUrl?: string;
+export interface Role {
   title: string;
   dateRange: string;
   bullets: string[];
+}
+
+export interface Job {
+  company: string;
+  companyUrl?: string;
+  title?: string;
+  dateRange: string;
+  bullets?: string[];
+  roles?: Role[];
 }
 
 /** Featured projects */

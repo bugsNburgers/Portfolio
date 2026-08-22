@@ -25,12 +25,13 @@ export const techRadarData: TechItem[] = [
   // Backend
   { name: 'Node.js', category: 'Backend', description: 'Backend runtime, REST APIs, async I/O' },
   { name: 'Redis', category: 'Backend', description: 'In-memory data store, edge caching, analytics speedup' },
+  { name: 'BullMQ', category: 'Backend', description: 'Asynchronous distributed job & message queue pipeline' },
   { name: 'RESTful APIs & WebSockets', category: 'Backend', description: 'Real-time communication and robust web APIs' },
   { name: 'Supabase', category: 'Backend', description: 'PostgreSQL, auth, realtime subscriptions' },
 
   // Tools & Platforms
   { name: 'Git / GitHub', category: 'Tools & Platforms', description: 'Version control, PRs, collaborative workflows' },
-  { name: 'GitHub API', category: 'Tools & Platforms', description: 'REST & GraphQL APIs for repo analytics & automation' },
+  { name: 'GitHub GraphQL / REST API', category: 'Tools & Platforms', description: 'Rate-limited ingestion, repo analytics & automation' },
   { name: 'Vercel', category: 'Tools & Platforms', description: 'Deployment, preview environments, edge network' },
 ];
 
