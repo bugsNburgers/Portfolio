@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useMemo } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
 
 // ------------------------------------------------------------------
@@ -69,18 +69,20 @@ const LoaderText = styled.div`
 `;
 
 const CharSpan = styled.span<{ $delay: number; $isDot?: boolean }>`
-  display: inline-block;
-  opacity: 0;
-  transform: translate3d(0, 10px, 0);
-  will-change: opacity, transform;
-  animation: ${charReveal} 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: ${({ $delay }) => $delay}s;
+  ${({ $delay, $isDot }) => css`
+    display: inline-block;
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+    will-change: opacity, transform;
+    animation: ${charReveal} 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: ${$delay}s;
 
-  ${({ $isDot }) =>
-    $isDot &&
-    `
-    color: #64ffda;
-    animation: ${charReveal} 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards, ${pulseDot} 2s ease-in-out infinite 0.8s;
+    ${$isDot &&
+    css`
+      color: #64ffda;
+      animation: ${charReveal} 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+        ${pulseDot} 2s ease-in-out infinite 0.8s;
+    `}
   `}
 `;
 
