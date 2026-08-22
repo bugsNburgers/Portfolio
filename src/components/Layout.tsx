@@ -7,7 +7,6 @@ import Loader from '@/components/Loader';
 import Nav from '@/components/Nav';
 import SocialSidebar from '@/components/SocialSidebar';
 import Footer from '@/components/Footer';
-import SpotlightCursor from '@/components/SpotlightCursor';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
 
 const PixelBlast = dynamic(() => import('@/components/PixelBlast'), { ssr: false });
@@ -48,9 +47,6 @@ const Layout = ({ children }: LayoutProps): React.ReactElement => {
         <Loader finishLoading={handleLoaderFinish} />
       ) : null}
 
-      {/* Cursor spotlight — unique interactive effect */}
-      <SpotlightCursor />
-
       {/* Full-screen interactive pixel burst background */}
       <PixelBlast
         variant="circle"
@@ -60,15 +56,15 @@ const Layout = ({ children }: LayoutProps): React.ReactElement => {
         patternDensity={0.95}
         opacityScale={0.5}
         pixelSizeJitter={0.5}
-        enableRipples={true}
+        enableRipples={false}
         rippleSpeed={0.3}
         rippleThickness={0.12}
-        rippleIntensityScale={0.8}
+        rippleIntensityScale={0.5}
         liquid={false}
         liquidStrength={0.04}
         liquidRadius={1.0}
         liquidWobbleSpeed={3.0}
-        speed={1.2}
+        speed={0.8}
         edgeFade={0.0}
         transparent={true}
         style={{

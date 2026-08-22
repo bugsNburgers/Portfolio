@@ -104,7 +104,7 @@ const Loader = ({ finishLoading }: LoaderProps): React.ReactElement | null => {
         <CharSpan
           className="char"
           key={index}
-          $delay={0.15 + index * 0.065} // Balanced, ultra-smooth stagger
+          $delay={0.1 + index * 0.05} // Snappy stagger
           $isDot={isDot}
         >
           {char}
@@ -144,10 +144,10 @@ const Loader = ({ finishLoading }: LoaderProps): React.ReactElement | null => {
         setIsHidden(true);
         document.body.classList.remove('hidden');
         finishLoading();
-      }, 550);
+      }, 450);
 
       return () => clearTimeout(unmountTimer);
-    }, 1750);
+    }, 1100);
 
     return () => {
       document.body.classList.remove('hidden');
