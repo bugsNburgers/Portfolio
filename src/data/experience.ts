@@ -21,7 +21,7 @@ const experienceData: Job[] = [
         dateRange: 'June 2026 – Present',
         bullets: [
           'Direct end-to-end <strong>on-site technical operations</strong> across live championships, ensuring 100% uptime and seamless execution across all tournament platforms (EntryDesk, RingFlow, HonorLog).',
-          'Manage and coordinate <strong>on-ground technical teams</strong> and ring officials, supervising live match queueing, real-time scorekeeper workflows, and category administration for <strong>400+ athletes per tournament</strong>.',
+          'Led an <strong>8-member tournament operations team</strong> across two CISCE karate championships, coordinating live tournament scheduling, category assignments, score updates, and prize administration for <strong>400+ participants</strong> at each event.',
           'Lead real-time incident resolution, network/device failover management, and tournament readiness to guarantee zero disruption to live match schedules.',
         ],
       },
@@ -29,11 +29,9 @@ const experienceData: Job[] = [
         title: 'Software Developer Intern',
         dateRange: 'Dec 2025 – May 2026',
         bullets: [
-          'Analyzed, debugged, and resolved live production issues during tournament operations, maintaining <strong>100% system uptime</strong> across deployments.',
           'Co-developed <strong>EntryDesk</strong>, a full-stack TypeScript event management platform with organizer and coach portals, contributing to its design, development, deployment, and maintenance for live karate tournaments.',
           'Co-developed <strong>RingFlow</strong> (Next.js, TypeScript, Supabase), a live tournament management system that balanced ring workloads, tracked match progress, and delivered real-time updates to athletes, coaches, and spectators via <strong>Supabase Realtime</strong>.',
           'Co-developed <strong>HonorLog</strong>, a public student-achievement directory featuring <strong>fuzzy search (Fuse.js)</strong>, tournament and medal history, role-based administration, audit logging, and JSON/XLSX bulk import.',
-          'Led an <strong>8-member tournament operations team</strong> across two CISCE karate championships, coordinating live tournament scheduling, category assignments, score updates, and prize administration for <strong>400+ participants</strong> at each event.',
         ],
       },
     ],
