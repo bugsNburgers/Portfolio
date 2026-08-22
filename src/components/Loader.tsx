@@ -121,19 +121,9 @@ const Loader = ({ finishLoading }: LoaderProps): React.ReactElement | null => {
 
     document.body.classList.add('hidden');
 
-    // Preload background assets & ensure fonts are ready during loader window
-    try {
-      if (typeof document !== 'undefined' && 'fonts' in document) {
-        document.fonts.ready.catch(() => {});
-      }
-      // Warm up hero video buffer in background
-      const preloadVideo = document.createElement('video');
-      preloadVideo.src = '/video.mp4';
-      preloadVideo.preload = 'auto';
-      preloadVideo.muted = true;
-      preloadVideo.load();
-    } catch {
-      // Fallback
+    // Ensure fonts are ready during loader window
+    if (typeof document !== 'undefined' && 'fonts' in document) {
+      document.fonts.ready.catch(() => {});
     }
 
     // Comfortable pacing: letters reveal sequentially + pause to ensure full background hydration

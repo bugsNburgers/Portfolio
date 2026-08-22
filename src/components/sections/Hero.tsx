@@ -7,9 +7,6 @@ import heroData from '@/data/hero';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
 import { blurInVariants, staggerContainerVariants } from '@/styles/TransitionStyles';
 import mixins from '@/styles/mixins';
-import VideoText from '@/components/VideoText';
-
-const NAV_HEIGHT = '100px';
 
 // ------------------------------------------------------------------
 // Styled components
@@ -51,6 +48,27 @@ const StyledTitle = styled.h1`
     color: ${theme.colors.lightestSlate};
     line-height: 1.1;
     font-weight: var(--md-ref-typeface-weight-bold);
+  `}
+`;
+
+const StyledTagline = styled.h2`
+  ${({ theme }) => css`
+    margin: 0;
+    margin-top: ${theme.spacing.xs};
+    font-family: ${theme.fonts.brand};
+    font-size: clamp(28px, 5.2vw, 70px);
+    font-weight: 900;
+    line-height: 1.15;
+    color: ${theme.colors.slate};
+
+    .accent-dot {
+      color: ${theme.colors.green};
+    }
+
+    @media ${theme.media.sm} {
+      margin-top: 15px;
+      font-size: clamp(32px, 9vw, 45px);
+    }
   `}
 `;
 
@@ -106,58 +124,13 @@ const ButtonRow = styled.div`
   `}
 `;
 
-// Thin wrapper so VideoText sits in the right position in flow
-const SubtitleRow = styled.div`
-  ${({ theme }) => css`
-    margin-top: ${theme.spacing.xs};
-    width: 100%;
-
-    @media ${theme.media.sm} {
-      margin-top: 15px; /* Standard spacing */
-    }
-  `}
-`;
-
-const DesktopTagline = styled.div`
-  display: block;
-  @media ${({ theme }) => theme.media.sm} {
-    display: none;
-  }
-`;
-
-const MobileTagline = styled.div`
-  display: none;
-  @media ${({ theme }) => theme.media.sm} {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px; /* Neat spacing for the two lines */
-  }
-`;
-
 // ------------------------------------------------------------------
 // Component
 // ------------------------------------------------------------------
 
 const Hero = (): React.ReactElement => {
   const prefersReducedMotion = usePrefersReducedMotion();
-  const { greeting, name, tagline: _tagline, description, ctaPrimary, ctaSecondary } = heroData;
-
-  const desktopVideoStyle = {
-    fontFamily: 'var(--md-ref-typeface-brand)',
-    fontSize: 'clamp(28px, 5.2vw, 70px)',
-    fontWeight: 900,
-    lineHeight: 1.15,
-    color: '#8892b0',
-  };
-
-  const mobileVideoStyle = {
-    fontFamily: 'var(--md-ref-typeface-brand)',
-    fontSize: 'clamp(32px, 9vw, 45px)', /* Large enough to fill screen, small enough not to wrap */
-    fontWeight: 900,
-    lineHeight: 1.15,
-    color: '#8892b0',
-  };
+  const { greeting, name, description, ctaSecondary } = heroData;
 
   return (
     <StyledHeroSection>
@@ -176,34 +149,9 @@ const Hero = (): React.ReactElement => {
         </motion.div>
 
         <motion.div variants={blurInVariants} transition={{ delay: prefersReducedMotion ? 0 : 0.3 }}>
-          <SubtitleRow>
-            {/* Desktop 1-line layout */}
-            <DesktopTagline>
-              <VideoText
-                src="/video.mp4"
-                suffix="."
-                suffixColor="#64ffda"
-                style={desktopVideoStyle}
-              >
-                I build things for the internet
-              </VideoText>
-            </DesktopTagline>
-
-            {/* Mobile 2-line layout */}
-            <MobileTagline>
-              <VideoText src="/video.mp4" style={mobileVideoStyle}>
-                I build things
-              </VideoText>
-              <VideoText
-                src="/video.mp4"
-                suffix="."
-                suffixColor="#64ffda"
-                style={mobileVideoStyle}
-              >
-                for the internet
-              </VideoText>
-            </MobileTagline>
-          </SubtitleRow>
+          <StyledTagline>
+            I build things for the internet<span className="accent-dot">.</span>
+          </StyledTagline>
         </motion.div>
 
         <motion.div variants={blurInVariants} transition={{ delay: prefersReducedMotion ? 0 : 0.4 }}>
@@ -223,3 +171,4 @@ const Hero = (): React.ReactElement => {
 };
 
 export default Hero;
+
