@@ -125,21 +125,10 @@ const CompanyLine = styled.div`
     align-items: center;
     gap: 6px;
     margin-top: 2px;
-    flex-wrap: wrap;
 
     .at {
       color: ${theme.colors.textFaint};
       font-size: ${theme.fontSizes.sm};
-    }
-
-    .role-badge {
-      font-family: ${theme.fonts.mono};
-      font-size: ${theme.fontSizes.xxs};
-      color: ${theme.colors.accent};
-      background: ${theme.colors.accentGlow};
-      border: 1px solid rgba(127, 90, 240, 0.2);
-      padding: 1px 6px;
-      border-radius: 4px;
     }
   `}
 `;
@@ -303,15 +292,6 @@ const SubRoleTitle = styled.h4`
     font-weight: 600;
     color: ${theme.colors.textPrimary};
     margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    .promo-arrow {
-      color: ${theme.colors.accent};
-      font-size: 13px;
-      line-height: 1;
-    }
   `}
 `;
 
@@ -319,12 +299,9 @@ const SubRoleDate = styled.span`
   ${({ theme }) => css`
     font-family: ${theme.fonts.mono};
     font-size: ${theme.fontSizes.xxs};
-    color: ${theme.colors.accent};
-    background: ${theme.colors.accentGlow};
-    border: 1px solid rgba(127, 90, 240, 0.2);
-    padding: 2px 8px;
-    border-radius: 4px;
+    color: ${theme.colors.textFaint};
     white-space: nowrap;
+    flex-shrink: 0;
     letter-spacing: 0.02em;
   `}
 `;
@@ -404,38 +381,18 @@ const Experience = (): React.ReactElement => {
                         {isMultiRole ? company : title}
                       </EntryTitle>
                       <CompanyLine>
-                        {isMultiRole ? (
-                          <>
-                            {companyUrl ? (
-                              <CompanyLink
-                                href={companyUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                {companyUrl.replace(/^https?:\/\//, '')}
-                              </CompanyLink>
-                            ) : null}
-                            <span className="role-badge">
-                              {roles?.length} roles · Promoted ↑
-                            </span>
-                          </>
+                        <span className="at">@</span>
+                        {companyUrl ? (
+                          <CompanyLink
+                            href={companyUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {isMultiRole ? companyUrl.replace(/^https?:\/\//, '') : company}
+                          </CompanyLink>
                         ) : (
-                          <>
-                            <span className="at">@</span>
-                            {companyUrl ? (
-                              <CompanyLink
-                                href={companyUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                {company}
-                              </CompanyLink>
-                            ) : (
-                              <CompanySpan>{company}</CompanySpan>
-                            )}
-                          </>
+                          <CompanySpan>{company}</CompanySpan>
                         )}
                       </CompanyLine>
                     </TitleBlock>
@@ -460,10 +417,7 @@ const Experience = (): React.ReactElement => {
                                 <SubRoleEntry key={role.title}>
                                   <SubDot $isLatest={isLatest} />
                                   <SubRoleHeader>
-                                    <SubRoleTitle>
-                                      {role.title}
-                                      {isLatest && <span className="promo-arrow">↑</span>}
-                                    </SubRoleTitle>
+                                    <SubRoleTitle>{role.title}</SubRoleTitle>
                                     <SubRoleDate>{role.dateRange}</SubRoleDate>
                                   </SubRoleHeader>
 

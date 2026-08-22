@@ -12,17 +12,6 @@ const experienceData: Job[] = [
     ],
   },
   {
-    company: 'Once UI | Longhorn Developers',
-    companyUrl: 'https://github.com/once-ui-system/core',
-    title: 'Open Source Contributor',
-    dateRange: 'Apr 2026 – Jul 2026',
-    bullets: [
-      "Debugged and fixed a touch-interaction defect in Once UI's <strong>Button/ToggleButton</strong> components, eliminating false hover states on mobile while preserving keyboard accessibility (<a href='https://github.com/once-ui-system/core/pull/71' target='_blank' rel='noopener noreferrer'>PR #71</a>).",
-      "Designed and shipped a <strong>numeric-sizes shorthand API</strong> for Once UI's Media component, removing repetitive boilerplate for a common responsive-image use case (<a href='https://github.com/once-ui-system/core/pull/72' target='_blank' rel='noopener noreferrer'>PR #72</a>).",
-      "Resolved UI/dashboard styling inconsistencies in <strong>Degree-Audit-Plus</strong> against Figma specs, improving visual accuracy across GPA and credit-tracking cards (<a href='https://github.com/Longhorn-Developers/Degree-Audit-Plus/pull/194' target='_blank' rel='noopener noreferrer'>PR #194</a>).",
-    ],
-  },
-  {
     company: 'Shorinkai India',
     companyUrl: 'https://entrydesk.shorinkai.in',
     dateRange: 'Dec 2025 – Present',
@@ -47,6 +36,17 @@ const experienceData: Job[] = [
           'Led an <strong>8-member tournament operations team</strong> across two CISCE karate championships, coordinating live tournament scheduling, category assignments, score updates, and prize administration for <strong>400+ participants</strong> at each event.',
         ],
       },
+    ],
+  },
+  {
+    company: 'Once UI | Longhorn Developers',
+    companyUrl: 'https://github.com/once-ui-system/core',
+    title: 'Open Source Contributor',
+    dateRange: 'Apr 2026 – Jul 2026',
+    bullets: [
+      "Debugged and fixed a touch-interaction defect in Once UI's <strong>Button/ToggleButton</strong> components, eliminating false hover states on mobile while preserving keyboard accessibility (<a href='https://github.com/once-ui-system/core/pull/71' target='_blank' rel='noopener noreferrer'>PR #71</a>).",
+      "Designed and shipped a <strong>numeric-sizes shorthand API</strong> for Once UI's Media component, removing repetitive boilerplate for a common responsive-image use case (<a href='https://github.com/once-ui-system/core/pull/72' target='_blank' rel='noopener noreferrer'>PR #72</a>).",
+      "Resolved UI/dashboard styling inconsistencies in <strong>Degree-Audit-Plus</strong> against Figma specs, improving visual accuracy across GPA and credit-tracking cards (<a href='https://github.com/Longhorn-Developers/Degree-Audit-Plus/pull/194' target='_blank' rel='noopener noreferrer'>PR #194</a>).",
     ],
   },
 ];
