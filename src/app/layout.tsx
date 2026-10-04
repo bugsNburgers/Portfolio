@@ -81,6 +81,10 @@ export default function RootLayout({ children }: RootLayoutProps): React.ReactEl
           rel="stylesheet"
         />
         <link href="https://fonts.cdnfonts.com/css/google-sans" rel="stylesheet" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body>
         <StyledComponentsRegistry>
@@ -88,10 +92,7 @@ export default function RootLayout({ children }: RootLayoutProps): React.ReactEl
             {children}
           </Providers>
         </StyledComponentsRegistry>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        
       </body>
     </html>
   );

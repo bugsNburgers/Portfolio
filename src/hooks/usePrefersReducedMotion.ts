@@ -6,7 +6,9 @@ const QUERY = '(prefers-reduced-motion: reduce)';
 
 const usePrefersReducedMotion = (): boolean => {
   // Default to false on server so initial="hidden" is rendered, preventing hydration flashes
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  // Default to true on server so SSR renders initial="visible" — content is fully visible to crawlers and no-JS.
+  // On client hydration, useEffect reads the real media query value to enable animations for users.
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(true);
 
   useEffect(() => {
     const mediaQueryList = window.matchMedia(QUERY);
