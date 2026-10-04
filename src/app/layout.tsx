@@ -9,11 +9,15 @@ import '@/app/globals.css';
 // ------------------------------------------------------------------
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://suprateekyawagal.in'),
   title: 'Suprateek Yawagal',
   description:
     'Suprateek Yawagal is a software engineer who builds things for the web with a focus on crafting accessible, human-centered digital experiences.',
   keywords: ['Suprateek Yawagal', 'software engineer', 'web developer', 'portfolio'],
   authors: [{ name: 'Suprateek Yawagal' }],
+  alternates: {
+    canonical: 'https://suprateekyawagal.in/',
+  },
   openGraph: {
     title: 'Suprateek Yawagal',
     description: 'Suprateek Yawagal is a software engineer who builds things for the web.',
@@ -35,7 +39,6 @@ export const metadata: Metadata = {
     title: 'Suprateek Yawagal',
     description: 'Suprateek Yawagal is a software engineer who builds things for the web.',
     images: ['/og.png'],
-    creator: '[REPLACE: @suprateek]',
   },
   icons: {
     icon: [
@@ -62,9 +65,9 @@ export default function RootLayout({ children }: RootLayoutProps): React.ReactEl
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Suprateek Yawagal | Portfolio',
-    alternateName: ['Suprateek Yawagal Portfolio'],
-    url: 'https://suprateekyawagal.in',
+    name: 'Suprateek Yawagal',
+    alternateName: ['Suprateek', 'Suprateek Yawagal Portfolio'],
+    url: 'https://suprateekyawagal.in/',
   };
 
   return (
