@@ -10,6 +10,7 @@ import Footer from '@/components/Footer';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
 
 const PixelBlast = dynamic(() => import('@/components/PixelBlast'), { ssr: false });
+const PullToRevealEasterEgg = dynamic(() => import('@/components/PullToRevealEasterEgg'), { ssr: false });
 
 // ------------------------------------------------------------------
 // Styled components
@@ -22,6 +23,7 @@ const StyledContent = styled.div`
     min-height: 100vh;
     position: relative;
     z-index: 2;
+    transform-origin: top center;
   `}
 `;
 
@@ -75,12 +77,13 @@ const Layout = ({ children }: LayoutProps): React.ReactElement => {
         }}
       />
 
-      <StyledContent>
+      {/* Fixed top navigation */}
+      <Nav isHome={!isLoading || prefersReducedMotion} />
+
+      <StyledContent id="site-content">
         <a className="skip-to-content" href="#content">
           Skip to Content
         </a>
-
-        <Nav isHome={!isLoading || prefersReducedMotion} />
 
         {/* Social FAB — bottom-right floating buttons (replaces sidebars) */}
         <SocialSidebar />
@@ -89,6 +92,9 @@ const Layout = ({ children }: LayoutProps): React.ReactElement => {
 
         <Footer />
       </StyledContent>
+
+      {/* Interactive elastic pull-to-reveal membrane & modal at the bottom of the page */}
+      <PullToRevealEasterEgg />
     </>
   );
 };

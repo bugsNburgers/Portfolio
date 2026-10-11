@@ -17,10 +17,10 @@ const StyledFooter = styled.footer`
     flex-direction: column;
     align-items: center;
     gap: 0;
-    padding: 0 40px;
+    padding: 0 40px 55px 40px;
 
     @media ${theme.media.md} {
-      padding: 0 20px;
+      padding: 0 20px 45px 20px;
     }
   `}
 `;
